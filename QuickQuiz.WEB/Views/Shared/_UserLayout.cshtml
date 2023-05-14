@@ -28,7 +28,7 @@
     <div class="wrapper">
         <nav id="sidebar" class="sidebar js-sidebar">
             <div class="sidebar-content js-simplebar">
-                <a class="sidebar-brand" href="index.html">
+                <a class="sidebar-brand"  asp-controller="Home" asp-action="Index">
                     <span class="align-middle">Quick Quiz</span>
                 </a>
 
@@ -42,6 +42,16 @@
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="/Member/Index">
                             <i class="align-middle" data-feather="user"></i> <span class="align-middle">Profilim</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" asp-controller="Question" asp-action="Add">
+                            <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Soru Oluştur</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" asp-controller="Question" asp-action="Index">
+                            <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Sorularım</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
