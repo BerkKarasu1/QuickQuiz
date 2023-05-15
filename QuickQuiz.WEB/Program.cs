@@ -1,6 +1,10 @@
+using MapsterMapper;
 using Microsoft.Extensions.FileProviders;
 using QuickQuiz.Core.Model;
+using QuickQuiz.Core.Repositories;
+using QuickQuiz.Core.Services;
 using QuickQuiz.Repository;
+using QuickQuiz.Repository.Repositories;
 using QuickQuiz.Service.Services;
 using QuickQuiz.WEB.Extensions;
 
@@ -33,7 +37,9 @@ builder.Services.ConfigureApplicationCookie(opt =>
     opt.SlidingExpiration = true;
 }
 );
-
+builder.Services.AddScoped<IQuestionService,QuestionService>();
+builder.Services.AddScoped<IQuestionRepository,QuestionRepository>();
+builder.Services.AddScoped<IMapper,Mapper>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
