@@ -1,7 +1,30 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
-    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    Layout = null;
 }
-
-<title>Anasayfa | Quick Quiz</title>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anasayfa | Quick Quiz</title>
+    <link href="~/css/styleIndex.css" rel="stylesheet">
+</head>
+<body>
+    <div class="content">
+        <h1 class="title">
+            Quick Quiz
+            <div class="aurora">
+                <div class="aurora__item"></div>
+                <div class="aurora__item"></div>
+                <div class="aurora__item"></div>
+                <div class="aurora__item"></div>
+            </div>
+        </h1>
+        <br>
+        <a class="custom-btn btn-6" asp-action="SignIn" asp-controller="Home">Giriş Yap</a>
+        <a class="custom-btn btn-6" asp-action="SignUp" asp-controller="Home">Üye Ol</a>
+    </div>
+</body>
+</html>

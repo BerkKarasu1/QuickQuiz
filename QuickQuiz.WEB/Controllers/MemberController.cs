@@ -27,7 +27,6 @@ namespace QuickQuiz.WEB.Controllers
 
         public async Task<IActionResult> Index()
         {
-
             return View(await _memberService.GetUserViewModelByUserNameAsync(userName));
         }
 
@@ -70,30 +69,74 @@ namespace QuickQuiz.WEB.Controllers
 
         public async Task<IActionResult> UserEdit()
         {
+            var currentUser = await _userManager.FindByNameAsync(User!.Identity!.Name!);
             ViewBag.genderList = new SelectList(Enum.GetNames(typeof(Gender)));
-            
-            return View(await _memberService.GetUserEditViewModelAsync(userName));
+            var userEditViewModel = new UserEditViewModel()
+            {
+                UserName = currentUser!.UserName!,
+                Email = currentUser!.Email!,
+                BirthDate = currentUser!.BirthDate,
+                Phone= currentUser!.PhoneNumber!,
+                City = currentUser!.City,
+                Gender = currentUser!.Gender
+            };
+
+            return View(userEditViewModel);
         }
 
         [HttpPost]
         public async Task<IActionResult> UserEdit(UserEditViewModel request)
         {
-            if (!ModelState.IsValid)
+            var currentUser = await _userManager.FindByNameAsync(User.Identity!.Name!);
+
+            currentUser!.UserName = request.UserName;
+            currentUser.Email = request.Email;
+            currentUser.PhoneNumber = request.Phone;
+            currentUser.BirthDate = request.BirthDate;
+            currentUser.City = request.City;
+            currentUser.Gender = request.Gender;
+
+            if (request.Picture != null && request.Picture.Length > 0)
             {
+                var wwwrootFolder = _fileProvider.GetDirectoryContents("wwwroot");
+
+                var randomFileName = $"{Guid.NewGuid().ToString()}{Path.GetExtension(request.Picture.FileName)}";
+
+                var newPicturePath = Path.Combine(wwwrootFolder!.First(x => x.Name == "userpictures").PhysicalPath!, randomFileName);
+
+                using var stream = new FileStream(newPicturePath, FileMode.Create);
+
+                await request.Picture.CopyToAsync(stream);
+
+                currentUser.Picture = randomFileName;
+            }
+
+            var updateToUserResult = await _userManager.UpdateAsync(currentUser);
+
+            if (!updateToUserResult.Succeeded)
+            {
+                ModelState.AddModelErrorList(updateToUserResult.Errors);
                 return View();
             }
 
-            var(isSuccess, errors)  = await _memberService.EditUserAsync(request, userName);
+            await _userManager.UpdateSecurityStampAsync(currentUser);
 
-            if (!isSuccess)
+            await _signInManager.SignOutAsync();
+            await _signInManager.SignInAsync(currentUser, true);
+
+            TempData["SuccessMessage"] = "Üye bilgileri başarıyla değiştirilmiştir.";
+
+            var userEditViewModel = new UserEditViewModel()
             {
-                ModelState.AddModelErrorList(errors!);
-                return View();
-            }
-        
-            TempData["SuccessMessage"] = "Üye bilgileri başarıyla değiştirilmiştir.";          
+                UserName = currentUser.UserName,
+                Email = currentUser.Email,
+                Phone = currentUser.PhoneNumber,
+                BirthDate = currentUser.BirthDate,
+                City = currentUser.City,
+                Gender = currentUser.Gender
+            };
 
-            return View(await _memberService.GetUserEditViewModelAsync(userName));
+            return View(userEditViewModel);
         }
 
         public IActionResult AccessDenied(string ReturnUrl)

@@ -50,9 +50,9 @@
                                     </div>                                   
                                     <form asp-controller="Home" asp-action="SignIn" asp-route-returnUrl="@Context.Request.Query["returnURl"]" method="post">
                                         <div class="mb-3">
-                                            <label for="Email" asp-for="Email" class="form-label"></label>
-                                            <input asp-for="Email" class="form-control form-control-lg" type="email" placeholder="Enter your email" />
-                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                            <label for="UserName" asp-for="UserName" class="form-label"></label>
+                                            <input asp-for="UserName" class="form-control form-control-lg" type="text" placeholder="Enter your user name" />
+                                            <span asp-validation-for="UserName" class="text-danger"></span>
                                         </div>
                                         <div class="mb-3">
                                             <label for="Password" asp-for="Password" class="form-label"></label>

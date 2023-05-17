@@ -29,7 +29,7 @@ namespace QuickQuiz.Service.Services
             mailMessage.From = new MailAddress(_emailSettings.Email);
             mailMessage.To.Add(ToEmail);
 
-            mailMessage.Subject = "Talimat Yaz| Şifre Sıfırlama Linki";
+            mailMessage.Subject = "Quick Quiz| Şifre Sıfırlama Linki";
             mailMessage.Body = @$"
                 <h4>Şifrenizi yenilemek için aşağıdaki linke tıklayınız.</h4>
                 <p><a href='{resetPasswordEmailLink}'>şifre yenileme link</a></p>";

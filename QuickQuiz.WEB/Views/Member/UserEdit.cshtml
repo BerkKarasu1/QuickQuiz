@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "UserEdit";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
@@ -12,11 +11,12 @@
 
         @if (TempData["SuccessMessage"] != null)
         {
-            <div class="alert alert-info" role="alert">
+            <div class="text-primary">
                 @TempData["SuccessMessage"]
             </div>
         }
 
+        <br /><br />
         <div asp-validation-summary=ModelOnly class="alert alert-danger" role="alert">
         </div>
 

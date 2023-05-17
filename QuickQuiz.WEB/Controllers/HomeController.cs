@@ -26,13 +26,17 @@ namespace QuickQuiz.WEB.Controllers
             _signInManager = signInManager;
             _emailService = emailService;
         }
-
-        [Authorize]
+        
         public IActionResult Index()
         {
             return View();
         }
 
+        [Authorize]
+        public IActionResult HomePage()
+        {
+            return View();
+        }
         public IActionResult SignUp()
         {
             return View();
@@ -50,13 +54,13 @@ namespace QuickQuiz.WEB.Controllers
                 return View();
             }
 
-            returnUrl ??= Url.Action("Index", "Home");
+            returnUrl ??= Url.Action("HomePage", "Home");
 
-            var hasUser = await _userManager.FindByEmailAsync(model.Email);
+            var hasUser = await _userManager.FindByNameAsync(model.UserName);
 
             if (hasUser == null)
             {
-                ModelState.AddModelError(string.Empty, "Email veya şifre yanlış!");
+                ModelState.AddModelError(string.Empty, "Kullanıcı adı veya şifre yanlış!");
                 return View();
             }
 
@@ -89,7 +93,7 @@ namespace QuickQuiz.WEB.Controllers
             if (identityResult.Succeeded)
             {
                 TempData["SuccessMessage"] = "Üyelik kayıt işlemi başarıyla gerçekleşmiştir.";
-                return RedirectToAction(nameof(HomeController.SignUp));
+                return RedirectToAction(nameof(HomeController.SignIn));
             }
 
             ModelState.AddModelErrorList(identityResult.Errors.Select(x => x.Description).ToList());
@@ -97,6 +101,34 @@ namespace QuickQuiz.WEB.Controllers
             return View();
         }
 
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordViewModel request)
+        {
+            var hasUser = await _userManager.FindByEmailAsync(request.Email);  // kullanıcı var mı yok mu
+            if (hasUser == null)
+            {
+                ModelState.AddModelError(String.Empty, "Bu email adresine sahip kullanıcı bulunamamıştır.");
+                return View(); // redirect dersek hatayı kaybederiz.
+            }
+
+            string passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(hasUser);
+
+            var passwordResetLink = Url.Action("ResetPassword", "RegisterUser",
+                new { userId = hasUser.Id, Token = passwordResetToken }, HttpContext.Request.Scheme);
+
+            //örnek link : https://localhost:7295?userId?12213&token=dshgdfhsadsd  bu sekilde bir url üretilecek.
+
+            await _emailService.SendResetPasswordEmail(passwordResetLink, hasUser.Email);
+
+            TempData["SuccessMessage"] = "Şifre yenileme linki, e-posta adresinize gönderilmiştir.";
+
+            return RedirectToAction(nameof(ForgetPassword));
+        }
 
         public IActionResult Privacy()
         {

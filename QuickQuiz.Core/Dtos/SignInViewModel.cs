@@ -8,16 +8,15 @@ namespace QuickQuiz.Core.Dtos
         {
 
         }
-        public SignInViewModel(string email, string password)
+        public SignInViewModel(string password, string name)
         {
-            Email = email;
+            UserName = name;
             Password = password;
         }
 
-        [Required(ErrorMessage = "Email alanı boş bırakılamaz!")]
-        [EmailAddress(ErrorMessage = "Email formatı yanlış!")]
-        [Display(Name = "Email:")]
-        public string Email { get; set; } = null!;
+        [Required(ErrorMessage = "Kullanıcı adı alanı boş bırakılamaz!")]
+        [Display(Name = "Kullanıcı Adı:")]
+        public string UserName { get; set; } = null!;
 
         [DataType(DataType.Password)]
 

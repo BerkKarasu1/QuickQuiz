@@ -27,7 +27,8 @@ namespace QuickQuiz.Service.Services
                 Email = currentUser!.Email!,
                 UserName = currentUser!.UserName!,
                 PhoneNumber = currentUser!.PhoneNumber!,
-                PictureUrl = currentUser.Picture
+                PictureUrl = currentUser.Picture,
+                City = currentUser!.City!
             };
         }
 
