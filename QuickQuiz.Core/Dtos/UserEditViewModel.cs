@@ -31,5 +31,20 @@ namespace QuickQuiz.Core.Dtos
 
         [Display(Name = "Cinsiyet:")]
         public Gender? Gender { get; set; }
+
+        [Display(Name = "Twitter Link:")]
+        public string? Twitter { get; set; }
+
+        [Display(Name = "Facebook Link:")]
+        public string? Facebook { get; set; }
+
+        [Display(Name = "Instagram Link:")]
+        public string? Instagram { get; set; }
+
+        [Display(Name = "Linkedln Link:")]
+        public string? Linkedln { get; set; }
+
+        [Display(Name = "Github Link:")]
+        public string? Github { get; set; }
     }
 }

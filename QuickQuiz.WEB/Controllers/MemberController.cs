@@ -78,7 +78,12 @@ namespace QuickQuiz.WEB.Controllers
                 BirthDate = currentUser!.BirthDate,
                 Phone= currentUser!.PhoneNumber!,
                 City = currentUser!.City,
-                Gender = currentUser!.Gender
+                Gender = currentUser!.Gender,
+                Github= currentUser!.Github,
+                Twitter = currentUser!.Twitter,
+                Instagram = currentUser!.Instagram,
+                Facebook = currentUser!.Facebook,
+                Linkedln = currentUser!.Linkedln
             };
 
             return View(userEditViewModel);
@@ -95,6 +100,12 @@ namespace QuickQuiz.WEB.Controllers
             currentUser.BirthDate = request.BirthDate;
             currentUser.City = request.City;
             currentUser.Gender = request.Gender;
+            currentUser.Github = request.Github;
+            currentUser.Facebook = request.Facebook;
+            currentUser.Instagram = request.Instagram;
+            currentUser.Linkedln = request.Linkedln;
+            currentUser.Twitter = request.Twitter;
+
 
             if (request.Picture != null && request.Picture.Length > 0)
             {
@@ -133,7 +144,12 @@ namespace QuickQuiz.WEB.Controllers
                 Phone = currentUser.PhoneNumber,
                 BirthDate = currentUser.BirthDate,
                 City = currentUser.City,
-                Gender = currentUser.Gender
+                Gender = currentUser.Gender,
+                Github = currentUser.Github,
+                Twitter = currentUser.Twitter,
+                Instagram = currentUser.Instagram,
+                Linkedln = currentUser.Linkedln,
+                Facebook = currentUser.Facebook
             };
 
             return View(userEditViewModel);
