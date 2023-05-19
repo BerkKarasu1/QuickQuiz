@@ -11,8 +11,8 @@ namespace QuickQuiz.Core.Dtos
     {
         public int Id { get; set; }
         public string Question { get; set; }
-        public List<string> Answers { get; set; } = new List<string>();
-        public string TrueAnswer { get; set; }
+        public List<Answer> Answers { get; set; } = new List<Answer>();
+        public Answer? TrueAnswer { get; set; }
         public AppUser Creater { get; set; }
     }
 }

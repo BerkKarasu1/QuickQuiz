@@ -1,0 +1,138 @@
+﻿@model List<QuestionDTO>
+<link href="~/css/textbox.css" rel="stylesheet" />
+@{
+    ViewData["Title"] = "Sorularım";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+@if (ViewBag.Error != null)
+{
+    <h3 class="dikkat">@ViewBag.Error</h3>
+}
+
+@for (int i = 0; i < Model.Count; i++)
+{
+    <div class="row mt-12">
+        <div class="col-md-1">
+            <input type="checkbox" form="GeneralForm" id="questcb">
+            <span>@(i + 1) Soru</span>
+        </div>
+        <div class="col-md-9">
+            <textarea class="form-control"  asp-for="@Model[i].Question"
+                      rows="3" id="question_@i" style="min-height:100px;" readonly ></textarea>            
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-outline-info" type="button" id="mod_@i" onclick="question(@i)">Cevapları Görüntüle</button>
+        </div>
+    </div>
+    for (int j = 0; j < Model[i].Answers.Count; j++)
+    {
+        string optionName = "";
+        if (j == 0)
+        {
+            optionName = "A";
+        }
+        else if (j == 1)
+        {
+            optionName = "B";
+        }
+        else if (j == 2)
+        {
+            optionName = "C";
+        }
+        else if (j == 3)
+        {
+            optionName = "D";
+        }
+        else if (j == 4)
+        {
+            optionName = "E";
+        }
+
+        <div class="row mt-12">            
+            <div class="col-md-9" id="AAmod_@i" hidden="hidden">
+                <span>@optionName ) </span>
+                <span id="Amod_@i" >@Model[i].Answers[j]</span>
+            </div>
+            <div class="col-md-9">
+                <textarea asp-for= class="form-control"  id="Aanswer_@i"
+                    aria-label="Example text with button addon" aria-describedby="button-addon1" hidden="hidden">
+                    @Model[i].Answers[j].AnswerText
+                </textarea>
+            </div>
+        </div>
+    }
+    <button type="submit" class="btn btn-success" asp-controller="Question" asp-action="UpdateQuestion" formmethod="post" id="saveBtn_@i" form="ChangeForm_@i" hidden="hidden">Değişiklikleri Kaydet</button>
+    <button class="btn btn-success" onclick="check()" data-bs-toggle="modal" data-bs-target="#createTestModal" type="button">Seçilen Öğelerden Test Oluştur</button>
+    <div class="modal fade" id="createTestModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Test Oluşturuluyor</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <strong id="bb"> Seçtiğiniz Testin Adını Belirleyin</strong>
+                    @*<input type="text" form="GeneralForm" asp-for=@Model.testCreateVM.TestName id="testName">*@
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" id="createTestButton" form="GeneralForm" class="btn btn-primary" asp-controller="Test" asp-action="CreateTest" formmethod="post">Test Oluştur</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+        Seçili Öğeleri Sil
+    </button>
+    <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Seçili Sorular Silinecek!!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Seçtiğiniz sorularınız oluşturduğunuz testler içerisinde olabilir yine de silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!!!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" class="btn btn-danger" form="GeneralForm" asp-controller="Question" asp-action="DeleteQuestion" formmethod="post">Seçili Soruları Sil</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+        Seçili Soruları Teste Ekle
+    </button>
+    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Seçili Sorular İşaretlediğiniz Testlere Eklenecek</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @*
+                @for (int i = 0; i < Model.testCreateVM.Tests.Count; i++)
+                {
+                <input form="GeneralForm" asp-for="@Model.testCreateVM.Tests[i].Id" hidden />
+                <div class="checkbox checkbox-success">
+                <input form="GeneralForm" type="checkbox" asp-for="@Model.testCreateVM.Tests[i].check" readonly />
+                <input form="GeneralForm" type="text" asp-for="@Model.testCreateVM.Tests[i].Name">
+                </div>
+
+                }*@
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" form="GeneralForm" class="btn btn-info" asp-controller="Test" asp-action="AddQuestionToTest" formmethod="post">Seçili Teste Ekle</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+<script src="~/js/allQuestions.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="~/js/textbox.js"></script>

@@ -17,6 +17,8 @@ namespace QuickQuiz.Repository
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(builder);
+            builder.Entity<Question>()
+                .HasMany(x => x.Answers).WithOne(x => x.Question);
         }
     }
 }

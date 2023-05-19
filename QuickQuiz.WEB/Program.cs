@@ -1,4 +1,7 @@
+using Exams.Service.Mapping;
+using Mapster;
 using MapsterMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using QuickQuiz.Core.Model;
 using QuickQuiz.Core.Repositories;
@@ -37,6 +40,9 @@ builder.Services.ConfigureApplicationCookie(opt =>
     opt.SlidingExpiration = true;
 }
 );
+var config = TypeAdapterConfig.GlobalSettings;
+config.Scan(typeof(QuestionMappingConfig).Assembly);
+builder.Services.AddSingleton(config);
 builder.Services.AddScoped<IQuestionService,QuestionService>();
 builder.Services.AddScoped<IQuestionRepository,QuestionRepository>();
 builder.Services.AddScoped<IMapper,Mapper>();
@@ -69,6 +75,6 @@ app.UseEndpoints(endpoints =>
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=HomePage}/{id?}");
 
 app.Run();

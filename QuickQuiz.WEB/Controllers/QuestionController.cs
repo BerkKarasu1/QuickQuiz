@@ -19,12 +19,12 @@ namespace QuickQuiz.WEB.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Add(QuestionDTO questionDTO)
-        {//todo: burada null olan answerlar silinecek.
-            //true answer Id'si ile geçerli cevapId'si birleştirilecek. Türü değiştirilip answer yapılabilir.
+        public async Task<IActionResult> Add(QuestionDTO questionDTO)
+        {
             questionDTO.Creater = CurrentUser;
-            _questionService.AddAsync(questionDTO);            
-            return View();
+            await _questionService.AddAsync(questionDTO);
+            QuestionDTO returnDTO = new();
+            return View(returnDTO);
         }
         [HttpPost]
         public IActionResult Delete(QuestionDTO questionDTO)
@@ -36,6 +36,12 @@ namespace QuickQuiz.WEB.Controllers
         {
             _questionService.Update(questionDTO);
             return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> AllQuestions(List<QuestionDTO> questionDTOs)
+        {
+            List<QuestionDTO> allQuestions = await _questionService.GetAllQuestionAsync(CurrentUser);
+            return View(allQuestions);
         }
     }
 }

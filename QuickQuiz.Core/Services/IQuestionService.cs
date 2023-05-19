@@ -10,8 +10,8 @@ namespace QuickQuiz.Core.Services
 {
     public interface IQuestionService
     {
-       Task<Question> GetQuestionByIdAsync(int questionId);
-        Task<List<Question>> GetAllQuestionAsync(AppUser user);
+       Task<QuestionDTO> GetQuestionByIdAsync(int questionId);
+        Task<List<QuestionDTO>> GetAllQuestionAsync(AppUser user);
         void Update(QuestionDTO question);
         void Remove(QuestionDTO question);
         Task AddAsync(QuestionDTO question);

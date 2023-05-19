@@ -154,7 +154,7 @@
                     <button type="button" class="option-btn" data-option="A">A</button>
                     <div class="option-textarea-wrapper" style="margin-right: 25px">
                         <textarea class="option-textarea"
-                                  asp-for="@Model.Answers"                                  
+                                  asp-for="@Model.Answers[0].AnswerText"                                  
                                   required></textarea>
                     </div>
                 </div>
@@ -164,7 +164,7 @@
                     <button type="button" class="option-btn" data-option="B">B</button>
                     <div class="option-textarea-wrapper" style="margin-right: 25px">
                         <textarea class="option-textarea"
-                                  asp-for="@Model.Answers"
+                                  asp-for="@Model.Answers[1].AnswerText"
                                   required></textarea>
                     </div>
                 </div>
@@ -173,7 +173,7 @@
                 <div class="option-input-wrapper" id="question3">
                     <button type="button" class="option-btn" data-option="C">C</button>
                     <div class="option-textarea-wrapper">
-                        <textarea class="option-textarea" asp-for="@Model.Answers"></textarea>
+                        <textarea class="option-textarea" asp-for="@Model.Answers[2].AnswerText"></textarea>
                     </div>
                     <button type="button"
                             class="close-btn"
@@ -186,7 +186,7 @@
                 <div class="option-input-wrapper" id="question4">
                     <button type="button" class="option-btn" data-option="D">D</button>
                     <div class="option-textarea-wrapper">
-                        <textarea class="option-textarea" asp-for="@Model.Answers"></textarea>
+                        <textarea class="option-textarea" asp-for="@Model.Answers[3].AnswerText"></textarea>
                     </div>
                     <button type="button"
                             class="close-btn"
@@ -199,7 +199,7 @@
                 <div class="option-input-wrapper" id="question5">
                     <button type="button" class="option-btn" data-option="E">E</button>
                     <div class="option-textarea-wrapper">
-                        <textarea class="option-textarea" asp-for="@Model.Answers"></textarea>
+                        <textarea class="option-textarea" asp-for="@Model.Answers[4].AnswerText"></textarea>
                     </div>
                     <button type="button"
                             class="close-btn"
@@ -216,7 +216,7 @@
         </div>
         <input type="hidden"
                id="selected-answer"
-               asp-for="@Model.TrueAnswer"
+               asp-for="@Model.TrueAnswer.AnswerText"
                required />
         <br /><br />
         <input type="submit" value="Testi Kaydet" />
