@@ -28,7 +28,12 @@ namespace QuickQuiz.Service.Services
                 UserName = currentUser!.UserName!,
                 PhoneNumber = currentUser!.PhoneNumber!,
                 PictureUrl = currentUser.Picture,
-                City = currentUser!.City!
+                City = currentUser!.City!,
+                Github = currentUser!.Github!,
+                Facebook = currentUser!.Facebook!,
+                Instagram = currentUser!.Instagram!,
+                Linkedln = currentUser!.Linkedln!,
+                Twitter = currentUser!.Twitter!
             };
         }
 

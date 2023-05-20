@@ -32,7 +32,6 @@ namespace QuickQuiz.WEB.Controllers
             return View();
         }
 
-        [Authorize]
         public IActionResult HomePage()
         {
             return View();
@@ -54,7 +53,7 @@ namespace QuickQuiz.WEB.Controllers
                 return View();
             }
 
-            returnUrl ??= Url.Action("HomePage", "Home");
+            returnUrl ??= Url.Action("Index", "Home");
 
             var hasUser = await _userManager.FindByNameAsync(model.UserName);
 

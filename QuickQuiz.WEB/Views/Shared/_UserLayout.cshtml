@@ -81,12 +81,18 @@
 
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav navbar-align">
-                        
+                        <li>
+                            <form role="search" class="navbar-form-custom" action="search_results.html">
+                                <div class="form-group">
+                                    <input type="text" placeholder="Arama yapın..." class="form-control mt-1" name="top-search" id="top-search">
+                                </div>
+                            </form>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
                                 <i class="align-middle" data-feather="settings"></i>
                             </a>
-
+                            
                             <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
                                 <img src="~/adminkit-3.1.0/static/img/icons/logo.jpg" class="avatar img-fluid rounded me-1" alt="img" /> <span class="text-dark">@User.Identity!.Name </span>
                             </a>
@@ -128,6 +134,18 @@
 
     <script src="~/adminkit-3.1.0/static/js/app.js"></script>
 
+    <script>
+        var $rows = $('#table tr');
+        $('#top-search').keyup(function () {
+            var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+            $rows.show().filter(function () {
+                var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+                return !~text.indexOf(val);
+            }).hide();
+        });
+
+    </script>
 </body>
 
 </html>

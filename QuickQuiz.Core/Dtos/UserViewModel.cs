@@ -7,5 +7,10 @@
         public string PhoneNumber { get; set; }
         public string? PictureUrl { get; set; }
         public string City { get; set; }
+        public string Github { get; set; }
+        public string Linkedln { get; set; }
+        public string Twitter { get; set; }
+        public string Facebook { get; set; }
+        public string Instagram { get; set; }
     }
 }
