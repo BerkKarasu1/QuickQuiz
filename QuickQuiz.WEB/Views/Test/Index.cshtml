@@ -1,0 +1,43 @@
+﻿@model List<TestDTO>
+@{
+    ViewData["Title"] = "Testlerim";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<link href="~/css/test.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+
+@for (int j = 0; j < Model.Count / 4 + 1; j++)
+{
+    int f = 0;
+    if (j == (Model.Count / 4)-1)
+    {
+        f = j * 4 + 4;
+    }
+    else
+    {
+        f = Model.Count;
+    }
+
+    <section class="hero-section">
+        <div class="card-grid">
+            @for (int i = j * 4; i < f; i++)
+            {
+
+                <a class="card" asp-controller="Test" asp-action="Edit" asp-route-id="@Model[i].Id">
+                    @if (Model[i].PictureUrl is not null and not "")
+                    {
+                        <div class="card__background" style="background-image: url(https://localhost:44333/TestPictures/@Model[i].PictureUrl)"></div>
+                    }
+                    else
+                    {
+                        <div class="card__background" style="background-image: url(https://images.unsplash.com/photo-1557177324-56c542165309?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80)"></div>
+                    }
+                    <div class="card__content">
+                        <p class="card__category">@Model[i].Creater</p>
+                        <h3 class="card__heading">@Model[i].Name</h3>
+                    </div>
+                </a>
+            }
+        </div>
+    </section>
+}

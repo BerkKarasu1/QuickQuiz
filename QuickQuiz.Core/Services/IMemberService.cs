@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using QuickQuiz.Core.Dtos;
 
-namespace QuickQuiz.Service.Services
+namespace QuickQuiz.Core.Services
 {
     public interface IMemberService
     {

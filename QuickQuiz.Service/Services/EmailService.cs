@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
-using System.Net.Mail;
-using System.Net;
 using QuickQuiz.Core.Model;
+using QuickQuiz.Core.Services;
+using System.Net;
+using System.Net.Mail;
 
 namespace QuickQuiz.Service.Services
 {

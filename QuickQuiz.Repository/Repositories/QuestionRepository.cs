@@ -41,13 +41,13 @@ namespace QuickQuiz.Repository.Repositories
             return await _context.Questions.Where(x => x.Creater.Id == user.Id).Include(x=>x.Answers).ToListAsync();
         }
 
-        public void RemoveAsync(Question entity)
+        public void Remove(Question entity)
         {
             _context.Remove(entity);
             _context.SaveChanges();
         }
 
-        public void UpdateAsync(Question entity)
+        public void Update(Question entity)
         {
             _context.Update(entity);
             _context.SaveChanges();

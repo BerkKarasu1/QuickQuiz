@@ -1,0 +1,93 @@
+﻿@model TestDTO
+@{
+    ViewData["Title"] = "Test Güncelleme";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <h2 style="text-align:center;">Test Güncelleme</h2> <br />
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="text-primary">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
+        <br /><br />
+        <div asp-validation-summary=ModelOnly class="alert alert-danger" role="alert">
+        </div>
+
+        <form asp-controller="Test" asp-action="Edits" method="post" enctype="multipart/form-data">
+            <div class="row mb-3">
+                <label class="col-md-4 col-form-label"> Test Adı</label>
+                <div class="col-sm-8">
+                    <input asp-for="Id" hidden />
+                    <input type="textarea" asp-for="Name" class="form-control">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-md-4 col-form-label"> Test Fotoğrafı</label>
+                <div class="col-sm-8">
+                    <input type="file" asp-for="PictureFile" class="form-control">
+                </div>
+            </div>
+            <div class="row mb-3">
+                @for (int i = 0; i < Model.Question.Count; i++)
+                {
+                    <label class="col-md-4 col-form-label">Soru @(i + 1)</label>
+                    <div class="col-sm-8">
+                        <span>@Model.Question[i].Question</span>
+                        <br> <br>
+                        @for (int j = 0; j < Model.Question[i].Answers.Count; j++)
+                        {
+                            char opt = '0';
+                            switch (j)
+                            {
+                                case 0:
+                                    opt = 'A';
+                                    break;
+                                case 1:
+                                    opt = 'B';
+                                    break;
+                                case 2:
+                                    opt = 'C';
+                                    break;
+                                case 3:
+                                    opt = 'D';
+                                    break;
+                                case 4:
+                                    opt = 'E';
+                                    break;
+                            }
+                            if (Model.Question[i].Answers[j].IsCorrect)
+                            {
+                                <span style="color:green">@opt ) </span>
+                            }
+                            else
+                            {
+                                <span>@opt</span>
+                            }
+                            <span>@Model.Question[i].Answers[j].AnswerText</span>
+                            <br />
+                        }
+                    </div>
+                    <hr />
+                }
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-8 offset-md-4">
+                    <button class="btn btn-primary" type="submit">Güncelle</button>
+                </div>
+            </div>
+        </form>
+        <form>
+            <div class="row mb-3">
+                <div class="col-md-8 offset-md-4">
+                    <button class="btn btn-primary" type="submit" asp-action="TryTest" asp-controller="Quiz" asp-route-id="@Model.Id">Dene</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

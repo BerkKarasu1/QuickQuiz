@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using QuickQuiz.Core.Dtos;
 using QuickQuiz.Core.Model;
-using QuickQuiz.Service.Services;
+using QuickQuiz.Core.Services;
 using QuickQuiz.WEB.Extensions;
 using QuickQuiz.WEB.Models;
 using System.Diagnostics;

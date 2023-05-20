@@ -45,6 +45,8 @@ config.Scan(typeof(QuestionMappingConfig).Assembly);
 builder.Services.AddSingleton(config);
 builder.Services.AddScoped<IQuestionService,QuestionService>();
 builder.Services.AddScoped<IQuestionRepository,QuestionRepository>();
+builder.Services.AddScoped<ITestService,TestService>();
+builder.Services.AddScoped<ITestRepository,TestRepository>();
 builder.Services.AddScoped<IMapper,Mapper>();
 var app = builder.Build();
 

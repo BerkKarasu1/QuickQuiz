@@ -16,5 +16,6 @@ namespace QuickQuiz.Core.Model
         public string? Instagram { get; set; }
         public string? Linkedln { get; set; }
         public string? Github { get; set; }
+        public List<Test>? Tests { get; set; }
     }
 }

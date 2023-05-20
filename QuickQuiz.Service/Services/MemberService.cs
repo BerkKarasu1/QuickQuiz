@@ -2,6 +2,7 @@
 using Microsoft.Extensions.FileProviders;
 using QuickQuiz.Core.Dtos;
 using QuickQuiz.Core.Model;
+using QuickQuiz.Core.Services;
 
 namespace QuickQuiz.Service.Services
 {

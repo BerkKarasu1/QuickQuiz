@@ -8,143 +8,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link href="~/css/addQuestion.css" rel="stylesheet" />
     <meta charset="UTF-8" />
-    <title>Test Oluşturma</title>
-    <style type="text/css">
-        .questionBody {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f7f7f7;
-            font-family: verdana, sans-serif;
-        }
+    <title>Soru Oluşturma</title>
 
-        .questionForm {
-            width: 100%; /* Genişliği % olarak ayarlandı */
-            max-width: 1200px; /* En fazla genişlik 800px olarak ayarlandı */
-            margin: 0 auto; /* Form tam genişlikte ekran ortasında yer alacak şekilde ayarlandı */
-            padding: 40px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .close-btn {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: none;
-            background-color: #ccc;
-            color: #fff;
-            font-size: 14px;
-            font-weight: bold;
-            margin-right: -30px;
-            margin-left: 35px;
-            padding: 0;
-        }
-
-            .close-btn:hover {
-                cursor: pointer;
-                background-color: #ff0000;
-            }
-
-        h2 {
-            font-size: 18px;
-            font-weight: bold;
-            margin-top: 20px;
-            margin-bottom: 10px;
-        }
-
-        textarea {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            resize: vertical;
-        }
-
-        .options-container {
-            margin: 0;
-            padding: 0;
-        }
-
-        .option {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .option-input-wrapper {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .option-btn {
-            display: inline-block;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            border: none;
-            background-color: #ddd;
-            color: #333;
-            font-size: 20px;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-
-            .option-btn:hover {
-                cursor: pointer;
-                background-color: #ffa500;
-                color: white;
-            }
-
-            .option-btn.selected {
-                background-color: green;
-                color: white;
-            }
-
-            .option-btn:not(.selected):hover {
-                background-color: #ffa500;
-                color: white;
-            }
-
-        .option-textarea-wrapper {
-            flex-grow: 1;
-            margin-left: 10px;
-        }
-
-        .option-textarea {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            resize: vertical;
-        }
-
-        input[type="submit"] {
-            display: block;
-            width: 100%;
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-            input[type="submit"]:hover {
-                background-color: #3e8e41;
-            }
-    </style>
 </head>
+<div class="alert alert-secondary" role="alert" hidden>
+</div>
 <div class="questionBody">
     <form id="test-form" class="questionForm" method="post" asp-action="Add" asp-controller="Question">
+        
         <h2 style="text-align: center;"><strong>Sorunuzu bu alana yazınız</strong></h2>
         <textarea id="question" asp-for="@Model.Question" rows="4" required></textarea><br /><br />
         <h2 style="text-align: center;"><strong>Cevaplar</strong></h2>
@@ -154,7 +27,7 @@
                     <button type="button" class="option-btn" data-option="A">A</button>
                     <div class="option-textarea-wrapper" style="margin-right: 25px">
                         <textarea class="option-textarea"
-                                  asp-for="@Model.Answers[0].AnswerText"                                  
+                                  asp-for="@Model.Answers[0].AnswerText"
                                   required></textarea>
                     </div>
                 </div>
@@ -209,8 +82,8 @@
                 </div>
             </div>
             <div>
-                <button type="button" style="float: right" onclick="addQuestion()">
-                    Soru Ekle
+                <button type="button" class="btn btn-info" style="float: right" onclick="addQuestion()">
+                    Cevap Ekle
                 </button>
             </div>
         </div>
@@ -219,7 +92,7 @@
                asp-for="@Model.TrueAnswer.AnswerText"
                required />
         <br /><br />
-        <input type="submit" value="Testi Kaydet" />
+        <input type="submit" value="Soruyu Kaydet" />
     </form>
 
     <script type="text/javascript">
@@ -241,7 +114,8 @@
                 }
             }
             if (!control) {
-                alert("En fazla 5 cevap ekleyebilirsiniz.");
+                const errorDiv = document.getElementById("error-message");
+                errorDiv.innerHTML = "En fazla 5 cevap ekleyebilirsiniz.";
             }
         };
 

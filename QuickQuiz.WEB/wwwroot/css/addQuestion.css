@@ -1,0 +1,130 @@
+.questionBody {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f7f7f7;
+    font-family: verdana, sans-serif;
+}
+
+.questionForm {
+    width: 100%; /* Geniþliði % olarak ayarlandý */
+    max-width: 1200px; /* En fazla geniþlik 800px olarak ayarlandý */
+    margin: 0 auto; /* Form tam geniþlikte ekran ortasýnda yer alacak þekilde ayarlandý */
+    padding: 40px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.close-btn {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: none;
+    background-color: #ccc;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: -30px;
+    margin-left: 35px;
+    padding: 0;
+}
+
+    .close-btn:hover {
+        cursor: pointer;
+        background-color: #ff0000;
+    }
+
+h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: vertical;
+}
+
+.options-container {
+    margin: 0;
+    padding: 0;
+}
+
+.option {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.option-input-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.option-btn {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: none;
+    background-color: #ddd;
+    color: #333;
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+    .option-btn:hover {
+        cursor: pointer;
+        background-color: #ffa500;
+        color: white;
+    }
+
+    .option-btn.selected {
+        background-color: green;
+        color: white;
+    }
+
+    .option-btn:not(.selected):hover {
+        background-color: #ffa500;
+        color: white;
+    }
+
+.option-textarea-wrapper {
+    flex-grow: 1;
+    margin-left: 10px;
+}
+
+.option-textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: vertical;
+}
+
+input[type="submit"] {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+    input[type="submit"]:hover {
+        background-color: #3e8e41;
+    }

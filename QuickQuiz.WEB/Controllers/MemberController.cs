@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.FileProviders;
 using QuickQuiz.Core.Dtos;
 using QuickQuiz.Core.Model;
-using QuickQuiz.Service.Services;
+using QuickQuiz.Core.Services;
 using QuickQuiz.WEB.Extensions;
 
 namespace QuickQuiz.WEB.Controllers

@@ -1,4 +1,4 @@
-﻿namespace QuickQuiz.Service.Services
+﻿namespace QuickQuiz.Core.Services
 {
     public interface IEmailService
     {

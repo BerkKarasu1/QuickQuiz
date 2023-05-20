@@ -9,29 +9,24 @@
 {
     <h3 class="dikkat">@ViewBag.Error</h3>
 }
-<form>
+<form form="GeneralForm" asp-controller="Test" asp-action="CreateTest" formmethod="post">
 
     @for (int i = 0; i < Model.Count; i++)
     {
         <div class="row mt-12">
             <div class="col-md-1">
-                <input asp-for="@Model[i].Check" type="checkbox" form="GeneralForm" id="questcb">
+                <input asp-for="@Model[i].Check" type="checkbox" id="questcb">
+               <input asp-for="@Model[i].Id" hidden >
                 <span>@(i + 1) Soru</span>
             </div>
             <div class="col-md-9">
-<<<<<<< HEAD
                 <h6 rows="3" style="min-height:15px;">
                     @Model[i].Question
                 </h6>
             </div>
             <div class="col-md-2">
                 <button class="btn btn-outline-info" type="button" id="mod_@i" onclick="question(@i)">Cevapları Görüntüle</button>
-=======
-                <textarea class="form-control"  id="Aanswer_@i"
-                    aria-label="Example text with button addon" aria-describedby="button-addon1" hidden="hidden">
-                    @Model[i].Answers[j].AnswerText
-                </textarea>
->>>>>>> 1807b3dbddbaf626b01412e020cc066f7035877f
+
             </div>
         </div>
         for (int j = 0; j < Model[i].Answers.Count; j++)
@@ -78,11 +73,11 @@
                 </div>
                 <div class="modal-body">
                     <strong id="bb"> Seçtiğiniz Testin Adını Belirleyin</strong>
-                    <input type="text" form="GeneralForm" asp-for=@Model[0].TestName id="testName">
+                    <input type="text"  asp-for=@Model[0].TestName id="testName">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
-                    <button type="submit" id="createTestButton" form="GeneralForm" class="btn btn-primary" asp-controller="Test" asp-action="CreateTest" formmethod="post">Test Oluştur</button>
+                    <button type="submit" id="createTestButton" class="btn btn-primary" >Test Oluştur</button>
                 </div>
             </div>
         </div>

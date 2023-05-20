@@ -1,0 +1,300 @@
+﻿@model TestDTO
+@{
+    Layout = null;
+}
+
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        display: flex;
+        min-height: 100vh;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color: #313645;
+        font-family: verdana, sans-serif;
+    }
+
+    h1 {
+        color: #fff;
+        margin: 20px 0;
+    }
+
+    .progress {
+        height: 5px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+    }
+
+    .progress--bar {
+        background-color: #0f0;
+        height: 100%;
+        transition: all ease 0.5s;
+        width: 0%;
+    }
+
+    .questionArea, .scoreArea {
+        display: none;
+    }
+
+    .questionArea {
+        max-width: 1000px;
+        width: 100%;
+        text-align: center;
+        padding: 0 15px;
+    }
+
+    .question {
+        color: #fff;
+        font-size: 18px;
+        margin: 20px 0;
+    }
+
+    .option {
+        display: flex;
+        align-items: center;
+        height: 50px;
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 6px;
+        margin-bottom: 10px;
+        color: #a7b6e4;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+        .option span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
+            margin-left: 5px;
+            margin-right: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #4b5677;
+        }
+
+        .option:hover {
+            background-color: rgba(213, 167, 26, 0.899);
+            color: black;
+        }
+
+    .scoreArea {
+        background-color: rgba(255, 255, 255, 0.5);
+        padding: 20px;
+        border-radius: 20px;
+        margin: 10px;
+        text-align: center;
+    }
+
+    .prizeImage {
+        width: auto;
+        height: 100px;
+        margin-bottom: 10px;
+    }
+
+    .scoreText1 {
+        color: #000;
+        font-size: 23px;
+        font-weight: bold;
+        margin: 20px auto 10px;
+    }
+
+    .scorePct {
+        color: #0d630d;
+        font-size: 30px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .scoreText2 {
+        font-size: 16px;
+        color: #000;
+        margin-bottom: 10px;
+    }
+
+    .scoreArea button {
+        border: 0;
+        border-radius: 6px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: #ccc;
+        padding: 10px 80px;
+        margin-top: 20px;
+        cursor: pointer;
+    }
+
+        .scoreArea button:hover {
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+</style>
+<div class="progress">
+    <div class="progress--bar"></div>
+</div>
+
+<h1>Quiz</h1>
+<div class="questionArea">
+    <form id="myForm" form="myForm" asp-controller="Quiz" asp-action="Result" method="post" enctype="multipart/form-data">
+
+        <input asp-for="@Model.Id" hidden />
+        @for (int i = 0; i < Model.Question.Count; i++)
+        {
+            <input form="myForm" id="answer_@i" value="0" asp-for="@Model.Question[i].TrueAnswer.AnswerText" name="Question[@i].TrueAnswer.AnswerText" hidden />
+            <input form="myForm" id="quest_@i" value="0" asp-for="@Model.Question[i].Question" name="Question[@i].Question" hidden />
+            <button type="submit">asd</button>
+        }
+    </form>
+    <!-- Form alanları ve diğer içerikler -->
+    <div class="question">...</div>
+    <div class="options">
+    </div>
+</div>
+
+<div class="scoreArea">
+    <img src="https://img.icons8.com/color/96/26e07f/checked--v4.png" class="prizeImage" />
+    <p>Finish!</p>
+    <hr />
+    <div class="scoreText1">--</div>
+    <div class="scorePct">--</div>
+    <div class="scoreText2">--</div>
+    <button>Retry</button>
+</div>
+<script>
+    let questions = [
+    @for (int i = 0; i < Model.Question.Count; i++)
+    {
+        <text>
+            {
+                question: '@Model.Question[i].Question',
+                options: [
+            @for (int j = 0; j < Model.Question[i].Answers.Count; j++)
+            {
+                <text>'@Model.Question[i].Answers[j].AnswerText', </text>
+            }
+                                        ],
+
+            },
+        </text>
+    }
+                ];
+    /* ======== End ======== */
+
+    /* ==== True code ==== */
+    const progressBar = document.querySelector(".progress--bar");
+    const questionArea = document.querySelector(".questionArea");
+    const scoreArea = document.querySelector(".scoreArea");
+    const scoreText1 = document.querySelector(".scoreText1");
+    const scorePct = document.querySelector(".scorePct");
+
+    //initial data
+    let currentQuestion = 0;
+    let correctAnswers = 0;
+    let selectedAnswers = [];
+
+    showQuestion();
+
+    //reset event
+    document.querySelector(".scoreArea button").addEventListener("click", () => {
+        currentQuestion = 0;
+        correctAnswers = 0;
+        showQuestion();
+    });
+
+    //Functions
+    function showQuestion() {
+        if (questions[currentQuestion]) {
+            let q = questions[currentQuestion];
+
+            let progress = Math.floor((currentQuestion / questions.length) * 100);
+            progressBar.style.width = `${progress}%`;
+
+            scoreArea.style.display = "none";
+            questionArea.style.display = "block";
+
+            document.querySelector(".question").innerHTML = q.question;
+
+            let optionsHtml = "";
+
+            for (let i in q.options) {
+                optionsHtml += `<div data-op="${i}" class="option"><span> ${parseInt(i) + 1
+                    }</span> ${q.options[i]}</div>`;
+            }
+
+            document.querySelector(".options").innerHTML = optionsHtml;
+
+            document.querySelectorAll(".options .option").forEach((item) => {
+                item.addEventListener("click", optionsClickEvent);
+            });
+        } else {
+            finishQuiz();
+        }
+    }
+
+    function optionsClickEvent(e) {
+        let clickedOption = parseInt(e.target.getAttribute("data-op"));
+        let quesId = "quest_" + currentQuestion;
+        let answerId = "answer_" + currentQuestion;
+        document.getElementById(quesId).value = questions[currentQuestion].question;
+        document.getElementById(answerId).value = questions[currentQuestion].options[clickedOption];
+
+        if (questions[currentQuestion].answer === clickedOption) {
+            correctAnswers++;
+        }
+        let selectedAnswer = {
+            question: questions[currentQuestion].question,
+            selectedOption: questions[currentQuestion].options[clickedOption]
+        };
+        selectedAnswers.push(selectedAnswer);
+
+        currentQuestion++;
+        showQuestion();
+
+    }
+
+    function finishQuiz() {
+        // ...
+
+        // Seçilen soruları ve cevapları TestDTO içinde göndermek için bir obje oluştur
+        let testDTO = {
+            id: @Model.Id,
+            name: '@Model.Name',
+            creater: {
+                // Creater bilgileri burada belirtin (örneğin, createrName, createrId vb.)
+            },
+            question: [],
+            pictureUrl: '@Model.PictureUrl'
+        };
+
+        // Seçilen soruları ve cevapları testDTO.question içine ekleyin
+        for (let i = 0; i < questions.length; i++) {
+            let selectedOptionIndex = questions[i].options.indexOf(selectedAnswers[i].selectedOption);
+            let trueAnswerText = questions[i].options[questions[i].answer];
+            let question = {
+                question: questions[i].question,
+                answers: questions[i].options,
+                trueAnswer: trueAnswerText,
+                selectedAnswer: selectedAnswers[i].selectedOption
+            };
+            testDTO.question.push(question);
+        }
+
+        // TestDTO'yu bir gizli alana yerleştir
+        let testDTOInput = document.createElement("input");
+        testDTOInput.type = "hidden";
+        testDTOInput.name = "TestDTO";
+        testDTOInput.value = JSON.stringify(testDTO);
+        document.getElementById("myForm").appendChild(testDTOInput);
+
+        // Formu submit et
+        document.getElementById("myForm").submit();
+    }
+</script>

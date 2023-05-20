@@ -13,6 +13,7 @@ namespace QuickQuiz.Core.Dtos
         public string Question { get; set; }
         public List<Answer> Answers { get; set; } = new List<Answer>();
         public Answer? TrueAnswer { get; set; }
+        public List<TestDTO>? Tests { get; set; } = new List<TestDTO>();
         public AppUser Creater { get; set; }
         public bool Check { get; set; }
         public string? TestName { get; set; }

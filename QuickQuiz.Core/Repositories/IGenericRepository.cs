@@ -9,8 +9,8 @@ namespace QuickQuiz.Core.Repositories
     public interface IGenericRepository<T> where T : class
     {
         public Task AddAsync(T entity);
-        public void RemoveAsync(T entity);
-        public void UpdateAsync(T entity);
+        public void Remove(T entity);
+        public void Update(T entity);
 
     }
 }

@@ -68,13 +68,13 @@ namespace QuickQuiz.Service.Services
         public void Remove(QuestionDTO questionDTO)
         {
             Question question = _mapper.Map<Question>(questionDTO);
-            _questionRepository.RemoveAsync(question);
+            _questionRepository.Remove(question);
         }
 
         public void Update(QuestionDTO questionDTO)
         {
             Question question = _mapper.Map<Question>(questionDTO);
-            _questionRepository.UpdateAsync(question);
+            _questionRepository.Update(question);
         }
     }
 }
