@@ -14,5 +14,7 @@ namespace QuickQuiz.Core.Dtos
         public List<Answer> Answers { get; set; } = new List<Answer>();
         public Answer? TrueAnswer { get; set; }
         public AppUser Creater { get; set; }
+        public bool Check { get; set; }
+        public string? TestName { get; set; }
     }
 }
