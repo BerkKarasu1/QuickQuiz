@@ -1,4 +1,6 @@
-﻿@{
+﻿@using QuickQuiz.Core.Models;
+@model List<ExamResult>
+@{
     ViewData["Title"] = "Result";
     Layout = null;
 }
@@ -7,6 +9,7 @@
     .genel {
         margin-top: -9.75rem !important;
     }
+
     .sonuc {
         display: flex;
         min-height: 100vh;
@@ -17,12 +20,12 @@
         font-family: verdana, sans-serif;
     }
 
-    .table  {
+    .table {
         background-color: #313645;
         color: #ced8e1 !important;
     }
 
-    .card-header{
+    .card-header {
         background-color: #313645;
     }
 
@@ -47,11 +50,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Project Apollo</td>
-                        <td class="d-none d-xl-table-cell">01/01/2021</td>
-                        <td><span class="badge bg-success">Done</span></td>
-                    </tr>
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <td>@(i+1)</td>
+                            <td class="d-none d-xl-table-cell">@Model[i].Student.UserName</td>
+                            <td><span class="badge bg-success">@Model[i].Result</span></td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
