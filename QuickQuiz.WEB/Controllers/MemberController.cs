@@ -163,7 +163,7 @@ namespace QuickQuiz.WEB.Controllers
         [Route("Member/UserProfile/{username?}")]
         public async Task<IActionResult> UserProfile(string username)
         {
-            return View(await _memberService.GetUserViewModelByUserNameAsync(userName));
+            return View(await _memberService.GetUserViewModelByUserNameAsync(username));
         }
 
         public IActionResult AccessDenied(string ReturnUrl)

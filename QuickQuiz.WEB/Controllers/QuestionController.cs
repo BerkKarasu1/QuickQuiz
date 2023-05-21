@@ -23,8 +23,7 @@ namespace QuickQuiz.WEB.Controllers
         {
             questionDTO.Creater = CurrentUser;
             await _questionService.AddAsync(questionDTO);
-            QuestionDTO returnDTO = new();
-            return View(returnDTO);
+            return RedirectToAction("Add");
         }
         [HttpPost]
         public IActionResult Delete(QuestionDTO questionDTO)

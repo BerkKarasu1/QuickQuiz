@@ -5,11 +5,11 @@
 
 @model UserViewModel
 
-<title>Quick Quiz | Profilim </title>
+<title>Quick Quiz | @Model.UserName </title>
 
 <div class="container-fluid p-0">
     <div class="mb-3">
-        <h1 class="h3 d-inline align-middle">Profilim</h1>
+        <h1 class="h3 d-inline align-middle">@Model.UserName</h1>
     </div>
     <div class="row">
         <div class="col-md-4 col-xl-3">
@@ -18,16 +18,7 @@
                     <user-picture-thumbnail class="rounded-pill" style="width:150px" picture-url="@Model.PictureUrl">
                     </user-picture-thumbnail>
                     <br /><br />
-                    <h5 class="card-title mb-0">@User.Identity!.Name</h5>
-                    <div class="text-muted mb-2">Lead Developer</div> <!--ROLE KOY-->
-
-                    <div>
-                        <a class="btn btn-primary btn-sm mt-3" href="#">Takip Et</a>
-                        <br /> <br />
-                        <a class="btn btn-primary btn-sm" href="#"><span data-feather="message-square"></span> Mesaj Gönder</a>
-                        <br />
-                        <a class="btn btn-primary btn-sm mt-3" href="#">Testlerimi Çöz!</a>
-                    </div>
+                    <h5 class="card-title mb-0">@Model.UserName</h5>
                 </div>
 
             </div>

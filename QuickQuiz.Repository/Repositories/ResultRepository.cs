@@ -25,12 +25,12 @@ namespace QuickQuiz.Repository.Repositories
 
         public async Task<List<ExamResult>> GetAllResultByTestIdAsync(int testId)
         {
-            return await _context.ExamResults.Where(x => x.Exam.Id == testId).OrderBy(x => x.Result).ToListAsync();
+            return await _context.ExamResults.Where(x => x.Exam.Id == testId).OrderByDescending(x => x.Result).ToListAsync();
         }
 
         public async Task<List<ExamResult>> GetAllResultUserAsync(AppUser user)
         {
-            return await _context.ExamResults.Where(x => x.Student.Id == user.Id).OrderBy(x => x.Result).ToListAsync();
+            return await _context.ExamResults.Where(x => x.Student.Id == user.Id).OrderByDescending(x => x.Result).ToListAsync();
         }
     }
 }
