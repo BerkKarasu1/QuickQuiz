@@ -155,6 +155,11 @@ namespace QuickQuiz.WEB.Controllers
             return View(userEditViewModel);
         }
 
+        public async Task<IActionResult> UserSearch()
+        {
+            return View(await _memberService.GetUserViewModelByUserNameAsync(userName));
+        }
+
         public IActionResult AccessDenied(string ReturnUrl)
         {
             string message = string.Empty;
