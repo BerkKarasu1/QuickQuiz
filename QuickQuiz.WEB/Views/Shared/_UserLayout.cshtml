@@ -55,11 +55,6 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="ui-forms.html">
-                            <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Test Oluştur</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
                         <a class="sidebar-link" asp-controller="Test" asp-action="Index">
                             <i class="align-middle" data-feather="align-left"></i> <span class="align-middle">Testlerim</span>
                         </a>
@@ -78,13 +73,15 @@
                 <a class="sidebar-toggle js-sidebar-toggle">
                     <i class="hamburger align-self-center"></i>
                 </a>
-
+                @{
+                    string name = null;
+                }
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav navbar-align">
                         <li>
-                            <form role="search" class="navbar-form-custom" action="search_results.html">
+                            <form role="search" class="navbar-form-custom" asp-action="UserSearch" asp-controller="Member" method="get">
                                 <div class="form-group">
-                                    <input type="text" placeholder="Arama yapın..." class="form-control mt-1" name="top-search" id="top-search">
+                                    <input type="text" asp-for=@name placeholder="Arama yapın..." class="form-control mt-1" name="top-search" id="top-search">
                                 </div>
                             </form>
                         </li>
@@ -144,7 +141,6 @@
                 return !~text.indexOf(val);
             }).hide();
         });
-
     </script>
 </body>
 

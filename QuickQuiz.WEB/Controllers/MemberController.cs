@@ -155,7 +155,7 @@ namespace QuickQuiz.WEB.Controllers
             return View(userEditViewModel);
         }
 
-        public async Task<IActionResult> UserSearch()
+        public async Task<IActionResult> UserSearch(string name)
         {
             return View(await _memberService.GetUserViewModelByUserNameAsync(userName));
         }
