@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using QuickQuiz.Core.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 

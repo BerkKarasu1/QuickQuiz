@@ -47,6 +47,8 @@ builder.Services.AddScoped<IQuestionService,QuestionService>();
 builder.Services.AddScoped<IQuestionRepository,QuestionRepository>();
 builder.Services.AddScoped<ITestService,TestService>();
 builder.Services.AddScoped<ITestRepository,TestRepository>();
+builder.Services.AddScoped<IResultRepository, ResultRepository>();
+builder.Services.AddScoped<IResultService, ResultService>();
 builder.Services.AddScoped<IMapper,Mapper>();
 var app = builder.Build();
 

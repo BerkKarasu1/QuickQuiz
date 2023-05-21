@@ -151,6 +151,8 @@ namespace QuickQuiz.Service.Services
                         }
                     }
                 }
+                double score = (CorrectAnswer / WrongAnswer) * 100;
+
                 //todo:
                 //DBye kaydedilecek 
                 return true;
