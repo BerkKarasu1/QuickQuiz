@@ -16,7 +16,7 @@
         <div class="row mt-12">
             <div class="col-md-1">
                 <input asp-for="@Model[i].Check" type="checkbox" id="questcb">
-               <input asp-for="@Model[i].Id" hidden >
+                <input asp-for="@Model[i].Id" hidden>
                 <span>@(i + 1) Soru</span>
             </div>
             <div class="col-md-9">
@@ -56,7 +56,14 @@
             <div class="row mt-12">
                 <div class="col-md-1"></div>
                 <div class="col-md-9" id="AAmod_@i" hidden="hidden">
-                    <span>@optionName ) </span>
+                    @if (Model[i].Answers[j].IsCorrect)
+                    {
+                        <span style="color:green">@optionName ) </span>
+                    }
+                    else
+                    {
+                        <span>@optionName ) </span>
+                    }
                     <span id="Amod_@i">@Model[i].Answers[j].AnswerText</span>
                 </div>
             </div>
@@ -73,11 +80,11 @@
                 </div>
                 <div class="modal-body">
                     <strong id="bb"> Seçtiğiniz Testin Adını Belirleyin</strong>
-                    <input type="text"  asp-for=@Model[0].TestName id="testName">
+                    <input type="text" asp-for=@Model[0].TestName id="testName">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
-                    <button type="submit" id="createTestButton" class="btn btn-primary" >Test Oluştur</button>
+                    <button type="submit" id="createTestButton" class="btn btn-primary">Test Oluştur</button>
                 </div>
             </div>
         </div>

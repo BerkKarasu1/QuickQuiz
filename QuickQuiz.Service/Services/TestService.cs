@@ -9,10 +9,12 @@ namespace QuickQuiz.Service.Services
     {
         readonly ITestRepository _testRepository;
         readonly IQuestionRepository _questionRepository;
-        public TestService(ITestRepository testRepository, IQuestionRepository questionRepository)
+        readonly IResultService _resultService;
+        public TestService(ITestRepository testRepository, IQuestionRepository questionRepository, IResultService resultService)
         {
             _testRepository = testRepository;
             _questionRepository = questionRepository;
+            _resultService = resultService;
         }
         public async Task AddAsync(TestDTO testDTO)
         {
@@ -51,11 +53,12 @@ namespace QuickQuiz.Service.Services
                         Id = item.Question[i].Id,
                         Answers = test.Question[i].Answers,
                         Check = test.Question[i].Check,
-                        TrueAnswer = test.Question[i].TrueAnswer,
+                        TrueAnswer = test.Question[i].TrueAnswer
                     });
                 }
                 test.Question = questionDTO;
                 testList.Add(test);
+                
             }
             return testList;
         }
@@ -125,7 +128,7 @@ namespace QuickQuiz.Service.Services
             test.Name = testDTO.Name;
             _testRepository.Update(test);
         }
-        public async Task<bool> Result(TestDTO testDTO)
+        public async Task<bool> Result(TestDTO testDTO, AppUser curruntUser)
         {
             var test = await _testRepository.GetTestById(testDTO.Id);
             if (test != null)
@@ -151,10 +154,9 @@ namespace QuickQuiz.Service.Services
                         }
                     }
                 }
-                double score = (CorrectAnswer / WrongAnswer) * 100;
+                float score = (float.Parse(CorrectAnswer.ToString()) / (float.Parse(WrongAnswer.ToString())+float.Parse(CorrectAnswer.ToString()))) * 100;
 
-                //todo:
-                //DBye kaydedilecek 
+                await _resultService.AddAsync(curruntUser, score, test);
                 return true;
             }
             return false;

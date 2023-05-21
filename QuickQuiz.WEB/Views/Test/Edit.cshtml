@@ -85,7 +85,9 @@
         <form>
             <div class="row mb-3">
                 <div class="col-md-8 offset-md-4">
+                    <input asp-for="Id" hidden />
                     <button class="btn btn-primary" type="submit" asp-action="Test" asp-controller="Quiz" asp-route-id="@Model.Id">Dene</button>
+                    <button class="btn btn-danger" type="submit" asp-action="RemoveTest" asp-controller="Test" method="post">Sil</button>
                 </div>
             </div>
         </form>

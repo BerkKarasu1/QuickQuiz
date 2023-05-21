@@ -32,19 +32,20 @@ namespace QuickQuiz.WEB.Controllers
                 Question = questionDTOs
             };
             await _testService.AddAsync(testDTO);
-          return  RedirectToAction("Index");
+            return RedirectToAction("Index");
         }
-        [HttpPost]
-        public void RemoveTest(TestDTO testDTO)
+        
+        public IActionResult RemoveTest(TestDTO testDTO)
         {
             _testService.Remove(testDTO);
+            return RedirectToAction("Index");
         }
         [Route("Test/Edit/{id?}")]
         public async Task<IActionResult> Edit(int id)
         {
             var test = await _testService.TestControl(CurrentUser, id);
-            if (test != null)            
-                return View(test);            
+            if (test != null)
+                return View(test);
             return RedirectToAction("Index");
         }
 
@@ -60,7 +61,7 @@ namespace QuickQuiz.WEB.Controllers
                 await test.PictureFile.CopyToAsync(stream);
                 test.PictureUrl = randomFileName;
             }
-         await   _testService.Update(test);
+            await _testService.Update(test);
             return RedirectToAction("Index");
         }
     }

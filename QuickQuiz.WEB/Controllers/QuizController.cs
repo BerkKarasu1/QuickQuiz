@@ -9,9 +9,11 @@ namespace QuickQuiz.WEB.Controllers
     public class QuizController : BaseController
     {
         ITestService _testService;
-        public QuizController(UserManager<AppUser> userManager, ITestService testService) : base(userManager)
+        IResultService _resultService;
+        public QuizController(UserManager<AppUser> userManager, ITestService testService, IResultService resultService) : base(userManager)
         {
             _testService = testService;
+            _resultService = resultService;
         }
         [Route("Quiz/Test/{id?}")]
         public async Task<IActionResult> Test(int id)
@@ -24,11 +26,19 @@ namespace QuickQuiz.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> Result(TestDTO testDTO)
         {
-            bool result = await _testService.Result(testDTO);
+            bool result = await _testService.Result(testDTO, CurrentUser);
             if (result)
-                return View();
+            {
+                var quizResults = await _resultService.GetExamAllResultAsync(testDTO.Id);
+                return View(quizResults);
+            }
             return View();
         }
-
+        [HttpGet]
+        public async Task<IActionResult> MyResults()
+        {
+            var results = await _resultService.GetUserAllResultAsync(CurrentUser);
+            return View(results);
+        }
     }
 }

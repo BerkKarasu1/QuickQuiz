@@ -27,7 +27,7 @@ namespace QuickQuiz.Repository.Repositories
         }
         public async Task<List<Test>> GetAllTest()
         {
-            return await _context.Tests.ToListAsync();
+            return await _context.Tests.Include(x=>x.Creater).ToListAsync();
         }
 
         public async Task<Test> GetTestById(int id)
