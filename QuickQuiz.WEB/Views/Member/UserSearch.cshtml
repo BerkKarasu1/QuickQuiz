@@ -1,4 +1,5 @@
-﻿@{
+﻿@model List<UserViewModel>
+@{
     ViewData["Title"] = "UserSearch";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
@@ -28,57 +29,76 @@
 
 <title>Quick Quiz | Kullanıcı Ara</title>
 
-<div class="row">
-    <user-card name="John Doe" class="col-md-6" avatar="https://randomuser.me/api/portraits/men/1.jpg">
-        <div slot="email">johndoe@gmail.com</div>
-        <div slot="phone">555-555-5555</div>
-    </user-card>
-    <user-card name="John Doe" class="col-md-6" avatar="https://randomuser.me/api/portraits/men/1.jpg">
-        <div slot="email">johndoe@gmail.com</div>
-        <div slot="phone">555-555-5555</div>
-    </user-card>
-</div>
+@for (int i = 0; i < Model.Count; i++)
+{
+    <div class="row">
+        <a asp-action="UserProfile" asp-controller="Member" asp-route-username="@Model[@i].UserName">
+            <user-card name="@Model[i].UserName" class="col-md-6" avatar="https://localhost:44333/userpictures/@Model[i].PictureUrl">
+                <div slot="email">@Model[i].Email</div>
+                <div slot="phone">@Model[i].PhoneNumber</div>
+            </user-card>
+        </a>
+    </div>
+    @if (i + 1 != Model.Count)
+    {
+        <div class="row">
+            @{
+                i++;
+            }
+            <a asp-action="UserProfile" asp-controller="Member" asp-route-username="@Model[@i].UserName">
+                <user-card name="@Model[i].UserName" class="col-md-6" avatar="https://localhost:44333/userpictures/@Model[i].PictureUrl">
+                    <div slot="email">@Model[i].Email</div>
+                    <div slot="phone">@Model[i].PhoneNumber</div>
+                </user-card>
+            </a>
+        </div>
+    }
+}
 
 <script>
+    function submitForm(i) {
+        var form = document.getElementById(`UserProfile_${i}`);
+        form.submit();
+    }
     const template = document.createElement('template');
     template.innerHTML = `
-              <style>
-              .user-card {
-                    font-family: 'Arial', sans-serif;
-                    background: #f4f4f4;
-                    width: 500px;
-                    display: grid;
-                    grid-template-columns: 1fr 2fr;
-                    grid-gap: 10px;
-                    margin-bottom: 15px;
-                    border-bottom: #6f6872 5px solid;
-                }
+                                                          <style>
+                                                          .user-card {
+                                                                font-family: 'Arial', sans-serif;
+                                                                background: #f4f4f4;
+                                                                width: 500px;
+                                                                display: grid;
+                                                                grid-template-columns: 1fr 2fr;
+                                                                grid-gap: 10px;
+                                                                margin-bottom: 15px;
+                                                                border-bottom: #6f6872 5px solid;
+                                                            }
 
-                .user-card img {
-                    width: 100%;
-                }
+                                                            .user-card img {
+                                                                width: 100%;
+                                                            }
 
-                .user-card button {
-                    cursor: pointer;
-                    background: #6f6872;
-                    color: #fff;
-                    border: 0;
-                    border-radius: 5px;
-                    padding: 5px 10px;
-                }
-              </style>
-              <div class="user-card">
-                <img />
-                <div>
-                  <h3></h3>
-                  <div class="info">
-                    <p><slot name="email" /></p>
-                    <p><slot name="phone" /></p>
-                  </div>
-                  <button id="toggle-info">Hide Info</button>
-                </div>
-              </div>
-            `;
+                                                            .user-card button {
+                                                                cursor: pointer;
+                                                                background: #6f6872;
+                                                                color: #fff;
+                                                                border: 0;
+                                                                border-radius: 5px;
+                                                                padding: 5px 10px;
+                                                            }
+                                                          </style>
+                                                          <div class="user-card">
+                                                            <img />
+                                                            <div>
+                                                              <h3></h3>
+                                                              <div class="info">
+                                                                <p><slot name="email" /></p>
+                                                                <p><slot name="phone" /></p>
+                                                              </div>
+                                                              <button id="toggle-info">Bilgileri Gizle</button>
+                                                            </div>
+                                                          </div>
+                                                        `;
 
     class UserCard extends HTMLElement {
         constructor() {
@@ -100,10 +120,10 @@
 
             if (this.showInfo) {
                 info.style.display = 'block';
-                toggleBtn.innerText = 'Hide Info';
+                toggleBtn.innerText = 'Bilgileri Gizle';
             } else {
                 info.style.display = 'none';
-                toggleBtn.innerText = 'Show Info';
+                toggleBtn.innerText = 'Bilgileri Göster';
             }
         }
 

@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+@model UserViewModel
+
+<title>Quick Quiz | Profilim </title>
+
+<div class="container-fluid p-0">
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle">Profilim</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-xl-3">
+            <div class="card mb-3">
+                <div class="card-body text-center">
+                    <user-picture-thumbnail class="rounded-pill" style="width:150px" picture-url="@Model.PictureUrl">
+                    </user-picture-thumbnail>
+                    <br /><br />
+                    <h5 class="card-title mb-0">@User.Identity!.Name</h5>
+                    <div class="text-muted mb-2">Lead Developer</div> <!--ROLE KOY-->
+
+                    <div>
+                        <a class="btn btn-primary btn-sm mt-3" href="#">Takip Et</a>
+                        <br /> <br />
+                        <a class="btn btn-primary btn-sm" href="#"><span data-feather="message-square"></span> Mesaj Gönder</a>
+                        <br />
+                        <a class="btn btn-primary btn-sm mt-3" href="#">Testlerimi Çöz!</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-8 col-xl-9">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title" style="margin-top: 1.5rem !important"> Profil Detayları</h5>
+                </div>
+                <div class="card-body h-100">
+                    <hr class="my-0" />
+                    <div class="card-body">
+                        <h5 class="h6 card-title">Hakkımda</h5>
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-1"><span data-feather="home" class="feather-sm me-1"></span> Lives in <a href="#">@Model.City</a></li>
+
+                            <li class="mb-1"><span data-feather="briefcase" class="feather-sm me-1"></span> Works at <a href="#">GitHub</a></li>
+                            <li class="mb-1"><span data-feather="map-pin" class="feather-sm me-1"></span> From <a href="#">Boston</a></li>
+                        </ul>
+                    </div>
+                    <hr class="my-0" />
+                    <div class="card-body">
+                        <h5 class="h6 card-title">Bana şuradan da ulaşabilirsin:</h5>
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-1">
+                                <a href=@Model.Github>Github</a>
+                            </li>
+                            <li class="mb-1">
+                                <a href=@Model.Instagram>Instagram</a>
+                            </li>
+                            <li class="mb-1">
+                                <a href=@Model.Twitter>Twitter</a>
+                            </li>
+                            <li class="mb-1">
+                                <a href=@Model.Linkedln>Linkedln</a>
+                            </li>
+                            <li class="mb-1">
+                                <a href=@Model.Facebook>Facebook</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using QuickQuiz.Core.Dtos;
 using QuickQuiz.Core.Model;
@@ -118,6 +119,30 @@ namespace QuickQuiz.Service.Services
             await _signInManager.SignInAsync(currentUser, true);
 
             return (true, null);
+        }
+
+        public async Task<List<UserViewModel>> GetUserViewModelBySearchedAsync(string userName)
+        {
+            var users = await _userManager.Users.Where(x => x.UserName.Contains(userName)).ToListAsync();
+            List<UserViewModel> usersViewModel = new();
+            foreach (var user in users)
+            {
+                var userVM = new UserViewModel
+                {
+                    Email = user!.Email!,
+                    UserName = user!.UserName!,
+                    PhoneNumber = user!.PhoneNumber!,
+                    PictureUrl = user.Picture,
+                    City = user!.City!,
+                    Github = user!.Github!,
+                    Facebook = user!.Facebook!,
+                    Instagram = user!.Instagram!,
+                    Linkedln = user!.Linkedln!,
+                    Twitter = user!.Twitter!
+                };
+                usersViewModel.Add(userVM);
+            }
+            return usersViewModel;
         }
     }
 }
