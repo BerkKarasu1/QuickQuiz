@@ -145,17 +145,18 @@
 <div class="questionArea">
     <form id="myForm" form="myForm" asp-controller="Quiz" asp-action="Result" method="post" enctype="multipart/form-data">
 
-        <input asp-for="@Model.Id" hidden />
+        <input asp-for="@Model.Id" hidden name="Id"/>
         @for (int i = 0; i < Model.Question.Count; i++)
         {
-            <input form="myForm" id="answer_@i" value="0" asp-for="@Model.Question[i].TrueAnswer.AnswerText" name="Question[@i].TrueAnswer.AnswerText" hidden />
-            <input form="myForm" id="quest_@i" value="0" asp-for="@Model.Question[i].Question" name="Question[@i].Question" hidden />
-            <button type="submit">asd</button>
+            <input  id="answer_@i" value="0" asp-for="@Model.Question[i].TrueAnswer.AnswerText" name="Question[@i].TrueAnswer.AnswerText" hidden />
+            <input  id="quest_@i" value="0" asp-for="@Model.Question[i].Question" name="Question[@i].Question" hidden />
+            <input  id="id_@i" value="0" asp-for="@Model.Question[i].Id" name="Question[@i].Id" hidden />
         }
+        <button id="but"  type="submit" style="display:none">Testi Bitir</button>
     </form>
     <!-- Form alanları ve diğer içerikler -->
-    <div class="question">...</div>
-    <div class="options">
+    <div id="que" class="question">...</div>
+    <div id="opt" class="options">
     </div>
 </div>
 
@@ -174,6 +175,7 @@
     {
         <text>
             {
+                Id:'@Model.Question[i].Id',
                 question: '@Model.Question[i].Question',
                 options: [
             @for (int j = 0; j < Model.Question[i].Answers.Count; j++)
@@ -243,6 +245,8 @@
         let clickedOption = parseInt(e.target.getAttribute("data-op"));
         let quesId = "quest_" + currentQuestion;
         let answerId = "answer_" + currentQuestion;
+        let id = "id_" + currentQuestion;
+        document.getElementById(id).value = questions[currentQuestion].Id;
         document.getElementById(quesId).value = questions[currentQuestion].question;
         document.getElementById(answerId).value = questions[currentQuestion].options[clickedOption];
 
@@ -261,40 +265,12 @@
     }
 
     function finishQuiz() {
-        // ...
-
-        // Seçilen soruları ve cevapları TestDTO içinde göndermek için bir obje oluştur
-        let testDTO = {
-            id: @Model.Id,
-            name: '@Model.Name',
-            creater: {
-                // Creater bilgileri burada belirtin (örneğin, createrName, createrId vb.)
-            },
-            question: [],
-            pictureUrl: '@Model.PictureUrl'
-        };
-
-        // Seçilen soruları ve cevapları testDTO.question içine ekleyin
-        for (let i = 0; i < questions.length; i++) {
-            let selectedOptionIndex = questions[i].options.indexOf(selectedAnswers[i].selectedOption);
-            let trueAnswerText = questions[i].options[questions[i].answer];
-            let question = {
-                question: questions[i].question,
-                answers: questions[i].options,
-                trueAnswer: trueAnswerText,
-                selectedAnswer: selectedAnswers[i].selectedOption
-            };
-            testDTO.question.push(question);
-        }
-
-        // TestDTO'yu bir gizli alana yerleştir
-        let testDTOInput = document.createElement("input");
-        testDTOInput.type = "hidden";
-        testDTOInput.name = "TestDTO";
-        testDTOInput.value = JSON.stringify(testDTO);
-        document.getElementById("myForm").appendChild(testDTOInput);
-
-        // Formu submit et
-        document.getElementById("myForm").submit();
+        
+       let quest= document.getElementById("que")
+       let option= document.getElementById("opt")
+        let but= document.getElementById("but")
+        quest.style.display = "none";
+        option.style.display = "none";
+        but.style.display = "block";
     }
 </script>

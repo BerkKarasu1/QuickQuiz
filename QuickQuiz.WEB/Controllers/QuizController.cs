@@ -13,18 +13,22 @@ namespace QuickQuiz.WEB.Controllers
         {
             _testService = testService;
         }
-        [Route("Quiz/TryTest/{id?}")]
-        public async Task<IActionResult> TryTest(int id)
+        [Route("Quiz/Test/{id?}")]
+        public async Task<IActionResult> Test(int id)
         {
-           var test= await _testService.TestControl(CurrentUser, id);
-            if(test!=null)
+            var test = await _testService.GetTestById(id);
+            if (test != null)
                 return View(test);
             return View();
         }
         [HttpPost]
-        public  IActionResult Result(TestDTO testDTO)
+        public async Task<IActionResult> Result(TestDTO testDTO)
         {
+            bool result = await _testService.Result(testDTO);
+            if (result)
+                return View();
             return View();
         }
+
     }
 }

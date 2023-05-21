@@ -13,7 +13,10 @@ namespace QuickQuiz.Core.Services
         Task AddAsync(TestDTO testDTO);
         void Remove(TestDTO TestDTO);
         Task<List<TestDTO>> GetAllTest(AppUser user);
+        Task<List<TestDTO>> GetAllTestAsync();
         Task<TestDTO> TestControl(AppUser user, int id);
         Task Update(TestDTO TestDTO);
+        Task<TestDTO> GetTestById(int id);
+        Task<bool> Result(TestDTO testDTO);
     }
 }

@@ -25,6 +25,11 @@ namespace QuickQuiz.Repository.Repositories
         {
             return await _context.Tests.Where(x => x.Creater.Id == user.Id).Include(x => x.Question).ThenInclude(x => x.Answers).ToListAsync();
         }
+        public async Task<List<Test>> GetAllTest()
+        {
+            return await _context.Tests.ToListAsync();
+        }
+
         public async Task<Test> GetTestById(int id)
         {
             return await _context.Tests.Include(x => x.Question).ThenInclude(x => x.Answers).FirstOrDefaultAsync(x => x.Id == id);

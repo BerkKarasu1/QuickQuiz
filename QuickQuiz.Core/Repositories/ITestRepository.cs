@@ -10,6 +10,7 @@ namespace QuickQuiz.Core.Repositories
     public interface ITestRepository:IGenericRepository<Test>
     {
         public Task<List<Test>> GetAllTest(AppUser user);
+        public Task<List<Test>> GetAllTest();
         public Task<Test> GetTestById(int id);
     }
 }

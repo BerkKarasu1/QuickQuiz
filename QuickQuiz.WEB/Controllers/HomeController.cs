@@ -12,23 +12,23 @@ namespace QuickQuiz.WEB.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
         private readonly UserManager<AppUser> _userManager;
-
         private readonly SignInManager<AppUser> _signInManager;
-
         private readonly IEmailService _emailService;
-        public HomeController(ILogger<HomeController> logger, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IEmailService emailService)
+        readonly ITestService _testService;
+        public HomeController(ILogger<HomeController> logger, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IEmailService emailService, ITestService testService)
         {
             _logger = logger;
             _userManager = userManager;
             _signInManager = signInManager;
             _emailService = emailService;
+            _testService = testService;
         }
-        
-        public IActionResult Index()
+
+        public async Task<IActionResult> Index()
         {
-            return View();
+          var test=await  _testService.GetAllTestAsync();
+            return View(test);
         }
 
         public IActionResult HomePage()
