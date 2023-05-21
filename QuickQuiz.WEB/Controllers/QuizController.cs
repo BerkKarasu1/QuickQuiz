@@ -23,6 +23,7 @@ namespace QuickQuiz.WEB.Controllers
                 return View(test);
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Result(TestDTO testDTO)
         {
