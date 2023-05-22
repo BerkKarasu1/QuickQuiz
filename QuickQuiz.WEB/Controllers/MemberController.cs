@@ -49,7 +49,8 @@ namespace QuickQuiz.WEB.Controllers
                 return View();
             }
 
-            var(isSuccess, errors) = await _memberService.ChangePasswordAsync(userName, request.PasswordOld, request.PasswordNew);
+            var(isSuccess, errors) = 
+                await _memberService.ChangePasswordAsync(userName, request.PasswordOld, request.PasswordNew);
 
             if (!isSuccess)
             {
@@ -154,6 +155,7 @@ namespace QuickQuiz.WEB.Controllers
 
             return View(userEditViewModel);
         }
+
         [Route("Member/UserSearch/{name?}")]
         public async Task<IActionResult> UserSearch(string name)
         {

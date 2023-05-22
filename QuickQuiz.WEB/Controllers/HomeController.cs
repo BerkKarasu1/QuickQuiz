@@ -35,10 +35,7 @@ namespace QuickQuiz.WEB.Controllers
         {
             return View();
         }
-        public IActionResult SignUp()
-        {
-            return View();
-        }
+       
         public IActionResult SignIn()
         {
             return View();
@@ -80,6 +77,11 @@ namespace QuickQuiz.WEB.Controllers
             return View();
         }
 
+        public IActionResult SignUp()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> SignUp(SignUpViewModel request)
         {
@@ -116,7 +118,7 @@ namespace QuickQuiz.WEB.Controllers
 
             string passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(hasUser);
 
-            var passwordResetLink = Url.Action("ResetPassword", "RegisterUser",
+            var passwordResetLink = Url.Action("PasswordChange", "Member",
                 new { userId = hasUser.Id, Token = passwordResetToken }, HttpContext.Request.Scheme);
 
             //örnek link : https://localhost:7295?userId?12213&token=dshgdfhsadsd  bu sekilde bir url üretilecek.
