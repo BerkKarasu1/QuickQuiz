@@ -73,6 +73,7 @@ namespace QuickQuiz.Service.Services
                 QuestionDTO questionDTO = new()
                 {
                     Id = test.Question[i].Id,
+                    Question = test.Question[i].Quest,
                     Answers = test.Question[i].Answers,
                 };
                 foreach (var item2 in test.Question[i].Answers)
