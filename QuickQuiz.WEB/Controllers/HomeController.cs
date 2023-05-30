@@ -27,7 +27,7 @@ namespace QuickQuiz.WEB.Controllers
 
         public async Task<IActionResult> Index()
         {
-          var test=await  _testService.GetAllTestAsync();
+            var test = await _testService.GetAllTestAsync();
             return View(test);
         }
 
@@ -35,7 +35,7 @@ namespace QuickQuiz.WEB.Controllers
         {
             return View();
         }
-       
+
         public IActionResult SignIn()
         {
             return View();
