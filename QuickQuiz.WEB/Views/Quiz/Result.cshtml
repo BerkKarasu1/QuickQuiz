@@ -53,8 +53,18 @@
                     @for (int i = 0; i < Model.Count; i++)
                     {
                         <tr>
-                            <td>@(i+1)</td>
-                            <td class="d-none d-xl-table-cell">@Model[i].Student.UserName</td>
+                            <td>@(i + 1)</td>
+                            @if (@Model[i].Student != null)
+                            {
+                                <td class="d-none d-xl-table-cell">@Model[i].Student.UserName</td>
+                            }
+                            else
+                            {
+                                <td class="d-none d-xl-table-cell">Misafir Kullanıcı</td>                                
+                            }
+
+
+                            
                             <td><span class="badge bg-success">@Model[i].Result</span></td>
                         </tr>
                     }
