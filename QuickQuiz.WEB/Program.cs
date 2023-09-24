@@ -30,12 +30,16 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.ConfigureApplicationCookie(opt =>
 {
-    var cookieBuilder = new CookieBuilder();
-    cookieBuilder.Name = "AppCookie";
-    opt.LoginPath = new PathString("/Home/SignIn");
+    opt.Cookie = new()
+    {
+        Name = "QuickQuizCookie",
+        HttpOnly = false,
+        SecurePolicy = CookieSecurePolicy.None,
+        SameSite = SameSiteMode.Lax
+    };
+    opt.LoginPath = new PathString("/home/signin");
     opt.LogoutPath = new PathString("/Member/Logout");
     opt.AccessDeniedPath = new PathString("/Member/AccessDenied");
-    opt.Cookie = cookieBuilder;
     opt.ExpireTimeSpan = TimeSpan.FromDays(60);
     opt.SlidingExpiration = true;
 }
@@ -43,13 +47,13 @@ builder.Services.ConfigureApplicationCookie(opt =>
 var config = TypeAdapterConfig.GlobalSettings;
 config.Scan(typeof(QuestionMappingConfig).Assembly);
 builder.Services.AddSingleton(config);
-builder.Services.AddScoped<IQuestionService,QuestionService>();
-builder.Services.AddScoped<IQuestionRepository,QuestionRepository>();
-builder.Services.AddScoped<ITestService,TestService>();
-builder.Services.AddScoped<ITestRepository,TestRepository>();
+builder.Services.AddScoped<IQuestionService, QuestionService>();
+builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
+builder.Services.AddScoped<ITestService, TestService>();
+builder.Services.AddScoped<ITestRepository, TestRepository>();
 builder.Services.AddScoped<IResultRepository, ResultRepository>();
 builder.Services.AddScoped<IResultService, ResultService>();
-builder.Services.AddScoped<IMapper,Mapper>();
+builder.Services.AddScoped<IMapper, Mapper>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -69,16 +73,13 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
+app.MapControllerRoute(
       name: "areas",
       pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
     );
-});
-
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=home}/{action=index}/{id?}");
+
 
 app.Run();

@@ -40,12 +40,21 @@ namespace QuickQuiz.Service.Services
             question.Answers = answers;
             await _questionRepository.AddAsync(question);
         }
-
+        //todo
         public async Task<List<QuestionDTO>> GetAllQuestionAsync(AppUser user)
         {
             List<Question> questions = await _questionRepository.GetAllQuestion(user);
             List<QuestionDTO> questionDTOs = new();
-            //return _mapper.Map<List<QuestionDTO>>(questions);
+            try
+            {
+
+            var asds= _mapper.Map<List<QuestionDTO>>(questions);
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
             foreach (var item in questions)
             {
                 questionDTOs.Add(new QuestionDTO

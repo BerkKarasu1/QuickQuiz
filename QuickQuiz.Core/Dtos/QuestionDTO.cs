@@ -1,4 +1,5 @@
-﻿using QuickQuiz.Core.Model;
+﻿using Mapster;
+using QuickQuiz.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,6 @@ namespace QuickQuiz.Core.Dtos
         public AppUser Creater { get; set; }
         public bool Check { get; set; }
         public string? TestName { get; set; }
+
     }
 }

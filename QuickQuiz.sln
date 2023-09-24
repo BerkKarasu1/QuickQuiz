@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickQuiz.WEB", "QuickQuiz.WEB\QuickQuiz.WEB.csproj", "{4ED1C79C-DC59-415A-BC08-99985244B2AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickQuiz.WEB", "QuickQuiz.WEB\QuickQuiz.WEB.csproj", "{4ED1C79C-DC59-415A-BC08-99985244B2AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickQuiz.Core", "QuickQuiz.Core\QuickQuiz.Core.csproj", "{A9D4959C-F088-410B-88DD-7D07482E5094}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickQuiz.Core", "QuickQuiz.Core\QuickQuiz.Core.csproj", "{A9D4959C-F088-410B-88DD-7D07482E5094}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickQuiz.Repository", "QuickQuiz.Repository\QuickQuiz.Repository.csproj", "{34D8F2DF-C7FD-4414-B4EC-90D1DA508C7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickQuiz.Repository", "QuickQuiz.Repository\QuickQuiz.Repository.csproj", "{34D8F2DF-C7FD-4414-B4EC-90D1DA508C7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickQuiz.Service", "QuickQuiz.Service\QuickQuiz.Service.csproj", "{AA1CCEDD-877F-4DEE-89D7-D4C97FE726E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickQuiz.Service", "QuickQuiz.Service\QuickQuiz.Service.csproj", "{AA1CCEDD-877F-4DEE-89D7-D4C97FE726E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickQuiz.Api", "QuickQuiz.Api\QuickQuiz.Api.csproj", "{3F73F334-F209-41EE-8F41-3A732694C4E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{AA1CCEDD-877F-4DEE-89D7-D4C97FE726E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA1CCEDD-877F-4DEE-89D7-D4C97FE726E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA1CCEDD-877F-4DEE-89D7-D4C97FE726E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F73F334-F209-41EE-8F41-3A732694C4E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F73F334-F209-41EE-8F41-3A732694C4E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F73F334-F209-41EE-8F41-3A732694C4E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F73F334-F209-41EE-8F41-3A732694C4E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -38,15 +38,21 @@ namespace QuickQuiz.WEB.Controllers
 
         public IActionResult SignIn()
         {
-            return View();
+            var tuple = (new SignInViewModel(), new SignUpViewModel());
+            return View(tuple);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> SignIn(SignInViewModel model, string? returnUrl = null)
+        public IActionResult SignMenu()
         {
+            var tuple = (new SignInViewModel(), new SignUpViewModel());
+            return View(tuple);
+        }
+        [HttpPost]
+        public async Task<IActionResult> SignIn([Bind(Prefix = "Item1")] SignInViewModel model, string returnUrl = null)
+        {
+            var tuple = (model, new SignUpViewModel());
             if (!ModelState.IsValid)
             {
-                return View();
+                return View(tuple);
             }
 
             returnUrl ??= Url.Action("Index", "Home");
@@ -56,7 +62,7 @@ namespace QuickQuiz.WEB.Controllers
             if (hasUser == null)
             {
                 ModelState.AddModelError(string.Empty, "Kullanıcı adı veya şifre yanlış!");
-                return View();
+                return View(tuple);
             }
 
             var signInResult = await _signInManager.PasswordSignInAsync(hasUser, model.Password, model.RememberMe, true);
@@ -69,12 +75,12 @@ namespace QuickQuiz.WEB.Controllers
             if (signInResult.IsLockedOut)
             {
                 ModelState.AddModelErrorList(new List<string>() { "3 dk boyunca giriş yapamazsınız!" });
-                return View();
+                return View(tuple);
             }
 
             ModelState.AddModelErrorList(new List<string>() { "Email veya şifreniz yanlış!", $"Başarısız giriş sayısı: {await _userManager.GetAccessFailedCountAsync(hasUser)}" });
 
-            return View();
+            return View(tuple);
         }
 
         public IActionResult SignUp()
@@ -83,7 +89,7 @@ namespace QuickQuiz.WEB.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignUp(SignUpViewModel request)
+        public async Task<IActionResult> SignUp([Bind(Prefix = "Item2")] SignUpViewModel request)
         {
             if (!ModelState.IsValid)
             {

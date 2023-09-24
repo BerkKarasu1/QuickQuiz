@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.FileProviders;
@@ -6,9 +7,11 @@ using QuickQuiz.Core.Dtos;
 using QuickQuiz.Core.Model;
 using QuickQuiz.Core.Services;
 using QuickQuiz.WEB.Extensions;
+using System.Data;
 
 namespace QuickQuiz.WEB.Controllers
 {
+    [Authorize(Roles = "User,Admin")]
     public class MemberController : Controller
     {
         private readonly SignInManager<AppUser> _signInManager;
@@ -24,13 +27,13 @@ namespace QuickQuiz.WEB.Controllers
             _fileProvider = fileProvider;
             _memberService = memberService;
         }
-
+        
         public async Task<IActionResult> Index()
         {
             return View(await _memberService.GetUserViewModelByUserNameAsync(userName));
         }
 
-        public async Task<IActionResult> PasswordChange()
+        public IActionResult PasswordChange()
         {
             return View();
         }
