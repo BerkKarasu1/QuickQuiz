@@ -1,6 +1,6 @@
 ﻿namespace QuickQuiz.Core.Dtos
 {
-    public class UserViewModel
+    public record struct UserDTO
     {
         public string UserName { get; set; }
         public string Email { get; set; }

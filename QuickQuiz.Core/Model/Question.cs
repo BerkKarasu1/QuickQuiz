@@ -12,9 +12,9 @@ namespace QuickQuiz.Core.Model
     {
         public int Id { get; set; }
         public string Quest { get; set; }
-        public List<Answer> Answers { get; set; } =new List<Answer>();
+        public List<Answer> Answers { get; set; } 
         public AppUser Creater { get; set; }
-        public List<Test>? Tests { get; set; }=new List<Test>();
+        public List<Test>? Tests { get; set; }
     }
     public class Answer
     {

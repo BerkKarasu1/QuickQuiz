@@ -2,7 +2,7 @@
 
 namespace QuickQuiz.Core.Dtos
 {
-    public class SignInViewModel
+    public  record SignInViewModel
     {
         public SignInViewModel()
         {

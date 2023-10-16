@@ -5,8 +5,8 @@ namespace QuickQuiz.Core.Services
 {
     public interface IMemberService
     {
-        Task<UserViewModel> GetUserViewModelByUserNameAsync(string userName);
-        Task<List<UserViewModel>> GetUserViewModelBySearchedAsync(string userName);
+        Task<UserDTO> GetUserViewModelByUserNameAsync(string userName);
+        Task<List<UserDTO>> GetUserViewModelBySearchedAsync(string userName);
         Task LogoutAsync();
         Task<bool> CheckPasswordAsync(string userName, string password);
         Task<(bool, IEnumerable<IdentityError>?)> ChangePasswordAsync(string userName, string oldPassword, string newPassword);

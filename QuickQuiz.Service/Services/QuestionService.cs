@@ -18,54 +18,25 @@ namespace QuickQuiz.Service.Services
         }
 
         public async Task AddAsync(QuestionDTO questionDTO)
-        {
-
-            Question question = new()
-            {
-                Quest = questionDTO.Question,
-                Creater = questionDTO.Creater
-            };
-            List<Answer> answers = new();
-            Question question1 = questionDTO.Adapt<Question>();//Quest iletilmiyor
-            foreach (var answer in questionDTO.Answers)
+        {//todo: Buradaki Answer Mapleme işlemini düzenlemek gerekiyor
+            Question question = questionDTO.Adapt<Question>();
+            List<Answer> answerList = new();
+            foreach (var answer in question.Answers)
             {
                 if (answer != null && answer.AnswerText != string.Empty && answer.AnswerText != null)
-                {
-                    Answer answerModel = answer.Adapt<Answer>();
-                    if (answer.AnswerText == questionDTO.TrueAnswer.AnswerText)
-                        answerModel.IsCorrect = true;
-                    answers.Add(answerModel);
-                }
+                    answer.Question = question;
+                else
+                    answerList.Add(answer);
             }
-            question.Answers = answers;
+            foreach (var item in answerList)
+                question.Answers.Remove(item);
             await _questionRepository.AddAsync(question);
         }
         //todo
         public async Task<List<QuestionDTO>> GetAllQuestionAsync(AppUser user)
         {
             List<Question> questions = await _questionRepository.GetAllQuestion(user);
-            List<QuestionDTO> questionDTOs = new();
-            try
-            {
-
-            var asds= _mapper.Map<List<QuestionDTO>>(questions);
-            }
-            catch (Exception e)
-            {
-
-                throw;
-            }
-            foreach (var item in questions)
-            {
-                questionDTOs.Add(new QuestionDTO
-                {
-                    Id = item.Id,
-                    Answers = item.Answers,
-                    Creater = item.Creater,
-                    Question = item.Quest,
-                });
-            }
-            return questionDTOs;
+            return _mapper.Map<List<QuestionDTO>>(questions);
         }
 
         public async Task<QuestionDTO> GetQuestionByIdAsync(int questionId)

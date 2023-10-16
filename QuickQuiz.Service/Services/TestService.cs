@@ -30,7 +30,7 @@ namespace QuickQuiz.Service.Services
             Test test = new()
             {
                 Name = testDTO.Name,
-                Creater = testDTO.Creater,
+                //Creater = testDTO.Creater,
                 Question = questionList,
                 PictureUrl = testDTO.PictureUrl,
 
@@ -43,8 +43,9 @@ namespace QuickQuiz.Service.Services
             List<TestDTO> testList = new();
             var allTest = await _testRepository.GetAllTest(user);
             foreach (var item in allTest)
-            {
-                TestDTO test = new() { Name = item.Name, Creater = item.Creater, PictureUrl = item.PictureUrl, Id = item.Id };
+            { //todo:
+              //                TestDTO test = new() { Name = item.Name, Creater = item.Creater, PictureUrl = item.PictureUrl, Id = item.Id };
+                TestDTO test = new() { Name = item.Name,  PictureUrl = item.PictureUrl, Id = item.Id };
                 List<QuestionDTO> questionDTO = new();
                 for (int i = 0; i < test.Question.Count; i++)
                 {
@@ -58,7 +59,7 @@ namespace QuickQuiz.Service.Services
                 }
                 test.Question = questionDTO;
                 testList.Add(test);
-                
+
             }
             return testList;
         }
@@ -66,7 +67,8 @@ namespace QuickQuiz.Service.Services
         public async Task<TestDTO> GetTestById(int id)
         {
             var test = await _testRepository.GetTestById(id);
-            TestDTO testDTO = new() { Name = test.Name, Creater = test.Creater, PictureUrl = test.PictureUrl, Id = test.Id };
+            //todo:
+            TestDTO testDTO = new() { Name = test.Name, PictureUrl = test.PictureUrl, Id = test.Id };
             List<QuestionDTO> questionDTOs = new();
             for (int i = 0; i < test.Question.Count; i++)
             {
@@ -74,13 +76,13 @@ namespace QuickQuiz.Service.Services
                 {
                     Id = test.Question[i].Id,
                     Question = test.Question[i].Quest,
-                    Answers = test.Question[i].Answers,
+                    //Answers = test.Question[i].Answers,
                 };
                 foreach (var item2 in test.Question[i].Answers)
                 {
                     if (item2.IsCorrect)
                     {
-                        questionDTO.TrueAnswer = item2;
+                        //questionDTO.TrueAnswer = item2;
                         break;
                     }
                 }
@@ -99,20 +101,20 @@ namespace QuickQuiz.Service.Services
         {
             var item = await _testRepository.GetTestById(id);
             if (item == null || item.Creater.Id != user.Id) return null;
-            TestDTO test = new() { Name = item.Name, Creater = item.Creater, PictureUrl = item.PictureUrl, Id = item.Id };
+            TestDTO test = new() { Name = item.Name, PictureUrl = item.PictureUrl, Id = item.Id };
             List<QuestionDTO> questionDTOs = new();
             for (int i = 0; i < item.Question.Count; i++)
             {
                 QuestionDTO questionDTO = new()
                 {
                     Id = item.Question[i].Id,
-                    Answers = item.Question[i].Answers,
+                    //Answers = item.Question[i].Answers,
                 };
                 foreach (var item2 in item.Question[i].Answers)
                 {
                     if (item2.IsCorrect)
                     {
-                        questionDTO.TrueAnswer = item2;
+                        //questionDTO.TrueAnswer = item2;
                         break;
                     }
                 }
@@ -155,7 +157,7 @@ namespace QuickQuiz.Service.Services
                         }
                     }
                 }
-                float score = (float.Parse(CorrectAnswer.ToString()) / (float.Parse(WrongAnswer.ToString())+float.Parse(CorrectAnswer.ToString()))) * 100;
+                float score = (float.Parse(CorrectAnswer.ToString()) / (float.Parse(WrongAnswer.ToString()) + float.Parse(CorrectAnswer.ToString()))) * 100;
 
                 await _resultService.AddAsync(curruntUser, score, test);
                 return true;
@@ -169,7 +171,7 @@ namespace QuickQuiz.Service.Services
             var allTest = await _testRepository.GetAllTest();
             foreach (var item in allTest)
             {
-                TestDTO test = new() { Name = item.Name, Creater = item.Creater, PictureUrl = item.PictureUrl, Id = item.Id };
+                TestDTO test = new() { Name = item.Name, PictureUrl = item.PictureUrl, Id = item.Id };
                 List<QuestionDTO> questionDTO = new();
                 for (int i = 0; i < test.Question.Count; i++)
                 {

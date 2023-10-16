@@ -8,16 +8,16 @@ namespace QuickQuiz.Core.Dtos
     {
         [Required(ErrorMessage = "Kullanıcı Ad alanı boş bırakılamaz!")]
         [Display(Name = "Kullanıcı Adı:")]
-        public string UserName { get; set; } = null!;
+        public string? UserName { get; set; }// = null!;
 
         [Required(ErrorMessage = "Email alanı boş bırakılamaz!")]
         [EmailAddress(ErrorMessage = "Email formatı yanlış!")]
         [Display(Name = "Email:")]
-        public string Email { get; set; } = null!;
+        public string Email { get; set; }// = null!;
 
         [Required(ErrorMessage = "Telefon alanı boş bırakılamaz!")]
         [Display(Name = "Telefon:")]
-        public string Phone { get; set; } = null!;  // nullable olamaz
+        public string Phone { get; set; }// = null!;  // nullable olamaz
 
         [DataType(DataType.Date)]
         [Display(Name = "Doğum Tarihi:")]

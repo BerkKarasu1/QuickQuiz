@@ -21,7 +21,6 @@ namespace QuickQuiz.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(QuestionDTO questionDTO)
         {
-            questionDTO.Creater = CurrentUser;
             await _questionService.AddAsync(questionDTO);
             return RedirectToAction("Add");
         }

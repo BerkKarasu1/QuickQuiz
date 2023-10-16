@@ -27,7 +27,7 @@ namespace QuickQuiz.WEB.Controllers
         {
             TestDTO testDTO = new()
             {
-                Creater = CurrentUser,
+                //Creater = CurrentUser,
                 Name = questionDTOs[0].TestName,
                 Question = questionDTOs
             };

@@ -8,16 +8,22 @@ using System.Threading.Tasks;
 
 namespace QuickQuiz.Core.Dtos
 {
-    public class QuestionDTO
+    public record class QuestionDTO
     {
         public int Id { get; set; }
         public string Question { get; set; }
-        public List<Answer> Answers { get; set; } = new List<Answer>();
-        public Answer? TrueAnswer { get; set; }
-        public List<TestDTO>? Tests { get; set; } = new List<TestDTO>();
-        public AppUser Creater { get; set; }
+        public List<AnswerDTO> Answers { get; set; } = new ();
+        public AnswerDTO? TrueAnswer { get; set; } = new();
+        public List<TestDTO> Tests { get; set; } = new();
+        public UserDTO Creater { get; set; } = new();
         public bool Check { get; set; }
         public string? TestName { get; set; }
-
+    }
+    public record class AnswerDTO
+    {
+        public int Id { get; set; }
+        //public QuestionDTO Question { get; set; } = new();
+        public string AnswerText { get; set; }
+        public bool IsCorrect { get; set; } = false;
     }
 }

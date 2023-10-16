@@ -49,7 +49,7 @@ namespace QuickQuiz.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> SignIn([Bind(Prefix = "Item1")] SignInViewModel model, string returnUrl = null)
         {
-            var tuple = (model, new SignUpViewModel());
+             var tuple = (model, new SignUpViewModel());
             if (!ModelState.IsValid)
             {
                 return View(tuple);
@@ -64,8 +64,8 @@ namespace QuickQuiz.WEB.Controllers
                 ModelState.AddModelError(string.Empty, "Kullanıcı adı veya şifre yanlış!");
                 return View(tuple);
             }
-
-            var signInResult = await _signInManager.PasswordSignInAsync(hasUser, model.Password, model.RememberMe, true);
+            //lockout =true olarak işaretle
+            var signInResult = await _signInManager.PasswordSignInAsync(hasUser, model.Password, model.RememberMe, false);
 
             if (signInResult.Succeeded)
             {

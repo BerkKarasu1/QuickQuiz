@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Mapster;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using QuickQuiz.Core.Dtos;
@@ -20,23 +21,10 @@ namespace QuickQuiz.Service.Services
             _fileProvider = fileProvider;
         }
 
-        async Task<UserViewModel> IMemberService.GetUserViewModelByUserNameAsync(string userName)
+        async Task<UserDTO> IMemberService.GetUserViewModelByUserNameAsync(string userName)
         {
             var currentUser = await _userManager.FindByNameAsync(userName);
-
-            return new UserViewModel
-            {
-                Email = currentUser!.Email!,
-                UserName = currentUser!.UserName!,
-                PhoneNumber = currentUser!.PhoneNumber!,
-                PictureUrl = currentUser.Picture,
-                City = currentUser!.City!,
-                Github = currentUser!.Github!,
-                Facebook = currentUser!.Facebook!,
-                Instagram = currentUser!.Instagram!,
-                Linkedln = currentUser!.Linkedln!,
-                Twitter = currentUser!.Twitter!
-            };
+            return currentUser.Adapt<UserDTO>();
         }
 
         async Task IMemberService.LogoutAsync()
@@ -68,22 +56,13 @@ namespace QuickQuiz.Service.Services
 
         async Task<UserEditViewModel> IMemberService.GetUserEditViewModelAsync(string userName)
         {
-            var currentUser = (await _userManager.FindByNameAsync(userName))!;
-            return new UserEditViewModel()
-            {
-                UserName = currentUser.UserName!,
-                Email = currentUser.Email!,
-                Phone = currentUser.PhoneNumber!,
-                BirthDate = currentUser.BirthDate,
-                City = currentUser.City,
-                Gender = currentUser.Gender
-            };
+            var currentUser = await _userManager.FindByNameAsync(userName);
+            return currentUser.Adapt<UserEditViewModel>();
         }
-
+        //todo: mapleme işlemi yapılacak.
         async Task<(bool, IEnumerable<IdentityError>?)> IMemberService.EditUserAsync(UserEditViewModel request, string userName)
         {
             var currentUser = (await _userManager.FindByNameAsync(userName))!;
-
             currentUser.UserName = request.UserName;
             currentUser.Email = request.Email;
             currentUser.PhoneNumber = request.Phone;
@@ -114,35 +93,16 @@ namespace QuickQuiz.Service.Services
             }
 
             await _userManager.UpdateSecurityStampAsync(currentUser);
-
             await _signInManager.SignOutAsync();
             await _signInManager.SignInAsync(currentUser, true);
 
             return (true, null);
         }
 
-        public async Task<List<UserViewModel>> GetUserViewModelBySearchedAsync(string userName)
+        public async Task<List<UserDTO>> GetUserViewModelBySearchedAsync(string userName)
         {
             var users = await _userManager.Users.Where(x => x.UserName.Contains(userName)).ToListAsync();
-            List<UserViewModel> usersViewModel = new();
-            foreach (var user in users)
-            {
-                var userVM = new UserViewModel
-                {
-                    Email = user!.Email!,
-                    UserName = user!.UserName!,
-                    PhoneNumber = user!.PhoneNumber!,
-                    PictureUrl = user.Picture,
-                    City = user!.City!,
-                    Github = user!.Github!,
-                    Facebook = user!.Facebook!,
-                    Instagram = user!.Instagram!,
-                    Linkedln = user!.Linkedln!,
-                    Twitter = user!.Twitter!
-                };
-                usersViewModel.Add(userVM);
-            }
-            return usersViewModel;
+            return users.Adapt<List<UserDTO>>();
         }
     }
 }
