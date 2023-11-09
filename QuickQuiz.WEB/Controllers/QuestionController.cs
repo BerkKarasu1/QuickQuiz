@@ -1,11 +1,16 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using QuickQuiz.Core.Dtos;
 using QuickQuiz.Core.Model;
 using QuickQuiz.Core.Services;
+using System.ComponentModel;
+using System.Reflection;
 
 namespace QuickQuiz.WEB.Controllers
 {
+    [Authorize(Roles = "User,Admin")]
     public class QuestionController : BaseController
     {
         readonly IQuestionService _questionService;
@@ -38,8 +43,25 @@ namespace QuickQuiz.WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> AllQuestions(List<QuestionDTO> questionDTOs)
         {
+            List<string> enums = new();
+            foreach (TestCategorys testCategory in Enum.GetValues(typeof(TestCategorys)))
+            {
+                var desc = testCategory.GetType().GetField(testCategory.ToString())?.GetCustomAttributes<DescriptionAttribute>().FirstOrDefault()?.Description;
+                if (desc != null)
+                    enums.Add(desc);
+            }
+            ViewBag.genderList = new SelectList(enums);
             List<QuestionDTO> allQuestions = await _questionService.GetAllQuestionAsync(CurrentUser);
-            return View(allQuestions);
+            return View((allQuestions, new TestDTO()));
+        }
+        public static string GetEnumDescription(Enum value)
+        {
+            FieldInfo fieldInfo = value.GetType().GetField(value.ToString());
+            DescriptionAttribute[] attributes = fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false) as DescriptionAttribute[];
+            if (attributes != null && attributes.Length > 0)
+                return attributes[0].Description;
+            else
+                return value.ToString();
         }
     }
 }

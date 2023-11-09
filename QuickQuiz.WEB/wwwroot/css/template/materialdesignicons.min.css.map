@@ -1,0 +1,16 @@
+{
+	"version": 3,
+	"file": "materialdesignicons.css",
+	"sources": [
+		"dist/scss/materialdesignicons.scss",
+		"dist/scss/_variables.scss",
+		"dist/scss/_functions.scss",
+		"dist/scss/_path.scss",
+		"dist/scss/_core.scss",
+		"dist/scss/_icons.scss",
+		"dist/scss/_extras.scss",
+		"dist/scss/_animated.scss"
+	],
+	"names": [],
+	
+}

@@ -1,10 +1,13 @@
-﻿using Azure.Core;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
 using QuickQuiz.Core.Dtos;
 using QuickQuiz.Core.Model;
 using QuickQuiz.Core.Services;
+using System.ComponentModel;
+using System.Reflection;
+using System.Text;
+using File = System.IO.File;
 
 namespace QuickQuiz.WEB.Controllers
 {
@@ -18,23 +21,28 @@ namespace QuickQuiz.WEB.Controllers
             _fileProvider = fileProvider;
         }
         public async Task<IActionResult> Index()
+        
         {
             var tests = await _testService.GetAllTest(CurrentUser);
             return View(tests);
         }
         [HttpPost]
-        public async Task<IActionResult> CreateTest(List<QuestionDTO> questionDTOs)
+        public async Task<IActionResult> CreateTest([Bind(Prefix = "Item1")] List<QuestionDTO> questionDTOs, [Bind(Prefix = "Item2")] TestDTO test)
         {
-            TestDTO testDTO = new()
+            test.Question = questionDTOs;
+            foreach (TestCategorys testCategory in Enum.GetValues(typeof(TestCategorys)))
             {
-                //Creater = CurrentUser,
-                Name = questionDTOs[0].TestName,
-                Question = questionDTOs
-            };
-            await _testService.AddAsync(testDTO);
+                var desc = testCategory.GetType().GetField(testCategory.ToString())?.GetCustomAttributes<DescriptionAttribute>().FirstOrDefault()?.Description;
+                if (desc != null && desc == test.TestCategoryDescription.ToString())
+                {
+                    test.TestCategorys = testCategory;
+                    break;
+                }
+            }
+            await _testService.AddAsync(test, CurrentUser);
             return RedirectToAction("Index");
         }
-        
+
         public IActionResult RemoveTest(TestDTO testDTO)
         {
             _testService.Remove(testDTO);
@@ -52,17 +60,24 @@ namespace QuickQuiz.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> Edits(TestDTO test)
         {
-            if (test.PictureFile != null && test.PictureFile.Length > 0)
-            {
-                var wwwrootFolder = _fileProvider.GetDirectoryContents("wwwroot");
-                var randomFileName = $"{Guid.NewGuid()}{Path.GetExtension(test.PictureFile.FileName)}";
-                var newPicturePath = Path.Combine(wwwrootFolder!.First(x => x.Name == "TestPictures").PhysicalPath!, randomFileName);
-                using var stream = new FileStream(newPicturePath, FileMode.Create);
-                await test.PictureFile.CopyToAsync(stream);
-                test.PictureUrl = randomFileName;
-            }
             await _testService.Update(test);
             return RedirectToAction("Index");
+        }
+        [HttpGet]
+        [Route("Test/External/{link?}")]
+        public async Task<IActionResult> ExternalUserTest(string link)        
+        {
+            (bool result, int testId) = await _testService.TestLinkControl(link);
+            testId = 9;
+            return View((result, testId,""));
+        }
+        [HttpPost]
+        public async Task<IActionResult> ExternalUserTestPost(string name, int id)
+        {
+            //Ad boş olamaz şeklinde uyarı gidecek
+            if (string.IsNullOrEmpty(name))
+                return View((true, id));
+            return RedirectToAction("Test", "Quiz", id);
         }
     }
 }

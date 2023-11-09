@@ -12,7 +12,8 @@ namespace QuickQuiz.Core.Model
         public int Id { get; set; }
         public string Name { get; set; }
         public AppUser Creater { get; set; }
-        public List<Question>? Question { get; set; } = new List<Question>();
+        public List<Question>? Question { get; set; }
+        public TestCategorys TestCategorys { get; set; }
         public string? PictureUrl { get; set; }
     }
 }

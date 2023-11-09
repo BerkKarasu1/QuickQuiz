@@ -40,7 +40,7 @@
                     <div class="col-sm-8">
                         <span>@Model.Question[i].Question</span>
                         <br> <br>
-                        @for (int j = 0; j < Model.Question[i].Answers.Count; j++)
+                        @for (int j = 0; j < Model.Question[i]?.Answers?.Count; j++)
                         {
                             char opt = '0';
                             switch (j)

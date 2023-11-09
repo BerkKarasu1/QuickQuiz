@@ -1,4 +1,4 @@
-﻿@model List<QuestionDTO>
+﻿@model (List<QuestionDTO> Question,TestDTO Test)
 <link href="~/css/textbox.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="~/js/allQuestions.js"></script>
@@ -12,17 +12,17 @@
 }
 <form form="GeneralForm" asp-controller="Test" asp-action="CreateTest" formmethod="post">
 
-    @for (int i = 0; i < Model.Count; i++)
+    @for (int i = 0; i < Model.Question.Count; i++)
     {
         <div class="row mt-12">
             <div class="col-md-1">
-                <input asp-for="@Model[i].Check" type="checkbox" id="questcb">
-                <input asp-for="@Model[i].Id" hidden>
+                <input asp-for="@Model.Question[i].Check" type="checkbox" id="questcb">
+                <input asp-for="@Model.Question[i].Id" hidden>
                 <span>@(i + 1) Soru</span>
             </div>
             <div class="col-md-9">
                 <h6 rows="3" style="min-height:15px;">
-                    @Model[i].Question
+                    @Model.Question[i].Question
                 </h6>
             </div>
             <div class="col-md-2">
@@ -30,7 +30,7 @@
 
             </div>
         </div>
-        for (int j = 0; j < Model[i].Answers.Count; j++)
+        for (int j = 0; j < Model.Question[i].Answers.Count; j++)
         {
             string optionName = "";
             if (j == 0)
@@ -57,7 +57,7 @@
             <div class="row mt-12">
                 <div class="col-md-1"></div>
                 <div class="col-md-9" id="AAmod_@i" hidden="hidden">
-                    @if (Model[i].Answers[j].IsCorrect)
+                    @if (Model.Question[i].Answers[j].IsCorrect)
                     {
                         <span style="color:green">@optionName ) </span>
                     }
@@ -65,13 +65,35 @@
                     {
                         <span>@optionName ) </span>
                     }
-                    <span id="Amod_@i">@Model[i].Answers[j].AnswerText</span>
+                    <span id="Amod_@i">@Model.Question[i].Answers[j].AnswerText</span>
                 </div>
             </div>
         }
         <hr />
     }
-    <button class="btn btn-success" onclick="check()" data-bs-toggle="modal" data-bs-target="#createTestModal" type="button">Seçilen Öğelerden Test Oluştur</button>
+    <button class="btn btn-success" onclick="check()" data-toggle="modal" data-target="#createTestModal" type="button">Seçilen Öğelerden Test Oluştur</button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Launch demo modal
+    </button>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" asp-for=@Model.Question[0].TestName id="testName">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="submit" id="createTestButton" class="btn btn-primary">Test Oluştur</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="createTestModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -79,12 +101,21 @@
                     <h5 class="modal-title" id="exampleModalLabel">Test Oluşturuluyor</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <strong id="bb"> Seçtiğiniz Testin Adını Belirleyin</strong>
-                    <input type="text" asp-for=@Model[0].TestName id="testName">
+                <div class="modal-body" style="text-align:center">
+                    <strong id="bb"> Oluşturduğunuz Testin Adını Belirleyin</strong>
+                    <br />
+                    <input type="text" asp-for=@Model.Test.Name id="testName">
+                    <br />
+                    <strong id="bb">Kategori Seçiniz</strong>
+                    <br />
+                    <select asp-for="@Model.Test.TestCategoryDescription" asp-items="ViewBag.genderList" class="form-control">
+                        <option value="">Kategori Seçiniz</option>
+                    </select>
+                    <span asp-validation-for="@Model.Test.Name" class="text-danger"></span>
+                    <span asp-validation-for="@Model.Test.TestCategorys" class="text-danger"></span>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
                     <button type="submit" id="createTestButton" class="btn btn-primary">Test Oluştur</button>
                 </div>
             </div>

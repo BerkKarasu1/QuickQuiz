@@ -18,21 +18,11 @@ namespace QuickQuiz.Service.Services
         }
 
         public async Task AddAsync(QuestionDTO questionDTO)
-        {//todo: Buradaki Answer Mapleme işlemini düzenlemek gerekiyor
+        {//todo: Buradaki Answer Mapleme işlemini düzenlemek gerekiyor: Yapıldı
+            //Doğru Cevap gelmiyor.
             Question question = questionDTO.Adapt<Question>();
-            List<Answer> answerList = new();
-            foreach (var answer in question.Answers)
-            {
-                if (answer != null && answer.AnswerText != string.Empty && answer.AnswerText != null)
-                    answer.Question = question;
-                else
-                    answerList.Add(answer);
-            }
-            foreach (var item in answerList)
-                question.Answers.Remove(item);
             await _questionRepository.AddAsync(question);
         }
-        //todo
         public async Task<List<QuestionDTO>> GetAllQuestionAsync(AppUser user)
         {
             List<Question> questions = await _questionRepository.GetAllQuestion(user);

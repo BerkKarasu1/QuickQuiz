@@ -1,146 +1,126 @@
-﻿@{
-    Layout = null;
-}
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
-    <meta name="author" content="AdminKit">
-    <meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
-
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="shortcut icon" type="image/x-icon" href="~/adminkit-3.1.0/static/img/icons/logo.ico" />
+    <title>QuiZck</title>
+    @* <link rel="stylesheet" href="/css/template/feather.css"> *@
+    <link rel="stylesheet" href="/css/template/themify-icons.css">
+    <link rel="stylesheet" href="/css/template/materialdesignicons.min.css">
+    <link rel="stylesheet" href="/css/template/style.css">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="canonical" href="https://demo-basic.adminkit.io/pages-blank.html" />
-
-    <title>Quick Quiz | </title>
-
-    <link href="~/adminkit-3.1.0/static/css/app.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="https://kit.fontawesome.com/3a2dc97f33.js" crossorigin="anonymous"></script>
+    <!-- endinject -->
+    <link rel="shortcut icon" href="images/favicon.png" />
 </head>
 
 <body>
-    <div class="wrapper">
-        <nav id="sidebar" class="sidebar js-sidebar">
-            <div class="sidebar-content js-simplebar">
-                <a class="sidebar-brand"  asp-controller="Home" asp-action="Index">
-                    <span class="align-middle">Quick Quiz</span>
-                </a>
-
-                <ul class="sidebar-nav">
-
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="/Home/Index">
-                            <i class="align-middle" data-feather="grid"></i> <span class="align-middle">Anasayfa</span>
-                        </a>
+    <div class="container-scroller">
+        <!-- partial:partials/_navbar.html -->
+        <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+            <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+                <a class="navbar-brand brand-logo mr-5" asp-controller="Home" asp-action="Index"><img src="/QuiZckLogo.png" class="mr-2" alt="logo" /></a>
+                <a class="navbar-brand brand-logo-mini" asp-controller="Home" asp-action="Index"><img src="/QuiZckLogo.png" alt="logo" /></a>
+            </div>
+            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+                <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                    <span class="mdi mdi-menu"></span>
+                </button>
+                <ul class="navbar-nav mr-lg-2">
+                    <li class="nav-item nav-search d-none d-lg-block">
+                        <div class="input-group">
+                            
+                            @{
+                                string name = null;
+                            }
+                            <form role="search" asp-action="UserSearch" asp-controller="Member" method="get">
+                                @* <div class="form-group"> *@
+                                    <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
+                                        <span class="input-group-text" id="search">
+                                            <i class="ti-search"></i>
+                                        </span>
+                                    <input type="text" asp-for=@name class="form-control" id="navbar-search-input" placeholder="Arama Yap" aria-label="search" aria-describedby="search">
+                                    </div>
+                                    @* <input type="text" asp-for=@name placeholder="Arama yapın..." class="form-control mt-1" id="top-search"> *@
+                                @* </div> *@
+                            </form>
+                        </div>
                     </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="/Member/Index">
-                            <i class="align-middle" data-feather="user"></i> <span class="align-middle">Profilim</span>
+                </ul>
+                <ul class="navbar-nav navbar-nav-right">
+                    <li class="nav-item nav-profile dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+                            <img src="images/faces/face28.jpg" alt="profile" />
                         </a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                            <a class="dropdown-item">
+                                <i class="ti-settings text-primary"></i>
+                                Settings
+                            </a>
+                            <a class="dropdown-item">
+                                <i class="ti-power-off text-primary"></i>
+                                Logout
+                            </a>
+                        </div>
                     </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" asp-controller="Question" asp-action="Add">
-                            <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Soru Oluştur</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" asp-controller="Question" asp-action="AllQuestions">
-                            <i class="align-middle" data-feather="message-square"></i> <span class="align-middle">Sorularım</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" asp-controller="Test" asp-action="Index">
-                            <i class="align-middle" data-feather="align-left"></i> <span class="align-middle">Testlerim</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" asp-controller="Member" asp-action="Logout" asp-route-returnurl="/Home/SignIn">
-                            <i class="align-middle" data-feather="log-in"></i> <span class="align-middle">Çıkış Yap</span>
-                        </a>
-                    </li>
-                </ul>              
+                </ul>
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                    <span class="icon-menu"></span>
+                </button>
             </div>
         </nav>
+        <div class="container-fluid page-body-wrapper">
 
-        <div class="main">
-            <nav class="navbar navbar-expand navbar-light navbar-bg">
-                <a class="sidebar-toggle js-sidebar-toggle">
-                    <i class="hamburger align-self-center"></i>
-                </a>
-                @{
-                    string name = null;
-                }
-                <div class="navbar-collapse collapse">
-                    <ul class="navbar-nav navbar-align">
-                        <li>
-                            <form role="search" class="navbar-form-custom" asp-action="UserSearch" asp-controller="Member" method="get">
-                                <div class="form-group">
-                                    <input type="text" asp-for=@name placeholder="Arama yapın..." class="form-control mt-1"  id="top-search">
-                                </div>
-                            </form>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
-                                <i class="align-middle" data-feather="settings"></i>
-                            </a>
-                            
-                            <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-                                <img src="~/adminkit-3.1.0/static/img/icons/logo.jpg" class="avatar img-fluid rounded me-1" alt="img" /> <span class="text-dark">@User.Identity!.Name </span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="/Member/Index"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="/Member/UserEdit"><i class="align-middle me-1" data-feather="settings"></i> Ayarlar</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" asp-controller="Member" asp-action="Logout" asp-route-returnurl="/Home/SignIn">Çıkış</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">
+                            <i class="menu-icon mdi mdi-bank"></i>
+                            <span class="menu-title">Ana Sayfa</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Question" asp-action="Add">
+                            <i class="menu-icon mdi mdi-comment-check-outline"></i>
+                            <span class="menu-title">Soru Oluştur</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Question" asp-action="AllQuestions">
+                            <i class="menu-icon mdi mdi-comment-question-outline"></i>
+                            <span class="menu-title">Sorularım</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Test" asp-action="Index">
+                            <i class="menu-icon mdi mdi-clipboard-text"></i>
+                            <span class="menu-title">Testlerim</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Member" asp-action="Logout" asp-route-returnurl="/Home/SignIn">
+                            <i class="menu-icon mdi mdi-export"></i>
+                            <span class="menu-title">Çıkış Yap</span>
+                        </a>
+                    </li>
+                </ul>
             </nav>
-
-            <main class="content">
-                <div class="container-fluid p-0">
-
-                    @RenderBody()
-
-                </div>
-            </main>
-
-            <footer class="footer">
-                <div class="container-fluid">
-                    <div class="row text-muted">
-                        <div class="col-6 text-start">
-                            <p class="mb-0">
-                               
-                            </p>
-                        </div>
-                        
-                    </div>
-                </div>
-            </footer>
+        <div class="main-panel">
+            @* <div class="content-wrapper"> *@
+                @RenderBody();
+            @* </div> *@
+        </div>
         </div>
     </div>
-
-    <script src="~/adminkit-3.1.0/static/js/app.js"></script>
-
-    <script>
-        var $rows = $('#table tr');
-        $('#top-search').keyup(function () {
-            var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-
-            $rows.show().filter(function () {
-                var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-                return !~text.indexOf(val);
-            }).hide();
-        });
-    </script>
+    <script src="~/js/template/template.js"></script>
+    <script src="~/js/template/vendor.bundle.base.js"></script>
 </body>
 
 </html>
+

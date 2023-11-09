@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Mapster;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using QuickQuiz.Core.Dtos;
 using QuickQuiz.Core.Model;
@@ -9,14 +11,14 @@ using System.Diagnostics;
 
 namespace QuickQuiz.WEB.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IEmailService _emailService;
         readonly ITestService _testService;
-        public HomeController(ILogger<HomeController> logger, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IEmailService emailService, ITestService testService)
+        public HomeController(ILogger<HomeController> logger, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IEmailService emailService, ITestService testService) : base(userManager)
         {
             _logger = logger;
             _userManager = userManager;
@@ -24,13 +26,14 @@ namespace QuickQuiz.WEB.Controllers
             _emailService = emailService;
             _testService = testService;
         }
-
+        [Authorize(Roles = "User,Admin")]
         public async Task<IActionResult> Index()
         {
-            var test = await _testService.GetAllTestAsync();
-            return View(test);
+            var test = await _testService.GetAllTestAsync();  
+            var user = CurrentUser.Adapt<UserEditViewModel>();
+            return View((test, user));
         }
-
+        [Authorize(Roles = "User,Admin")]
         public IActionResult HomePage()
         {
             return View();
@@ -41,15 +44,10 @@ namespace QuickQuiz.WEB.Controllers
             var tuple = (new SignInViewModel(), new SignUpViewModel());
             return View(tuple);
         }
-        public IActionResult SignMenu()
-        {
-            var tuple = (new SignInViewModel(), new SignUpViewModel());
-            return View(tuple);
-        }
         [HttpPost]
         public async Task<IActionResult> SignIn([Bind(Prefix = "Item1")] SignInViewModel model, string returnUrl = null)
         {
-             var tuple = (model, new SignUpViewModel());
+            var tuple = (model, new SignUpViewModel());
             if (!ModelState.IsValid)
             {
                 return View(tuple);

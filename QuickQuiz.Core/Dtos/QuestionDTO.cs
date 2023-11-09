@@ -12,18 +12,18 @@ namespace QuickQuiz.Core.Dtos
     {
         public int Id { get; set; }
         public string Question { get; set; }
-        public List<AnswerDTO> Answers { get; set; } = new ();
-        public AnswerDTO? TrueAnswer { get; set; } = new();
-        public List<TestDTO> Tests { get; set; } = new();
-        public UserDTO Creater { get; set; } = new();
+        public List<AnswerDTO> Answers { get; set; }
+        public AnswerDTO? TrueAnswer { get; set; } 
+        public List<TestDTO> Tests { get; set; }
+        public UserDTO Creater { get; set; } 
         public bool Check { get; set; }
         public string? TestName { get; set; }
     }
     public record class AnswerDTO
     {
         public int Id { get; set; }
-        //public QuestionDTO Question { get; set; } = new();
+        //public QuestionDTO Question { get; set; }
         public string AnswerText { get; set; }
-        public bool IsCorrect { get; set; } = false;
+        public bool IsCorrect { get; set; } 
     }
 }

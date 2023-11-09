@@ -10,7 +10,7 @@ namespace QuickQuiz.Core.Services
 {
     public interface ITestService
     {
-        Task AddAsync(TestDTO testDTO);
+        Task AddAsync(TestDTO testDTO,AppUser currentUser);
         void Remove(TestDTO TestDTO);
         Task<List<TestDTO>> GetAllTest(AppUser user);
         Task<List<TestDTO>> GetAllTestAsync();
@@ -18,5 +18,6 @@ namespace QuickQuiz.Core.Services
         Task Update(TestDTO TestDTO);
         Task<TestDTO> GetTestById(int id);
         Task<bool> Result(TestDTO testDTO, AppUser curruntUser);
+        Task<(bool, int)> TestLinkControl(string link);
     }
 }
