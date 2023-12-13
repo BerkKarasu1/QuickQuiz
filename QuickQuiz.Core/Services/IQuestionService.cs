@@ -14,6 +14,6 @@ namespace QuickQuiz.Core.Services
         Task<List<QuestionDTO>> GetAllQuestionAsync(AppUser user);
         void Update(QuestionDTO question);
         void Remove(QuestionDTO question);
-        Task AddAsync(QuestionDTO question);
+        Task AddAsync(QuestionDTO question, AppUser user);
     }
 }

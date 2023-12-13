@@ -35,6 +35,13 @@ namespace QuickQuiz.WEB.Controllers
             }
             return View();
         }
+        public async Task<IActionResult> Result(int id)
+        {
+            var quizResults = await _resultService.GetExamAllResultAsync(id);
+            if (quizResults != null)
+                return View(quizResults);
+            return RedirectToAction("Index", "Home");
+        }
         [HttpGet]
         public async Task<IActionResult> MyResults()
         {

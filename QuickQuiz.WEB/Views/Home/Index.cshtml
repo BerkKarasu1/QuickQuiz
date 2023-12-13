@@ -1,4 +1,4 @@
-﻿@model (List<TestDTO> tests,UserEditViewModel user)
+﻿@model (List<TestDTO> tests,UserEditViewModel user,List<List<TestDTO>> categories)
 @{
     ViewData["Title"] = "Ana Sayfa";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
@@ -93,7 +93,7 @@
                     if (string.IsNullOrEmpty(item.PictureUrl))
                         item.PictureUrl = "https://www.yudiz.com/codepen/expandable-animated-card-slider/rdr-2.jpg";
 
-                    <div class="item" style="background-image: url(@item.PictureUrl);">
+                    <div class="item" style="background-image: url(data:image/jpeg;base64,@item.PictureUrl);">               
                         <div class="item-desc">
                             <h3>@item.Name</h3>
                             <p>@item.Creater?.UserName </p>
@@ -114,35 +114,33 @@
     </div>
 </div>
 <div class="content-wrapper">
-    <div class="categoryname-container">
-        <h1>Kategori Adı</h1>
-        <a>Daha Fazla</a>
-    </div>
-    <div class="carousel2__container">
-        @foreach (var item in Model.tests)
-        {
-            @* <img src='data:image/jpeg;base64,@item.PictureUrl' alt='Image' width="100%" /> *@
-            <div class="carousel2-item">
-                <img class="carousel2-item__img"
-                     src="data:image/jpeg;base64,@item.PictureUrl"
-                     alt="QuizImage" />
-
-               @*  <img class="carousel2-item__img"
-                     src="https://images.pexels.com/photos/708392/pexels-photo-708392.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260"
-                     alt="people" /> *@
-                <div class="carousel2-item__details">
-                    <div class="controls">
-                        <!-- <span class="fas fa-play-circle"></span>
-                          <span class="fas fa-plus-circle"></span> -->
+    @foreach (var category in Model.categories)
+    {
+        <div class="categoryname-container">
+            <h1>@category[0].TestCategoryDescription</h1>
+            <a>Daha Fazla</a>
+        </div>
+        <div class="carousel2__container">
+            @foreach (var item in category)
+            {
+                <div class="carousel2-item">
+                    <a asp-controller="Quiz" asp-action="Test" asp-route-id="@item.Id" style="text-decoration:none;">
+                    <img class="carousel2-item__img"
+                         src="data:image/jpeg;base64,@item.PictureUrl"
+                         alt="QuizImage" />
+                    <div class="carousel2-item__details">
+                        <div class="controls">
+                        </div>
+                        <h6 class="carousel2-item__details--title">
+                            @item.Name
+                        </h6>
+                        <h6 class="carousel2-item__details--subtitle">@item.Creater?.UserName</h6>
                     </div>
-                    <h6 class="carousel2-item__details--title">
-                       @item.Name
-                    </h6>
-                    <h6 class="carousel2-item__details--subtitle">@item.Creater?.UserName</h6>
+                                        </a>
                 </div>
-            </div>
-        }       
-    </div>
+            }
+        </div>
+    }
 </div>
 <script>
     $(".custom-carousel").owlCarousel({

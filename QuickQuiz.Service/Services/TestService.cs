@@ -34,6 +34,8 @@ namespace QuickQuiz.Service.Services
                     questionList.Add(quest);
                 }
             }
+            if (questionList.Count == 0)
+                return;
             testDTO.Question = null;
             var test = _mapper.Map<Test>(testDTO);
             test.Creater = currentUser;
@@ -58,30 +60,9 @@ namespace QuickQuiz.Service.Services
         }
 
         public async Task<TestDTO> TestControl(AppUser user, int id)
-        {//todo: burası düzenlenecek.
+        {
             var item = await _testRepository.GetTestById(id);
-            if (item == null || item.Creater.Id != user.Id) return null;
-            TestDTO test = new() { Name = item.Name, PictureUrl = item.PictureUrl, Id = item.Id };
-            List<QuestionDTO> questionDTOs = new();
-            for (int i = 0; i < item.Question.Count; i++)
-            {
-                QuestionDTO questionDTO = new()
-                {
-                    Id = item.Question[i].Id,
-                    //Answers = item.Question[i].Answers,
-                };
-                foreach (var item2 in item.Question[i].Answers)
-                {
-                    if (item2.IsCorrect)
-                    {
-                        //questionDTO.TrueAnswer = item2;
-                        break;
-                    }
-                }
-                questionDTOs.Add(questionDTO);
-            }
-            test.Question = questionDTOs;
-            return test;
+            return item.Adapt<TestDTO>();
         }
 
         public async Task Update(TestDTO testDTO)
@@ -161,7 +142,7 @@ namespace QuickQuiz.Service.Services
                 return (false, id);
             }
             string[] linkInfo = decodedText.Split("_");
-            
+
             if (linkInfo.Length == 2)
             {
                 try

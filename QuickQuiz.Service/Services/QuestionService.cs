@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using MapsterMapper;
+using Microsoft.AspNetCore.Identity;
 using QuickQuiz.Core.Dtos;
 using QuickQuiz.Core.Model;
 using QuickQuiz.Core.Repositories;
@@ -17,10 +18,18 @@ namespace QuickQuiz.Service.Services
             _mapper = mapper;
         }
 
-        public async Task AddAsync(QuestionDTO questionDTO)
-        {//todo: Buradaki Answer Mapleme işlemini düzenlemek gerekiyor: Yapıldı
-            //Doğru Cevap gelmiyor.
+        public async Task AddAsync(QuestionDTO questionDTO, AppUser user)
+        {//todo:Maplerken gelen TrueAnswerı ile aynı olan cevabı maplerken işaretlemek gerekiyor.
             Question question = questionDTO.Adapt<Question>();
+            foreach (var item in question.Answers)
+            {
+                if (item.AnswerText.Equals(questionDTO.TrueAnswer.AnswerText))
+                {
+                    item.IsCorrect = true;
+                    break;
+                }
+            }
+            question.Creater = user;
             await _questionRepository.AddAsync(question);
         }
         public async Task<List<QuestionDTO>> GetAllQuestionAsync(AppUser user)

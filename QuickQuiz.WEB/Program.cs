@@ -9,6 +9,7 @@ using QuickQuiz.Core.Services;
 using QuickQuiz.Repository;
 using QuickQuiz.Repository.Repositories;
 using QuickQuiz.Service.Services;
+using QuickQuiz.WEB.Configurations;
 using QuickQuiz.WEB.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -72,7 +73,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-
+RoleSeed.Seed(app);
 app.MapControllerRoute(
       name: "areas",
       pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"

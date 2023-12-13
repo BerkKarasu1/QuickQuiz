@@ -28,7 +28,7 @@ namespace QuickQuiz.WEB.Controllers
         }
         [HttpPost]
         public async Task<IActionResult> CreateTest([Bind(Prefix = "Item1")] List<QuestionDTO> questionDTOs, [Bind(Prefix = "Item2")] TestDTO test)
-        {
+        {            
             test.Question = questionDTOs;
             foreach (TestCategorys testCategory in Enum.GetValues(typeof(TestCategorys)))
             {

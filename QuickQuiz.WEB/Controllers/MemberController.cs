@@ -170,11 +170,10 @@ namespace QuickQuiz.WEB.Controllers
         {
             return View(await _memberService.GetUserViewModelByUserNameAsync(username));
         }
-
+        [AllowAnonymous]
         public IActionResult AccessDenied(string ReturnUrl)
         {
-            string message = string.Empty;
-            message = "Bu sayfayı görmeye yetkiniz yoktur. Yetki almak için yöneticiniz ile görüşebilirsiniz.";
+            string  message = "Lütfen mail adresinize gönderilen link üzerinden hesabınızı aktifleştiriniz.";
             ViewBag.message = message;
             return View();
         }

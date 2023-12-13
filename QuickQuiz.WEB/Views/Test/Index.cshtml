@@ -9,7 +9,7 @@
 @for (int j = 0; j < Model.Count / 4 + 1; j++)
 {
     int f = 0;
-    if (j == (Model.Count / 4)-1)
+    if (j == (Model.Count / 4) - 1)
     {
         f = j * 4 + 4;
     }
@@ -24,9 +24,9 @@
             {
 
                 <a class="card" asp-controller="Test" asp-action="Edit" asp-route-id="@Model[i].Id">
-                    @if (Model[i].PictureUrl is not null and not "")
+                    @if (!string.IsNullOrEmpty(Model[i].PictureUrl))
                     {
-                        <div class="card__background" style="background-image: url(https://localhost:44333/TestPictures/@Model[i].PictureUrl)"></div>
+                        <div class="card__background" style="background-image: url(data:image/jpeg;base64,@Model[i].PictureUrl)"></div>
                     }
                     else
                     {

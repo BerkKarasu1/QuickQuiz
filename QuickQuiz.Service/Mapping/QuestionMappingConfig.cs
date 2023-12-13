@@ -2,6 +2,8 @@
 using Mapster;
 using QuickQuiz.Core.Dtos;
 using QuickQuiz.Core.Model;
+using System.ComponentModel;
+using System.Reflection;
 
 namespace Exams.Service.Mapping
 {
@@ -33,8 +35,9 @@ namespace Exams.Service.Mapping
                 .IgnoreNullValues(true);
             config.NewConfig<AnswerDTO, Answer>()
                 .IgnoreNullValues(true);
-
+            //testCategory.GetType().GetField(testCategory.ToString())?.GetCustomAttributes<DescriptionAttribute>().FirstOrDefault()?.Description
             config.NewConfig<Test, TestDTO>()
+                .Map(dest=>dest.TestCategoryDescription,src =>src.TestCategorys.GetType().GetField(src.TestCategorys.ToString()).GetCustomAttributes<DescriptionAttribute>().FirstOrDefault().Description)
                 .Ignore(x => x.PictureFile)
                 .IgnoreNullValues(true);
             config.NewConfig<TestDTO, Test>()

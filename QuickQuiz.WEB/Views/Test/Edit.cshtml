@@ -67,7 +67,7 @@
                             }
                             else
                             {
-                                <span>@opt</span>
+                                <span>@opt ) </span>
                             }
                             <span>@Model.Question[i].Answers[j].AnswerText</span>
                             <br />
@@ -78,7 +78,7 @@
             </div>
             <div class="row mb-3">
                 <div class="col-md-8 offset-md-4">
-                    <button class="btn btn-primary" type="submit">Güncelle</button>
+                    <button class="btn btn-success" type="submit">Güncelle</button>
                 </div>
             </div>
         </form>
@@ -88,6 +88,7 @@
                     <input asp-for="Id" hidden />
                     <button class="btn btn-primary" type="submit" asp-action="Test" asp-controller="Quiz" asp-route-id="@Model.Id">Dene</button>
                     <button class="btn btn-danger" type="submit" asp-action="RemoveTest" asp-controller="Test" method="post">Sil</button>
+                    <button class="btn btn-danger" type="submit" asp-action="Result" asp-controller="Quiz" asp-route-id="@Model.Id" method="post">Sonuçlar</button>
                 </div>
             </div>
         </form>

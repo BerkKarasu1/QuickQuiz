@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\**" />
+    <Content Remove="Areas\**" />
+    <EmbeddedResource Remove="Areas\**" />
+    <None Remove="Areas\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\adminkit-3.1.0\.github\ISSUE_TEMPLATE\bug_report.md" />
     <None Include="wwwroot\adminkit-3.1.0\.github\ISSUE_TEMPLATE\config.yml" />
     <None Include="wwwroot\adminkit-3.1.0\.github\ISSUE_TEMPLATE\feature_request.md" />
@@ -17,11 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\" />
-    <Folder Include="Areas\Admin\Controllers\" />
-    <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\Admin\Views\" />
     <Folder Include="wwwroot\TestPictures\" />
   </ItemGroup>
 

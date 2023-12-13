@@ -5,8 +5,6 @@
 }
 @model QuestionDTO
 
-<!DOCTYPE html>
-<html>
 <head>
     <link href="~/css/addQuestion.css" rel="stylesheet" />
     <meta charset="UTF-8" />
@@ -95,93 +93,95 @@
         <input type="submit" value="Soruyu Kaydet" />
     </form>
 
-    <script type="text/javascript">
-        const optionButtons = document.querySelectorAll(".option-btn");
-        let questionsDiv = document.querySelectorAll(
-            `#question1,#question2,#question3,#question4,#question5`
-        );
-        for (i = 3; i < 5; i++) {
-            questionsDiv[i].style.display = "none";
-        }
 
-        let addQuestion = () => {
-            let control = false;
-            for (i = 0; i < 5; i++) {
-                if (questionsDiv[i].style.display === "none") {
-                    questionsDiv[i].style.display = "";
-                    control = true;
-                    break;
-                }
-            }
-            if (!control) {
-                const errorDiv = document.getElementById("error-message");
-                errorDiv.innerHTML = "En fazla 5 cevap ekleyebilirsiniz.";
-            }
-        };
-
-        function removeQuestion(btn) {
-            const questionDiv = btn.parentNode;
-            const textarea = questionDiv.querySelector(".option-textarea");
-            const selectedButton = document.querySelector(
-                `.option-btn.selected[data-option="${btn.previousElementSibling.dataset.option}"]`
-            );
-            // let button= questionDiv.querySelector(".option-btn");
-            let buttonIsSelected = questionDiv.querySelector(
-                ".option-btn.selected"
-            );
-            if (buttonIsSelected != null) {
-                document.getElementById("selected-answer").value = "";
-                buttonIsSelected.classList.remove("selected");
-            }
-            textarea.value = "";
-            questionDiv.style.display = "none";
-        }
-        let selectedAnswerDiv;
-        optionButtons.forEach((button) => {
-            button.addEventListener("click", () => {
-                // Tüm şık butonlarının seçim durumunu kaldır
-                optionButtons.forEach((button) => {
-                    button.classList.remove("selected");
-                });
-
-                // Seçilen şık butonuna seçildiğini işaretle
-                button.classList.add("selected");
-                const selectedAnswerInput = document.getElementById("selected-answer");
-                selectedAnswerDiv = button.parentNode;
-
-                // Seçilen şık butonunun verisini sakla
-                selectedAnswerInput.value = selectedAnswerDiv.querySelector(".option-textarea").value;
-            });
-
-            // Formu sunucuya göndermeden önce, doğru cevabın seçildiğinden emin ol
-            const form = document.getElementById("test-form");
-            form.addEventListener("submit", (event) => {
-                const selectedAnswerInput =
-                    document.getElementById("selected-answer");
-                let buttonIsSelected = document.querySelector(".option-btn.selected");
-                let selectedDiv;
-                if (buttonIsSelected != null) {
-                    selectedDiv = buttonIsSelected.parentNode;
-                } else {
-                    event.preventDefault();
-                    return false;
-                }
-                selectedAnswerInput.value = selectedDiv.querySelector(".option-textarea").value;
-                if (selectedAnswerInput.value === "") {
-                    // alert("Lütfen doğru cevabı seçin.");
-                    event.preventDefault();
-                    return false;
-                } else if (
-                    selectedDiv.querySelector(".option-textarea").value === "" || selectedDiv.querySelector(".option-textarea").value === null
-                ) {
-                    // alert("Doğru cevap alanını boş bırakamazsınız");
-                    event.preventDefault();
-                    return false;
-                }
-
-            });
-        });
-    </script>
 </div>
-</html>
+<script type="text/javascript">
+    const optionButtons = document.querySelectorAll(".option-btn");
+    let questionsDiv = document.querySelectorAll(
+        `#question1,#question2,#question3,#question4,#question5`
+    );
+    for (i = 3; i < 5; i++) {
+        questionsDiv[i].style.display = "none";
+    }
 
+    let addQuestion = () => {
+        let control = false;
+        for (i = 0; i < 5; i++) {
+            if (questionsDiv[i].style.display === "none") {
+                questionsDiv[i].style.display = "";
+                control = true;
+                break;
+            }
+        }
+        if (!control) {
+            const errorDiv = document.getElementById("error-message");
+            errorDiv.innerHTML = "En fazla 5 cevap ekleyebilirsiniz.";
+        }
+    };
+
+    function removeQuestion(btn) {
+        const questionDiv = btn.parentNode;
+        const textarea = questionDiv.querySelector(".option-textarea");
+        const selectedButton = document.querySelector(
+            `.option-btn.selected[data-option="${btn.previousElementSibling.dataset.option}"]`
+        );
+        // let button= questionDiv.querySelector(".option-btn");
+        let buttonIsSelected = questionDiv.querySelector(
+            ".option-btn.selected"
+        );
+        if (buttonIsSelected != null) {
+            document.getElementById("selected-answer").value = "";
+            buttonIsSelected.classList.remove("selected");
+        }
+        textarea.value = "";
+        questionDiv.style.display = "none";
+    }
+    let selectedAnswerDiv;
+    optionButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+            // Tüm şık butonlarının seçim durumunu kaldır
+            optionButtons.forEach((button) => {
+                button.classList.remove("selected");
+            });
+
+            // Seçilen şık butonuna seçildiğini işaretle
+            button.classList.add("selected");
+            const selectedAnswerInput = document.getElementById("selected-answer");
+            selectedAnswerDiv = button.parentNode;
+
+            // Seçilen şık butonunun verisini sakla
+            selectedAnswerInput.value = selectedAnswerDiv.querySelector(".option-textarea").value;
+        });
+
+        // Formu sunucuya göndermeden önce, doğru cevabın seçildiğinden emin ol
+        
+    });
+    const form = document.getElementById("test-form");
+    form.addEventListener("submit", (event) => {
+        const selectedAnswerInput =
+            document.getElementById("selected-answer");
+        let buttonIsSelected = document.querySelector(".option-btn.selected");
+        console.log(buttonIsSelected)
+        let selectedDiv;
+        if (buttonIsSelected != null) {
+            selectedDiv = buttonIsSelected.parentNode;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+        console.log(selectedDiv.querySelector(".option-textarea").value);
+        selectedAnswerInput.value = selectedDiv.querySelector(".option-textarea").value;
+        if (selectedAnswerInput.value === "") {
+            // alert("Lütfen doğru cevabı seçin.");
+            event.preventDefault();
+            return false;
+        } else if (
+            selectedDiv.querySelector(".option-textarea").value === "" || selectedDiv.querySelector(".option-textarea").value === null
+        ) {
+            // alert("Doğru cevap alanını boş bırakamazsınız");
+            event.preventDefault();
+            return false;
+        }
+
+    });
+</script>

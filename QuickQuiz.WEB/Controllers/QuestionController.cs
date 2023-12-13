@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -26,7 +27,7 @@ namespace QuickQuiz.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(QuestionDTO questionDTO)
         {
-            await _questionService.AddAsync(questionDTO);
+            await _questionService.AddAsync(questionDTO,CurrentUser);
             return RedirectToAction("Add");
         }
         [HttpPost]

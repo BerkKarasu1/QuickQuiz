@@ -2,12 +2,15 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using QuickQuiz.Core.Dtos;
 using QuickQuiz.Core.Model;
 using QuickQuiz.Core.Services;
 using QuickQuiz.WEB.Extensions;
 using QuickQuiz.WEB.Models;
 using System.Diagnostics;
+using System.Text;
+using System.Text.Encodings.Web;
 
 namespace QuickQuiz.WEB.Controllers
 {
@@ -29,9 +32,11 @@ namespace QuickQuiz.WEB.Controllers
         [Authorize(Roles = "User,Admin")]
         public async Task<IActionResult> Index()
         {
-            var test = await _testService.GetAllTestAsync();  
-            var user = CurrentUser.Adapt<UserEditViewModel>();
-            return View((test, user));
+            List<TestDTO> test = await _testService.GetAllTestAsync();
+            UserEditViewModel user = CurrentUser.Adapt<UserEditViewModel>();
+            List<List<TestDTO>> categories = test.GroupBy(x => x.TestCategorys).Select(g => g.ToList()).ToList();
+
+            return View((test, user, categories));
         }
         [Authorize(Roles = "User,Admin")]
         public IActionResult HomePage()
@@ -66,9 +71,7 @@ namespace QuickQuiz.WEB.Controllers
             var signInResult = await _signInManager.PasswordSignInAsync(hasUser, model.Password, model.RememberMe, false);
 
             if (signInResult.Succeeded)
-            {
                 return Redirect(returnUrl!);
-            }
 
             if (signInResult.IsLockedOut)
             {
@@ -83,33 +86,61 @@ namespace QuickQuiz.WEB.Controllers
 
         public IActionResult SignUp()
         {
-            return View();
+            return RedirectToAction(nameof(HomeController.SignIn));
         }
 
         [HttpPost]
         public async Task<IActionResult> SignUp([Bind(Prefix = "Item2")] SignUpViewModel request)
         {
             if (!ModelState.IsValid)
-            {
                 return View();
-            }
-            var identityResult = await _userManager.CreateAsync(new AppUser() { UserName = request.UserName, Email = request.Email }, request.PasswordConfirm);
+            AppUser user = new()
+            {
+                UserName = request.UserName,
+                Email = request.Email
+            };
+            var identityResult = await _userManager.CreateAsync(user, request.PasswordConfirm);
             if (identityResult.Succeeded)
             {
+                await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                string encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+                string? callbackUrl = Url.Action("ConfirmEmail", "Home", new { token = encodedToken, userName = request.UserName, email = request.Email }, Request.Scheme);
+                if (callbackUrl is null)
+                {
+                    //LOG İŞLEMİ YAPILACAK.
+                }
+                string encodedUrl = HtmlEncoder.Default.Encode(callbackUrl);
+                await _emailService.SendAccountConfirmEmail(encodedUrl, request.UserName, request.Email);
                 TempData["SuccessMessage"] = "Üyelik kayıt işlemi başarıyla gerçekleşmiştir.";
                 return RedirectToAction(nameof(HomeController.SignIn));
             }
-
             ModelState.AddModelErrorList(identityResult.Errors.Select(x => x.Description).ToList());
-
-            return View();
+            return RedirectToAction(nameof(HomeController.SignIn));
         }
 
         public IActionResult ForgetPassword()
         {
             return View();
         }
+        public async Task<IActionResult> ConfirmEmail(string token, string userName, string email)
+        {
+            string decodedToken = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token));
+            AppUser? user = await _userManager.FindByEmailAsync(email);
+            if (user != null)
+            {
+                IdentityResult result = await _userManager.ConfirmEmailAsync(user, decodedToken);
+                if (result.Succeeded)
+                {
 
+                }
+                else
+                {
+
+                }
+            }
+            return RedirectToAction(nameof(HomeController.SignIn));
+        }
         [HttpPost]
         public async Task<IActionResult> ForgetPassword(ForgetPasswordViewModel request)
         {
@@ -121,16 +152,13 @@ namespace QuickQuiz.WEB.Controllers
             }
 
             string passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(hasUser);
-
-            var passwordResetLink = Url.Action("PasswordChange", "Member",
+            string passwordResetLink = Url.Action("PasswordChange", "Member",
                 new { userId = hasUser.Id, Token = passwordResetToken }, HttpContext.Request.Scheme);
 
             //örnek link : https://localhost:7295?userId?12213&token=dshgdfhsadsd  bu sekilde bir url üretilecek.
-
             await _emailService.SendResetPasswordEmail(passwordResetLink, hasUser.Email);
 
             TempData["SuccessMessage"] = "Şifre yenileme linki, e-posta adresinize gönderilmiştir.";
-
             return RedirectToAction(nameof(ForgetPassword));
         }
 
