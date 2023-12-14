@@ -19,13 +19,16 @@ namespace QuickQuiz.WEB.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly RoleManager<AppRole> _roleManager;
         private readonly IEmailService _emailService;
         readonly ITestService _testService;
-        public HomeController(ILogger<HomeController> logger, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IEmailService emailService, ITestService testService) : base(userManager)
+
+        public HomeController(ILogger<HomeController> logger, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,RoleManager<AppRole> roleManager, IEmailService emailService, ITestService testService) : base(userManager)
         {
             _logger = logger;
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _emailService = emailService;
             _testService = testService;
         }
@@ -112,6 +115,7 @@ namespace QuickQuiz.WEB.Controllers
                 }
                 string encodedUrl = HtmlEncoder.Default.Encode(callbackUrl);
                 await _emailService.SendAccountConfirmEmail(encodedUrl, request.UserName, request.Email);
+                //todo: Mesaj yönlendirmesi düzeltilecek
                 TempData["SuccessMessage"] = "Üyelik kayıt işlemi başarıyla gerçekleşmiştir.";
                 return RedirectToAction(nameof(HomeController.SignIn));
             }
@@ -132,11 +136,12 @@ namespace QuickQuiz.WEB.Controllers
                 IdentityResult result = await _userManager.ConfirmEmailAsync(user, decodedToken);
                 if (result.Succeeded)
                 {
-
+                    await _userManager.AddToRoleAsync(user, "User");
+                    //todo: Başarı mesajı + Login Ekranı
                 }
                 else
                 {
-
+                    //todo: Başarısız mesajı + Tekrar Token Gönderme Ekranı
                 }
             }
             return RedirectToAction(nameof(HomeController.SignIn));
