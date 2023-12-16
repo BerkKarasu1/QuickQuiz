@@ -8,6 +8,8 @@ using QuickQuiz.Core.Model;
 using QuickQuiz.Core.Services;
 using QuickQuiz.WEB.Extensions;
 using QuickQuiz.WEB.Models;
+using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -23,7 +25,7 @@ namespace QuickQuiz.WEB.Controllers
         private readonly IEmailService _emailService;
         readonly ITestService _testService;
 
-        public HomeController(ILogger<HomeController> logger, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,RoleManager<AppRole> roleManager, IEmailService emailService, ITestService testService) : base(userManager)
+        public HomeController(ILogger<HomeController> logger, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager, IEmailService emailService, ITestService testService) : base(userManager)
         {
             _logger = logger;
             _userManager = userManager;
@@ -64,29 +66,33 @@ namespace QuickQuiz.WEB.Controllers
             returnUrl ??= Url.Action("Index", "Home");
 
             var hasUser = await _userManager.FindByNameAsync(model.UserName);
+            hasUser ??= await _userManager.FindByEmailAsync(model.UserName);
 
             if (hasUser == null)
-            {
-                ModelState.AddModelError(string.Empty, "Kullanıcı adı veya şifre yanlış!");
-                return View(tuple);
-            }
+                return ReturnSingInError(tuple, "Giriş bilgileriniz hatalıdır. Kontrol edip tekrar giriş yapınız.");
+
+            //ModelState.AddModelError(string.Empty, "Giriş bilgileriniz hatalıdır. Kontrol edip tekrar giriş yapınız.");
+            //return View(tuple);
             //lockout =true olarak işaretle
             var signInResult = await _signInManager.PasswordSignInAsync(hasUser, model.Password, model.RememberMe, false);
 
             if (signInResult.Succeeded)
                 return Redirect(returnUrl!);
-
-            if (signInResult.IsLockedOut)
-            {
-                ModelState.AddModelErrorList(new List<string>() { "3 dk boyunca giriş yapamazsınız!" });
-                return View(tuple);
-            }
-
-            ModelState.AddModelErrorList(new List<string>() { "Email veya şifreniz yanlış!", $"Başarısız giriş sayısı: {await _userManager.GetAccessFailedCountAsync(hasUser)}" });
-
+            else if (signInResult.IsLockedOut)
+                return ReturnSingInError(tuple, "3 dk boyunca giriş yapamazsınız!");
+            //{
+            //    ModelState.AddModelErrorList(new List<string>() { "3 dk boyunca giriş yapamazsınız!" });
+            //    return View(tuple);
+            //}
+            return ReturnSingInError(tuple, "Giriş bilgileriniz hatalıdır. Kontrol edip tekrar giriş yapınız.");
+            //ModelState.AddModelErrorList(new List<string>() { "Email veya şifreniz yanlış!", $"Başarısız giriş sayısı: {await _userManager.GetAccessFailedCountAsync(hasUser)}" });
+            //return View(tuple);
+        }
+        private ViewResult ReturnSingInError((SignInViewModel, SignUpViewModel) tuple, string errorMessage)
+        {
+            ModelState.AddModelError(string.Empty, errorMessage);
             return View(tuple);
         }
-
         public IActionResult SignUp()
         {
             return RedirectToAction(nameof(HomeController.SignIn));
@@ -165,17 +171,6 @@ namespace QuickQuiz.WEB.Controllers
 
             TempData["SuccessMessage"] = "Şifre yenileme linki, e-posta adresinize gönderilmiştir.";
             return RedirectToAction(nameof(ForgetPassword));
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        }    
     }
 }

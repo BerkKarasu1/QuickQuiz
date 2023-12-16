@@ -25,8 +25,9 @@ namespace QuickQuiz.WEB.Extensions
                 options.Password.RequireLowercase = true;
                 options.Password.RequireDigit = true;
 
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3); // 3 dk boyunca kitlenecek.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10); // 3 dk boyunca kitlenecek.
                 options.Lockout.MaxFailedAccessAttempts = 3;  // 3 başarısız girişte
+                options.Lockout.AllowedForNewUsers = true; 
 
             }).AddPasswordValidator<PasswordValidator>()
             .AddUserValidator<UserValidator>()
