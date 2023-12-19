@@ -32,7 +32,7 @@ namespace QuickQuiz.Repository.Repositories
 
         public async Task<Test> GetTestById(int id)
         {
-            return await _context.Tests.Include(x => x.Question).ThenInclude(x => x.Answers).FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Tests.Include(x => x.Creater).Include(x => x.Question).ThenInclude(x => x.Answers).FirstOrDefaultAsync(x => x.Id == id);
         }
         public void Remove(Test entity)
         {

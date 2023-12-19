@@ -30,6 +30,11 @@ namespace QuickQuiz.WEB.Controllers
         public async Task<IActionResult> CreateTest([Bind(Prefix = "Item1")] List<QuestionDTO> questionDTOs, [Bind(Prefix = "Item2")] TestDTO test)
         {            
             test.Question = questionDTOs;
+            if(test.TestCategoryDescription is null)
+            {
+                TempData["QuestionError"] = "Test kategorisi seçiniz.";
+                return RedirectToAction("AllQuestions", "Question");
+            }
             foreach (TestCategorys testCategory in Enum.GetValues(typeof(TestCategorys)))
             {
                 var desc = testCategory.GetType().GetField(testCategory.ToString())?.GetCustomAttributes<DescriptionAttribute>().FirstOrDefault()?.Description;
@@ -63,21 +68,21 @@ namespace QuickQuiz.WEB.Controllers
             await _testService.Update(test);
             return RedirectToAction("Index");
         }
-        [HttpGet]
-        [Route("Test/External/{link?}")]
-        public async Task<IActionResult> ExternalUserTest(string link)        
-        {
-            (bool result, int testId) = await _testService.TestLinkControl(link);
-            testId = 9;
-            return View((result, testId,""));
-        }
-        [HttpPost]
-        public async Task<IActionResult> ExternalUserTestPost(string name, int id)
-        {
-            //Ad boş olamaz şeklinde uyarı gidecek
-            if (string.IsNullOrEmpty(name))
-                return View((true, id));
-            return RedirectToAction("Test", "Quiz", id);
-        }
+        //[HttpGet]
+        //[Route("Test/External/{link?}")]
+        //public async Task<IActionResult> ExternalUserTest(string link)        
+        //{
+        //    (bool result, int testId) = await _testService.TestLinkControl(link);
+        //    testId = 9;
+        //    return View((result, testId,""));
+        //}
+        //[HttpPost]
+        //public async Task<IActionResult> ExternalUserTestPost(string name, int id)
+        //{
+        //    //Ad boş olamaz şeklinde uyarı gidecek
+        //    if (string.IsNullOrEmpty(name))
+        //        return View((true, id));
+        //    return RedirectToAction("Test", "Quiz", id);
+        //}
     }
 }

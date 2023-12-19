@@ -6,12 +6,20 @@
     ViewData["Title"] = "Sorularım";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
+
 @if (ViewBag.Error != null)
 {
+    <br />
     <h3 class="dikkat">@ViewBag.Error</h3>
 }
+else if (TempData["QuestionError"] != null)
+{
+    <br />
+    <h3 class="dikkat">@TempData["QuestionError"]</h3>    
+}
 <form form="GeneralForm" asp-controller="Test" asp-action="CreateTest" formmethod="post">
-
+    <br />
+    <br />
     @for (int i = 0; i < Model.Question.Count; i++)
     {
         <div class="row mt-12">

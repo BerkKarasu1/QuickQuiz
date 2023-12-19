@@ -1,0 +1,20 @@
+﻿@model (string token,string name)
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>QuiZck</title>
+    <link rel="stylesheet" href="~/css/externalusertest.css" />
+</head>
+<body>
+    <div class="login">
+        <form asp-controller="Quiz" asp-action="VisitorCheck" method="post">
+            <input type="text" name="token" asp-for="@Model.token" value="@Model.token" hidden />
+            <input type="text" name="name" asp-for="@Model.name" placeholder="Adınızı ve Soyadınızı Giriniz" maxlength="30" required="required" />
+            <button type="submit" class="btn btn-primary btn-block btn-large">Teste başla 🥳</button>
+        </form>
+    </div>
+</body>
+</html>

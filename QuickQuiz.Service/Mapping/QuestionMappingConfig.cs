@@ -1,9 +1,15 @@
 ﻿
 using Mapster;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.Extensions.Configuration;
 using QuickQuiz.Core.Dtos;
 using QuickQuiz.Core.Model;
 using System.ComponentModel;
 using System.Reflection;
+using System.Text;
+using System.Web;
 
 namespace Exams.Service.Mapping
 {
@@ -38,6 +44,8 @@ namespace Exams.Service.Mapping
             //testCategory.GetType().GetField(testCategory.ToString())?.GetCustomAttributes<DescriptionAttribute>().FirstOrDefault()?.Description
             config.NewConfig<Test, TestDTO>()
                 .Map(dest=>dest.TestCategoryDescription,src =>src.TestCategorys.GetType().GetField(src.TestCategorys.ToString()).GetCustomAttributes<DescriptionAttribute>().FirstOrDefault().Description)
+                .Map(dest=>dest.Link,src=>$"https://localhost:7147/quiz/visitor/{Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(src.Creater!=null? src.Creater.UserName + "/"
+                + src.Id.ToString() : "UserNotFound" ))}")
                 .Ignore(x => x.PictureFile)
                 .IgnoreNullValues(true);
             config.NewConfig<TestDTO, Test>()

@@ -55,38 +55,28 @@ namespace QuickQuiz.WEB.Controllers
             return View(tuple);
         }
         [HttpPost]
-        public async Task<IActionResult> SignIn([Bind(Prefix = "Item1")] SignInViewModel model, string returnUrl = null)
+        public async Task<IActionResult> SignIn([Bind(Prefix = "Item1")] SignInViewModel model, string? returnUrl = null)
         {
             var tuple = (model, new SignUpViewModel());
             if (!ModelState.IsValid)
-            {
                 return View(tuple);
-            }
-
-            returnUrl ??= Url.Action("Index", "Home");
 
             var hasUser = await _userManager.FindByNameAsync(model.UserName);
             hasUser ??= await _userManager.FindByEmailAsync(model.UserName);
 
             if (hasUser == null)
                 return ReturnSingInError(tuple, "Giriş bilgileriniz hatalıdır. Kontrol edip tekrar giriş yapınız.");
-
-            //ModelState.AddModelError(string.Empty, "Giriş bilgileriniz hatalıdır. Kontrol edip tekrar giriş yapınız.");
-            //return View(tuple);
-            //lockout =true olarak işaretle
             var signInResult = await _signInManager.PasswordSignInAsync(hasUser, model.Password, model.RememberMe, false);
 
             if (signInResult.Succeeded)
+            {
+                returnUrl ??= Url.Action("Index", "Home");
                 return Redirect(returnUrl!);
+            }
             else if (signInResult.IsLockedOut)
                 return ReturnSingInError(tuple, "3 dk boyunca giriş yapamazsınız!");
-            //{
-            //    ModelState.AddModelErrorList(new List<string>() { "3 dk boyunca giriş yapamazsınız!" });
-            //    return View(tuple);
-            //}
-            return ReturnSingInError(tuple, "Giriş bilgileriniz hatalıdır. Kontrol edip tekrar giriş yapınız.");
-            //ModelState.AddModelErrorList(new List<string>() { "Email veya şifreniz yanlış!", $"Başarısız giriş sayısı: {await _userManager.GetAccessFailedCountAsync(hasUser)}" });
-            //return View(tuple);
+            else
+                return ReturnSingInError(tuple, "Giriş bilgileriniz hatalıdır. Kontrol edip tekrar giriş yapınız.");
         }
         private ViewResult ReturnSingInError((SignInViewModel, SignUpViewModel) tuple, string errorMessage)
         {
@@ -122,10 +112,10 @@ namespace QuickQuiz.WEB.Controllers
                 string encodedUrl = HtmlEncoder.Default.Encode(callbackUrl);
                 await _emailService.SendAccountConfirmEmail(encodedUrl, request.UserName, request.Email);
                 //todo: Mesaj yönlendirmesi düzeltilecek
-                TempData["SuccessMessage"] = "Üyelik kayıt işlemi başarıyla gerçekleşmiştir.";
-                return RedirectToAction(nameof(HomeController.SignIn));
+                TempData["SuccessMessage"] = "Üyelik kayıt işleminizin tamamlanması için Mail adresinize gönderilen aktivasyon linki üzerinden üyeliğinizi onaylayın.";
             }
-            ModelState.AddModelErrorList(identityResult.Errors.Select(x => x.Description).ToList());
+            else
+                ModelState.AddModelErrorList(identityResult.Errors.Select(x => x.Description).ToList());
             return RedirectToAction(nameof(HomeController.SignIn));
         }
 
@@ -171,6 +161,11 @@ namespace QuickQuiz.WEB.Controllers
 
             TempData["SuccessMessage"] = "Şifre yenileme linki, e-posta adresinize gönderilmiştir.";
             return RedirectToAction(nameof(ForgetPassword));
-        }    
+        }
+
+        public IActionResult Error()
+        {
+            return View();
+        }
     }
 }

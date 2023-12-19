@@ -11,6 +11,7 @@ namespace QuickQuiz.Core.Dtos
         public string Name { get; set; }
         public UserEditViewModel? Creater { get; set; }
         public List<QuestionDTO>? Question { get; set; }
+        public string Link { get; set; }
         public IFormFile? PictureFile { get; set; }
         [Required(ErrorMessage = "Kategori boş bırakılamaz!")]
         public TestCategorys TestCategorys { get; set; }

@@ -24,8 +24,10 @@ namespace QuickQuiz.Repository
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var str = configuration.GetSection("ConnectionStrings").GetSection("SqlCon").Value;
-            optionsBuilder.UseNpgsql(str);
+            //MIGRATION BASARKEN HATA ALINIYOR.
+            //var str = configuration.GetSection("ConnectionStrings").GetSection("SqlCon").Value;
+            //optionsBuilder.UseNpgsql(str);
+            optionsBuilder.UseNpgsql("Host=128.140.107.62;Port=9000;Database=QuickQuiz;Username=postgres;Password=rgFAGqqPmYz5qYzdY36a; TrustServerCertificate=True;");
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {

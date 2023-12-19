@@ -6,13 +6,13 @@ namespace QuickQuiz.WEB.Localization
     {
         public override IdentityError DuplicateUserName(string userName)
         {
-            return new() { Code = "DuplicateUserName", Description = $"Bu {userName} daha önce başka bir kullanıcı tarafından alınmıştır." };
+            return new() { Code = "DuplicateUserName", Description = $"Girdiğiniz kullanıcı adı \"{userName}\" başka bir kullanıcı tarafından kullanılmaktadır." };
             //return base.DuplicateUserName(userName);
         }
 
         public override IdentityError DuplicateEmail(string email)
         {
-            return new() { Code = "DuplicateEmail", Description = $"Bu {email} daha önce başka bir kullanıcı tarafından alınmıştır." };
+            return new() { Code = "DuplicateEmail", Description = $"Girdiğiniz mail adresi \"{email}\"  kullanılmaktadır." };
             //return base.DuplicateEmail(email);
         }
 

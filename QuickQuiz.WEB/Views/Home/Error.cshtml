@@ -1,0 +1,20 @@
+﻿@{
+    Layout = null;
+}
+@if (TempData["ErrorPageMessage"] != null)
+{
+	
+<link rel="stylesheet" type="text/css" href="~/css/error.css">
+<div class="mars"></div>
+<img src="~/pictures/errorpictures/404.svg" class="logo-404" />
+<img src="~/pictures/errorpictures/meteor.svg" class="meteor" />
+<p class="title">Hata Alındı</p>
+<p class="subtitle">
+	@TempData["ErrorPageMessage"]
+</p>
+<div align="center">
+	<a class="btn-back" asp-action="Index" asp-controller="Home">Ana Menüye Dön</a>
+</div>
+<img src="~/pictures/errorpictures/astronaut.svg" class="astronaut" />
+<img src="~/pictures/errorpictures/spaceship.svg" class="spaceship" />
+}

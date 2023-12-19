@@ -21,8 +21,11 @@ namespace QuickQuiz.Service.Services
         {
             await _resultRepository.AddAsync(new ExamResult { Exam = test, Student = user, Result = score });
         }
-
-        public async Task<List<ExamResult>> GetExamAllResultAsync(int id)
+		public async Task AddVisitorAsync(string visitorName, float score, Test test)
+		{
+			await _resultRepository.AddAsync(new ExamResult { Exam = test,VisitorName=visitorName, Result = score });
+		}
+		public async Task<List<ExamResult>> GetExamAllResultAsync(int id)
         {
             return await _resultRepository.GetAllResultByTestIdAsync(id);
         }

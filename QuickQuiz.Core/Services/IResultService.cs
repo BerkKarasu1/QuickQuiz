@@ -13,7 +13,8 @@ namespace QuickQuiz.Core.Services
     {
         Task AddAsync(ExamResult result);
         Task AddAsync(AppUser user,float score,Test test);
-        Task<List<ExamResult>> GetUserAllResultAsync(AppUser user);
+        Task AddVisitorAsync(string visitorName, float score, Test test);
+		Task<List<ExamResult>> GetUserAllResultAsync(AppUser user);
         Task<List<ExamResult>> GetExamAllResultAsync(int id);
     }
 }

@@ -1,4 +1,4 @@
-﻿@model TestDTO
+﻿@model (TestDTO testDTO,string visitorName)
 @{
     Layout = null;
 }
@@ -215,15 +215,16 @@
 <div class="questionArea">
     <form id="myForm" form="myForm" asp-controller="Quiz" asp-action="Result" method="post" enctype="multipart/form-data">
 
-        <input asp-for="@Model.Id" hidden name="Id"/>
-        @for (int i = 0; i < Model.Question.Count; i++)
+        <input asp-for="@Model.testDTO.Id" name="Id" hidden />
+        <input asp-for="@Model.visitorName" value="@Model.visitorName" name="visitorName" hidden />
+        @for (int i = 0; i < Model.testDTO.Question.Count; i++)
         {
-            <input  id="answer_@i" value="0" asp-for="@Model.Question[i].TrueAnswer.AnswerText" name="Question[@i].TrueAnswer.AnswerText" hidden />
-            <input  id="quest_@i" value="0" asp-for="@Model.Question[i].Question" name="Question[@i].Question" hidden />
-            <input  id="id_@i" value="0" asp-for="@Model.Question[i].Id" name="Question[@i].Id" hidden />
+            <input id="answer_@i" value="0" asp-for="@Model.testDTO.Question[i].TrueAnswer.AnswerText" name="Question[@i].TrueAnswer.AnswerText" hidden />
+            <input id="quest_@i" value="0" asp-for="@Model.testDTO.Question[i].Question" name="Question[@i].Question" hidden />
+            <input id="id_@i" value="0" asp-for="@Model.testDTO.Question[i].Id" name="Question[@i].Id" hidden />
         }
         @*<button id="but"  type="submit" style="display:none">Testi Bitir</button>*@
-        <button class="custom-btn btn-12" id="but" type="submit" style="display:none"><span>Click!</span><span>Testi Bitir</span></button>
+        <button class="custom-btn btn-12" id="but" type="submit" style="display:none"><span>Sonlandır</span><span>Testi Sonlandır</span></button>
     </form>
     <!-- Form alanları ve diğer içerikler -->
     <div id="que" class="question">...</div>
@@ -242,23 +243,23 @@
 </div>
 <script>
     let questions = [
-    @for (int i = 0; i < Model.Question.Count; i++)
+    @for (int i = 0; i < Model.testDTO.Question.Count; i++)
     {
         <text>
             {
-                Id:'@Model.Question[i].Id',
-                question: '@Model.Question[i].Question',
+                Id: '@Model.testDTO.Question[i].Id',
+                question: '@Model.testDTO.Question[i].Question',
                 options: [
-            @for (int j = 0; j < Model.Question[i].Answers.Count; j++)
+            @for (int j = 0; j < Model.testDTO.Question[i].Answers.Count; j++)
             {
-                <text>'@Model.Question[i].Answers[j].AnswerText', </text>
+                <text>'@Model.testDTO.Question[i].Answers[j].AnswerText', </text>
             }
-                                        ],
+                                                ],
 
             },
         </text>
     }
-                ];
+                    ];
     /* ======== End ======== */
 
     /* ==== True code ==== */
@@ -338,9 +339,9 @@
 
     function finishQuiz() {
         progressBar.style.width = `${100}%`;
-       let quest= document.getElementById("que")
-       let option= document.getElementById("opt")
-        let but= document.getElementById("but")
+        let quest = document.getElementById("que")
+        let option = document.getElementById("opt")
+        let but = document.getElementById("but")
         quest.style.display = "none";
         option.style.display = "none";
         but.style.display = "block";

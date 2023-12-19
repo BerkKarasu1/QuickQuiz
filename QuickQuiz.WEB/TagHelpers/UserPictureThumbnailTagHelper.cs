@@ -12,7 +12,6 @@ namespace QuickQuiz.WEB.TagHelpers
             if (String.IsNullOrEmpty(PictureUrl))
             {
                 output.Attributes.SetAttribute("src", "/userpictures/default_pict.jpg");
-
             }
 
             else

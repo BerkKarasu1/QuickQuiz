@@ -54,13 +54,13 @@
                     {
                         <tr>
                             <td>@(i + 1)</td>
-                            @if (@Model[i].Student != null)
+                            @if (@Model[i]?.Student != null)
                             {
                                 <td class="d-none d-xl-table-cell">@Model[i].Student.UserName</td>
                             }
                             else
                             {
-                                <td class="d-none d-xl-table-cell">Misafir Kullanıcı</td>                                
+                                <td class="d-none d-xl-table-cell">@(Model[i].VisitorName != null ? Model[i].VisitorName : "Misafir Kullanıcı")</td>
                             }
 
 

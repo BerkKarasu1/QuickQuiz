@@ -5,8 +5,8 @@
 }
 
 <div class="row">
-    <div class="col-md-6 offset-md-3">
-        <h2 style="text-align:center;">Test Güncelleme</h2> <br />
+    <div class="col-md-10 offset-md-1">
+        <h2 style="text-align:center;margin-top:50px;">Test Güncelleme</h2> <br />
 
         @if (TempData["SuccessMessage"] != null)
         {
@@ -19,7 +19,7 @@
         <div asp-validation-summary=ModelOnly class="alert alert-danger" role="alert">
         </div>
 
-        <form asp-controller="Test" asp-action="Edits" method="post" enctype="multipart/form-data">
+        <form id="updateForm" asp-controller="Test" asp-action="Edits" method="post" enctype="multipart/form-data">
             <div class="row mb-3">
                 <label class="col-md-4 col-form-label"> Test Adı</label>
                 <div class="col-sm-8">
@@ -76,21 +76,69 @@
                     <hr />
                 }
             </div>
-            <div class="row mb-3">
-                <div class="col-md-8 offset-md-4">
-                    <button class="btn btn-success" type="submit">Güncelle</button>
-                </div>
-            </div>
+            
         </form>
-        <form>
-            <div class="row mb-3">
-                <div class="col-md-8 offset-md-4">
+        <style>
+            .multi-button {
+                filter: drop-shadow(3px 10px 15px rgba(0, 0, 0, 0.45));
+
+            }
+
+                .multi-button button {
+                    height: 50px;
+                    width: 100px;
+                    background: linear-gradient(to bottom, #5865f2, #da55bb);
+                    font-weight: bold;
+                    color: white;
+                    font-size: 1.2rem;
+                    border: none;
+                    margin: 1px;
+                    padding: 0;
+                    stroke: black;
+                    outline: none;
+                }
+
+                .multi-button :nth-child(1) {
+                    border-radius: 20px 0 0 20px;
+                }
+
+                .multi-button :nth-child(5) {
+                    border-radius: 0 20px 20px 0;
+                }
+
+            button:hover {
+                cursor: pointer;
+                filter: drop-shadow(3px 5px 5px rgba(0, 0, 0, 0.45));
+            }
+
+            button:active {
+                filter: none;
+                transform: scale(.95);
+            }
+
+        </style>
+        <form style="  display: grid;
+  place-items: center;">
                     <input asp-for="Id" hidden />
-                    <button class="btn btn-primary" type="submit" asp-action="Test" asp-controller="Quiz" asp-route-id="@Model.Id">Dene</button>
-                    <button class="btn btn-danger" type="submit" asp-action="RemoveTest" asp-controller="Test" method="post">Sil</button>
-                    <button class="btn btn-danger" type="submit" asp-action="Result" asp-controller="Quiz" asp-route-id="@Model.Id" method="post">Sonuçlar</button>
-                </div>
-            </div>
+            <input id="testlinkid" asp-for="@Model.Link" value="@Model.Link" hidden />
+                    <div class="multi-button">
+                     <button  onclick="submitForm()" type="button">Güncelle</button>
+                    <button  type="submit" asp-action="Test" asp-controller="Quiz" asp-route-id="@Model.Id">Deneyin</button>
+                    <button  type="submit" asp-action="RemoveTest" asp-controller="Test" method="post">Sil</button>
+                    <button  type="submit" asp-action="Result" asp-controller="Quiz" asp-route-id="@Model.Id" method="post">Sonuçlar</button>
+                    <button  type="button" id="copyButton" value="@Model.Id" onclick="copyFunc()"> Kopyala</button>
+                    </div>
+
         </form>
     </div>
 </div>
+
+<script>
+    function submitForm() {
+        document.getElementById("updateForm").submit();
+    }
+    function copyFunc() {
+        let copyText= document.getElementById("testlinkid");
+        navigator.clipboard.writeText(copyText.value);
+    }
+</script>

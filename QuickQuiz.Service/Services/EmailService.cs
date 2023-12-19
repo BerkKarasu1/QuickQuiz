@@ -44,8 +44,16 @@ namespace QuickQuiz.Service.Services
                 IsBodyHtml = true
             };
             mailMessage.To.Add(ToEmail);
-
+            try
+            {
             await smptClient.SendMailAsync(mailMessage);
+
+            }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+                throw;
+            }
         }
         private SmtpClient SmtpClient()
         {

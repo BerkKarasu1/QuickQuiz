@@ -115,7 +115,7 @@ namespace QuickQuiz.WEB.Controllers
             {
                 var wwwrootFolder = _fileProvider.GetDirectoryContents("wwwroot");
 
-                var randomFileName = $"{Guid.NewGuid().ToString()}{Path.GetExtension(request.Picture.FileName)}";
+                var randomFileName = $"{Guid.NewGuid()}{Path.GetExtension(request.Picture.FileName)}";
 
                 var newPicturePath = Path.Combine(wwwrootFolder!.First(x => x.Name == "userpictures").PhysicalPath!, randomFileName);
 
