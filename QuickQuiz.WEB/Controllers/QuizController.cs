@@ -20,12 +20,12 @@ namespace QuickQuiz.WEB.Controllers
         //    visitor != null ? Test(testId, visitor) : Test(testId);
         [Route("Quiz/Test/{id?}")]
 
-        public async Task<IActionResult> Test(int testId, string visitor="")
+        public async Task<IActionResult> Test(int id, string visitor="")
         {
-            var test = await _testService.GetTestById(testId);
+            var test = await _testService.GetTestById(id);
             if (test != null)
                 return View((test, visitor));
-            return View();
+            return RedirectToAction("Index","Home");
         }
         //public async Task<IActionResult> Test(int testId, string visitor)
         //{

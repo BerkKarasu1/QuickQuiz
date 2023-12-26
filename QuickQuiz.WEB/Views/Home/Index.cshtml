@@ -38,9 +38,9 @@
                     <div class="card card-tale">
                         <a asp-action="AllQuestions" asp-controller="Question" style="text-decoration:none; color:inherit;">
                             <div class="card-body">
-                                <p class="mb-4">Soruların</p>
-                                <p class="fs-30 mb-2">4006</p>
-                                <p>10.00% (30 days)</p>
+                                <p class="mb-4">Sorularım</p>
+                                @*   <p class="fs-30 mb-2">4006</p>
+                                <p>10.00% (30 days)</p> *@
                             </div>
                         </a>
                     </div>
@@ -49,37 +49,37 @@
                     <div class="card card-dark-blue">
                         <a asp-action="AllQuestions" asp-controller="Question" style="text-decoration:none; color:inherit;">
                             <div class="card-body">
-                                <p class="mb-4">Testlerin</p>
+                                <p class="mb-4">Testlerim</p>@*
                                 <p class="fs-30 mb-2">61344</p>
-                                <p>22.00% (30 days)</p>
+                                <p>22.00% (30 days)</p> *@
                             </div>
                         </a>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
-                    <div class="card card-light-blue">
-                        <a asp-action="AllQuestions" asp-controller="Question" style="text-decoration:none; color:inherit;">
-                            <div class="card-body">
-                                <p class="mb-4">Testlerini Çözen Kişi Sayısı</p>
-                                <p class="fs-30 mb-2">34040</p>
-                                <p>2.00% (30 days)</p>
-                            </div>
-                        </a>
-                    </div>
+                @*  <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
+                <div class="card card-light-blue">
+                <a asp-action="AllQuestions" asp-controller="Question" style="text-decoration:none; color:inherit;">
+                <div class="card-body">
+                <p class="mb-4">Testlerini Çözen Kişi Sayısı</p>
+                <p class="fs-30 mb-2">34040</p>
+                <p>2.00% (30 days)</p>
+                </div>
+                </a>
+                </div>
                 </div>
                 <div class="col-md-6 stretch-card transparent">
-                    <div class="card card-light-danger">
-                        <a asp-action="AllQuestions" asp-controller="Question" style="text-decoration:none; color:inherit;">
-                            <div class="card-body">
-                                <p class="mb-4">Bağlantıların</p>
-                                <p class="fs-30 mb-2">47033</p>
-                                <p>0.22% (30 days)</p>
-                            </div>
-                        </a>
-                    </div>
+                <div class="card card-light-danger">
+                <a asp-action="AllQuestions" asp-controller="Question" style="text-decoration:none; color:inherit;">
+                <div class="card-body">
+                <p class="mb-4">Bağlantıların</p>
+                <p class="fs-30 mb-2">47033</p>
+                <p>0.22% (30 days)</p>
                 </div>
+                </a>
+                </div>
+                </div> *@
             </div>
         </div>
     </div>
@@ -89,11 +89,8 @@
             <h2 class="line-title">Trend Testler</h2>
             <div class="owl-carousel custom-carousel owl-theme">
                 @foreach (var item in Model.tests)
-                {
-                    if (string.IsNullOrEmpty(item.PictureUrl))
-                        item.PictureUrl = "https://www.yudiz.com/codepen/expandable-animated-card-slider/rdr-2.jpg";
-
-                    <div class="item" style="background-image: url(data:image/jpeg;base64,@item.PictureUrl);">               
+                {                   
+                    <div class="item" style="background-image: url(data:image/jpeg;base64,@item.PictureUrl);">
                         <div class="item-desc">
                             <h3>@item.Name</h3>
                             <p>@item.Creater?.UserName </p>
@@ -118,25 +115,34 @@
     {
         <div class="categoryname-container">
             <h1>@category[0].TestCategoryDescription</h1>
-            <a>Daha Fazla</a>
+            @* <a>Daha Fazla</a> *@
         </div>
         <div class="carousel2__container">
             @foreach (var item in category)
             {
                 <div class="carousel2-item">
                     <a asp-controller="Quiz" asp-action="Test" asp-route-id="@item.Id" style="text-decoration:none;">
-                    <img class="carousel2-item__img"
-                         src="data:image/jpeg;base64,@item.PictureUrl"
-                         alt="QuizImage" />
-                    <div class="carousel2-item__details">
-                        <div class="controls">
+                        @if (string.IsNullOrEmpty(item.PictureUrl))
+                        {
+                            <img class="carousel2-item__img"
+                                 src="background-image: url(https://images.unsplash.com/photo-1557177324-56c542165309?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80)"
+                                 alt="QuizImage" />
+                        }
+                        else
+                        {
+                            <img class="carousel2-item__img"
+                                 src="data:image/jpeg;base64,@item.PictureUrl"
+                                 alt="QuizImage" />
+                        }
+                        <div class="carousel2-item__details">
+                            <div class="controls">
+                            </div>
+                            <h6 class="carousel2-item__details--title">
+                                @item.Name
+                            </h6>
+                            <h6 class="carousel2-item__details--subtitle">@item.Creater?.UserName</h6>
                         </div>
-                        <h6 class="carousel2-item__details--title">
-                            @item.Name
-                        </h6>
-                        <h6 class="carousel2-item__details--subtitle">@item.Creater?.UserName</h6>
-                    </div>
-                                        </a>
+                    </a>
                 </div>
             }
         </div>

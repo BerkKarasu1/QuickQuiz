@@ -211,7 +211,7 @@
     <div class="progress--bar"></div>
 </div>
 
-<h1>Quiz</h1>
+<h1 id="title">@Model.testDTO.Name</h1>
 <div class="questionArea">
     <form id="myForm" form="myForm" asp-controller="Quiz" asp-action="Result" method="post" enctype="multipart/form-data">
 
@@ -341,9 +341,11 @@
         progressBar.style.width = `${100}%`;
         let quest = document.getElementById("que")
         let option = document.getElementById("opt")
+        let title = document.getElementById("title")
         let but = document.getElementById("but")
         quest.style.display = "none";
         option.style.display = "none";
+        title.style.display = "none";
         but.style.display = "block";
     }
 </script>

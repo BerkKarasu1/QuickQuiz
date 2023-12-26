@@ -17,6 +17,13 @@ namespace Exams.Service.Mapping
     {
         public void Register(TypeAdapterConfig config)
         {
+            string site = string.Empty;
+#if DEBUG
+            site = "https://localhost:7147";
+#else
+            site = "https://app.quizck.com";
+#endif
+
             config.NewConfig<AppUser, UserEditViewModel>()
                 .Ignore(dest => dest.Picture)
                 .Map(dest => dest.Phone, src => src.PhoneNumber);
@@ -44,13 +51,15 @@ namespace Exams.Service.Mapping
             //testCategory.GetType().GetField(testCategory.ToString())?.GetCustomAttributes<DescriptionAttribute>().FirstOrDefault()?.Description
             config.NewConfig<Test, TestDTO>()
                 .Map(dest=>dest.TestCategoryDescription,src =>src.TestCategorys.GetType().GetField(src.TestCategorys.ToString()).GetCustomAttributes<DescriptionAttribute>().FirstOrDefault().Description)
-                .Map(dest=>dest.Link,src=>$"https://localhost:7147/quiz/visitor/{Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(src.Creater!=null? src.Creater.UserName + "/"
+                .Map(dest=>dest.Link,src=>$"{site}/quiz/visitor/{Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(src.Creater!=null? src.Creater.UserName + "/"
                 + src.Id.ToString() : "UserNotFound" ))}")
+                .Map(dest => dest.PictureUrl,src=> src.PictureUrl ?? Convert.ToBase64String(File.ReadAllBytes("wwwroot/defaulttest.png")))
                 .Ignore(x => x.PictureFile)
                 .IgnoreNullValues(true);
             config.NewConfig<TestDTO, Test>()
                 .Ignore()
                 .IgnoreNullValues(true);
+
         }
     }
 }

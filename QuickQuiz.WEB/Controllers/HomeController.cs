@@ -39,7 +39,7 @@ namespace QuickQuiz.WEB.Controllers
         {
             List<TestDTO> test = await _testService.GetAllTestAsync();
             UserEditViewModel user = CurrentUser.Adapt<UserEditViewModel>();
-            List<List<TestDTO>> categories = test.GroupBy(x => x.TestCategorys).Select(g => g.ToList()).ToList();
+            List<List<TestDTO>> categories = test.GroupBy(x => x.TestCategorys).Select(g => g.Take(10).ToList()).ToList();
 
             return View((test, user, categories));
         }
