@@ -11,6 +11,8 @@ namespace QuickQuiz.Core.Model
         public string? Picture { get; set; }
         public DateTime? BirthDate { get; set; }
         public Gender? Gender { get; set; }
+        public EducationLevel? EducationLevel { get; set; }
+        public Occupation? Occupation { get; set; }
         public List<Question>? Question { get; set; }
         public string? Twitter { get; set; }
         public string? Facebook { get; set; }

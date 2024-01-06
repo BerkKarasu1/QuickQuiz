@@ -50,10 +50,28 @@
                 </div>
             </div>
             <div class="row mb-3">
+                <label for="EducationLevel" class="col-md-4 col-form-label" asp-for="EducationLevel"></label>
+                <div class="col-sm-8">
+                    <select asp-for="EducationLevelDesc" asp-items="ViewBag.educationLevel" class="form-control">
+                        <option value="">Eğitim Seviyesi</option>
+                    </select>
+                    <span asp-validation-for="EducationLevel" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="Occupation" class="col-md-4 col-form-label" asp-for="Occupation"></label>
+                <div class="col-sm-8">
+                    <select asp-for="OccupationDesc" asp-items="ViewBag.occupation" class="form-control">
+                        <option value="">Meslek</option>
+                    </select>
+                    <span asp-validation-for="Occupation" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
                 <label for="Gender" class="col-md-4 col-form-label" asp-for="Gender"></label>
                 <div class="col-sm-8">
                     <select asp-for="Gender" asp-items="ViewBag.genderList" class="form-control">
-                        <option value="">Cinsiyet seçiniz</option>
+                        <option value="">Cinsiyet</option>
                     </select>
                     <span asp-validation-for="Gender" class="text-danger"></span>
                 </div>

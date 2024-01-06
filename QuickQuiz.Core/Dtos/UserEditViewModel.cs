@@ -31,6 +31,12 @@ namespace QuickQuiz.Core.Dtos
 
         [Display(Name = "Cinsiyet:")]
         public Gender? Gender { get; set; }
+        [Display(Name = "Eğitim Seviyesi:")]
+        public EducationLevel? EducationLevel { get; set; }
+        public string? EducationLevelDesc { get; set; }
+        [Display(Name = "Meslek:")]
+        public Occupation? Occupation { get; set; }
+        public string? OccupationDesc { get; set; }
 
         [Display(Name = "Twitter Link:")]
         public string? Twitter { get; set; }
