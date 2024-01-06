@@ -11,7 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickQuiz.Repository", "Qui
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickQuiz.Service", "QuickQuiz.Service\QuickQuiz.Service.csproj", "{AA1CCEDD-877F-4DEE-89D7-D4C97FE726E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickQuiz.Api", "QuickQuiz.Api\QuickQuiz.Api.csproj", "{3F73F334-F209-41EE-8F41-3A732694C4E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickQuiz.Api", "QuickQuiz.Api\QuickQuiz.Api.csproj", "{3F73F334-F209-41EE-8F41-3A732694C4E8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AddCustomTest", "AddCustomTest\AddCustomTest.csproj", "{EB027C0D-B5A5-4D5A-90DB-104C3AA8C537}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeDateCreate", "FakeDateCreate\FakeDateCreate.csproj", "{7DD1D720-F35E-44DB-903A-D994F4757249}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{3F73F334-F209-41EE-8F41-3A732694C4E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F73F334-F209-41EE-8F41-3A732694C4E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F73F334-F209-41EE-8F41-3A732694C4E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB027C0D-B5A5-4D5A-90DB-104C3AA8C537}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB027C0D-B5A5-4D5A-90DB-104C3AA8C537}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB027C0D-B5A5-4D5A-90DB-104C3AA8C537}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB027C0D-B5A5-4D5A-90DB-104C3AA8C537}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DD1D720-F35E-44DB-903A-D994F4757249}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DD1D720-F35E-44DB-903A-D994F4757249}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DD1D720-F35E-44DB-903A-D994F4757249}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DD1D720-F35E-44DB-903A-D994F4757249}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

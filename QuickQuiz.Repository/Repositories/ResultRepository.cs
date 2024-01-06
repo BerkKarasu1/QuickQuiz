@@ -25,7 +25,7 @@ namespace QuickQuiz.Repository.Repositories
 
         public async Task<List<ExamResult>> GetAllResultByTestIdAsync(int testId)
         {
-            return await _context.ExamResults.Where(x => x.Exam.Id == testId).OrderByDescending(x => x.Result).ToListAsync();
+            return await _context.ExamResults.Where(x => x.Exam.Id == testId).Include(x=>x.Student).OrderByDescending(x => x.Result).ToListAsync();
         }
 
         public async Task<List<ExamResult>> GetAllResultUserAsync(AppUser user)
