@@ -13,6 +13,9 @@ using System;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Encodings.Web;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using QuickQuiz.Service.Services;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
 
 namespace QuickQuiz.WEB.Controllers
 {
@@ -23,9 +26,10 @@ namespace QuickQuiz.WEB.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly RoleManager<AppRole> _roleManager;
         private readonly IEmailService _emailService;
+        private readonly IMemberService _memberService;
         readonly ITestService _testService;
 
-        public HomeController(ILogger<HomeController> logger, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager, IEmailService emailService, ITestService testService) : base(userManager)
+        public HomeController(ILogger<HomeController> logger, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager, IEmailService emailService, ITestService testService, IMemberService memberService) : base(userManager)
         {
             _logger = logger;
             _userManager = userManager;
@@ -33,6 +37,7 @@ namespace QuickQuiz.WEB.Controllers
             _roleManager = roleManager;
             _emailService = emailService;
             _testService = testService;
+            _memberService = memberService;
         }
         [Authorize(Roles = "User,Admin")]
         public async Task<IActionResult> Index()
@@ -49,9 +54,19 @@ namespace QuickQuiz.WEB.Controllers
             return View();
         }
 
-        public IActionResult SignIn()
+        //public IActionResult SignIn(SignInViewModel signInVM, SignUpViewModel signUpVM)
+        //{
+        //    var tuple = (new SignInViewModel(), new SignUpViewModel());
+        //    return View(tuple);
+        //}
+        public IActionResult SignIn(SignUpViewModel signUpVM, bool signUpReturn = false)
         {
-            var tuple = (new SignInViewModel(), new SignUpViewModel());
+            if (!signUpReturn)
+                foreach (var modelValue in ModelState.Values)
+                {
+                    modelValue.Errors.Clear();
+                }
+            var tuple = (new SignInViewModel(), signUpVM);
             return View(tuple);
         }
         [HttpPost]
@@ -92,11 +107,12 @@ namespace QuickQuiz.WEB.Controllers
         public async Task<IActionResult> SignUp([Bind(Prefix = "Item2")] SignUpViewModel request)
         {
             if (!ModelState.IsValid)
-                return View();
+                return RedirectToAction(nameof(HomeController.SignIn), new { signUpVM = request, signUpReturn = true });
             AppUser user = new()
             {
                 UserName = request.UserName,
-                Email = request.Email
+                Email = request.Email,
+                RegisterTime = DateTime.UtcNow
             };
             var identityResult = await _userManager.CreateAsync(user, request.PasswordConfirm);
             if (identityResult.Succeeded)
@@ -104,7 +120,7 @@ namespace QuickQuiz.WEB.Controllers
                 await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 string encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-                string? callbackUrl = Url.Action("ConfirmEmail", "Home", new { token = encodedToken, userName = request.UserName, email = request.Email }, Request.Scheme);
+                string? callbackUrl = Url.Action("ConfirmEmail", "Home", new { token = encodedToken, userName = request.UserName, email = request.Email }, Request.Scheme, "quizck.com");
                 if (callbackUrl is null)
                 {
                     //LOG İŞLEMİ YAPILACAK.
@@ -129,6 +145,7 @@ namespace QuickQuiz.WEB.Controllers
             AppUser? user = await _userManager.FindByEmailAsync(email);
             if (user != null)
             {
+                user.AccountConfirmTime = DateTime.UtcNow;
                 IdentityResult result = await _userManager.ConfirmEmailAsync(user, decodedToken);
                 if (result.Succeeded)
                 {
@@ -153,16 +170,63 @@ namespace QuickQuiz.WEB.Controllers
             }
 
             string passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(hasUser);
-            string passwordResetLink = Url.Action("PasswordChange", "Member",
-                new { userId = hasUser.Id, Token = passwordResetToken }, HttpContext.Request.Scheme);
+            string passwordResetLink = Url.Action("PasswordChange", "Home",
+                new { userId = hasUser.Id, token = passwordResetToken }, HttpContext.Request.Scheme);
 
             //örnek link : https://localhost:7295?userId?12213&token=dshgdfhsadsd  bu sekilde bir url üretilecek.
             await _emailService.SendResetPasswordEmail(passwordResetLink, hasUser.Email);
 
             TempData["SuccessMessage"] = "Şifre yenileme linki, e-posta adresinize gönderilmiştir.";
-            return RedirectToAction(nameof(ForgetPassword));
+            return RedirectToAction(nameof(SignIn));
         }
 
+        public async Task<IActionResult> PasswordChange(string userId, string token)
+        {
+            AppUser? user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                ModelState.AddModelError("UserNotFound", "Kullanıcı bulunamadı.");
+                return View();
+            }
+            bool isVerify = await _userManager.VerifyUserTokenAsync(user, _userManager.Options.Tokens.PasswordResetTokenProvider, "ResetPassword", token);
+
+            if (!isVerify)
+            {
+                ModelState.AddModelError("TokenDenied", "Geçersiz token kullanımı yapılmıştır.");
+                return View();
+            }
+
+            return View((new PasswordChangeViewModel() { Token=token}, userId));
+        }
+        [HttpPost]
+        public async Task<IActionResult> PasswordChange( PasswordChangeViewModel viewModel, string userId)
+        {
+            if (!ModelState.IsValid)
+                return View();
+            if (userId != null)
+            {
+                if (viewModel.Token == null)
+                {
+                    ModelState.AddModelError("TokenDenied", "Geçersiz token kullanımı yapılmıştır.");
+                    return View();
+                }
+                AppUser? user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
+                {
+                    ModelState.AddModelError("UserNotFound", "Kullanıcı bulunamadı.");
+                    return View();
+                }
+                IdentityResult result = await _userManager.ResetPasswordAsync(user, viewModel.Token, viewModel.PasswordNew);
+                if (!result.Succeeded)
+                    ModelState.AddModelErrorList(result.Errors);
+                else
+                {
+                    TempData["SuccessMessage"] = "Şifreniz başarılı bir şekilde değiştirilmiştir.";
+                    return RedirectToAction("SignIn");
+                }
+            }
+            return View();
+        }
         public IActionResult Error()
         {
             return View();

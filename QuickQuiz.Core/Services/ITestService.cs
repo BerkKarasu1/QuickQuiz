@@ -17,7 +17,8 @@ namespace QuickQuiz.Core.Services
         Task<TestDTO> TestControl(AppUser user, int id);
         Task Update(TestDTO TestDTO);
         Task<TestDTO> GetTestById(int id);
-		Task<bool> Result(TestDTO testDTO, AppUser? curruntUser, string visitorName);
+        Task SetStartTimeAsync(AppUser user, TestDTO testDTO);
+        Task<bool> Result(TestDTO testDTO, AppUser? curruntUser, string visitorName,string rating);
         Task<(string[]?, bool)> TestLinkControl(string link);
     }
 }

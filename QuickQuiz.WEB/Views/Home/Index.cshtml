@@ -12,18 +12,30 @@
         </div>
     </div>
     <div class="row">
+   @*       <div class="item" style="background-image: url(data:image/jpeg;base64,@Model.tests[22].PictureUrl);">
+            <div class="item-desc">
+                <h3>@Model.tests[22].Name</h3>
+                <p>@Model.tests[22].Creater?.UserName </p>
+            </div>
+            <!-- ONAY BUTONU -->
+            <div class="wrappertestbutton">
+                <a asp-controller="Quiz" asp-action="Test" asp-route-id="@Model.tests[22].Id" style="text-decoration:none;">
+                    <div class="starttestbutton" onclick="document.body.classList.add('active')">
+                        <span class="starttestbutton-text">Testi Başlat</span>
+                        <div class="starttestbutton-backgrounds"></div>
+                    </div>
+                </a>
+            </div>
+        </div> *@
         <div class="col-md-6 grid-margin stretch-card">
             <div class="card tale-bg">
                 <div class="card-people mt-auto">
-                    <img src="~/people.svg" alt="people">
-                    <div class="weather-info">
+                    <img src="data:image/jpeg;base64,@Model.tests[23].PictureUrl" alt="people">
+                    <div class="weather-info">                  
                         <div class="d-flex">
-                            <div>
-                                <h2 class="mb-0 font-weight-normal"><i class="icon-sun mr-2"></i>31<sup>C</sup></h2>
-                            </div>
-                            <div class="ml-2">
-                                <h4 class="location font-weight-normal">Senin İçin Seçtiğimiz</h4>
-                                <h6 class="font-weight-normal">Test</h6>
+                            <div class="ml-1">
+                                <b><h2 class="location font-weight-normal" style="color:#e7af00">Senin İçin Seçtiğimiz Test</h2></b>
+                                <h6 class="font-weight-normal" style="color:white">@Model.tests[23].Name</h6>
                             </div>
                         </div>
                     </div>
@@ -88,7 +100,7 @@
         <section class="testcard-section">
             <h2 class="line-title">Trend Testler</h2>
             <div class="owl-carousel custom-carousel owl-theme">
-                @foreach (var item in Model.tests)
+                @foreach (var item in Model.tests.TakeLast(10))
                 {                   
                     <div class="item" style="background-image: url(data:image/jpeg;base64,@item.PictureUrl);">
                         <div class="item-desc">

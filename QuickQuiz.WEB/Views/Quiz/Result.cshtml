@@ -1,5 +1,5 @@
 ﻿@using QuickQuiz.Core.Models;
-@model List<ExamResult>
+@model (List<ExamResult> examResults,string currentUser)
 @{
     ViewData["Title"] = "Result";
     Layout = null;
@@ -7,7 +7,7 @@
 
 <style>
     .genel {
-        margin-top: -9.75rem !important;
+        margin-top: 3.75rem !important;
     }
 
     .sonuc {
@@ -16,7 +16,7 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        background-color: #313645;
+        background-color: #1b2b5b;
         font-family: verdana, sans-serif;
     }
 
@@ -25,8 +25,14 @@
         color: #ced8e1 !important;
     }
 
-    .card-header {
+    .card-headerresult {
         background-color: #313645;
+    }
+
+    .card-headertitle {
+        background-color: #b1d5f5;
+        text-align: center;
+        padding: 20px;
     }
 
 </style>
@@ -38,8 +44,8 @@
 <div class="row sonuc">
     <div class="col-12 col-lg-8 col-xxl-9 d-flex genel">
         <div class="card flex-fill">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Sonuçlar</h5>
+            <div class="card-headerresult">
+                <h1 class="card-headertitle mb-0">Sonuçlar</h1>
             </div>
             <table class="table table-hover my-0">
                 <thead>
@@ -50,29 +56,40 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for (int i = 0; i < Model.Count; i++)
+                    @{
+                        int removedResult = 0;
+                    }
+                    @for (int i = 0; i < Model.examResults.Count; i++)
                     {
+                        if (Model.examResults[i].Result == null) { removedResult++; continue; }
                         <tr>
-                            <td>@(i + 1)</td>
-                            @if (@Model[i]?.Student != null)
+                            @if (@Model.examResults[i]?.Student != null)
                             {
-                                <td class="d-none d-xl-table-cell">@Model[i].Student.UserName</td>
+                                if (!string.IsNullOrEmpty(Model.currentUser) && Model.currentUser == Model.examResults[i].Student.UserName)
+                                {
+                                    <td style="color:red">@(i + 1 - removedResult)</td>
+                                    <td style="color:red" class="d-none d-xl-table-cell">@Model.examResults[i].Student.UserName</td>
+                                }
+                                else
+                                {
+                                    <td>@(i + 1 - removedResult)</td>
+                                    <td class="d-none d-xl-table-cell">@Model.examResults[i].Student.UserName</td>
+                                }
                             }
                             else
                             {
-                                <td class="d-none d-xl-table-cell">@(Model[i].VisitorName != null ? Model[i].VisitorName : "Misafir Kullanıcı")</td>
+
+                                <td>@(i + 1 - removedResult)</td>
+                                <td class="d-none d-xl-table-cell">@(Model.examResults[i].VisitorName != null ? Model.examResults[i].VisitorName : "Misafir Kullanıcı")</td>
                             }
-
-
-                            
-                            <td><span class="badge bg-success">@Model[i].Result</span></td>
+                            <td><span class="badge bg-success">@Model.examResults[i].Result</span></td>
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
     </div>
-    <a class="btn btn-secondary col-md-3" asp-action="Index" asp-controller="Home">Anasayfaya dön</a>
+    <a class="btn btn-secondary col-md-3 mb-5" asp-action="Index" asp-controller="Home">Anasayfaya dön</a>
 </div>
 
 <script src="~/adminkit-3.1.0/static/js/app.js"></script>

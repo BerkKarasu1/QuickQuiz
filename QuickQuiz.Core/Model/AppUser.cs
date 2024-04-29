@@ -20,5 +20,7 @@ namespace QuickQuiz.Core.Model
         public string? Linkedln { get; set; }
         public string? Github { get; set; }
         public List<Test>? Tests { get; set; }
+        public DateTime? RegisterTime { get; set; }
+        public DateTime? AccountConfirmTime { get; set; }
     }
 }

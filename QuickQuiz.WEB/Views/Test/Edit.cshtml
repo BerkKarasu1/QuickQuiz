@@ -76,12 +76,11 @@
                     <hr />
                 }
             </div>
-            
+
         </form>
         <style>
             .multi-button {
                 filter: drop-shadow(3px 10px 15px rgba(0, 0, 0, 0.45));
-
             }
 
                 .multi-button button {
@@ -102,7 +101,7 @@
                     border-radius: 20px 0 0 20px;
                 }
 
-                .multi-button :nth-child(5) {
+                .multi-button :nth-child(6) {
                     border-radius: 0 20px 20px 0;
                 }
 
@@ -117,17 +116,25 @@
             }
 
         </style>
-        <form style="  display: grid;
-  place-items: center;">
-                    <input asp-for="Id" hidden />
+        <form style="  display: grid;  place-items: center;padding-bottom: 50px;">
+            <input asp-for="Id" hidden />
             <input id="testlinkid" asp-for="@Model.Link" value="@Model.Link" hidden />
-                    <div class="multi-button">
-                     <button  onclick="submitForm()" type="button">Güncelle</button>
-                    <button  type="submit" asp-action="Test" asp-controller="Quiz" asp-route-id="@Model.Id">Deneyin</button>
-                    <button  type="submit" asp-action="RemoveTest" asp-controller="Test" method="post">Sil</button>
-                    <button  type="submit" asp-action="Result" asp-controller="Quiz" asp-route-id="@Model.Id" method="post">Sonuçlar</button>
-                    <button  type="button" id="copyButton" value="@Model.Id" onclick="copyFunc()"> Kopyala</button>
-                    </div>
+            <div class="multi-button">
+                <button onclick="submitForm()" type="button">Güncelle</button>
+                <button type="submit" asp-action="Test" asp-controller="Quiz" asp-route-id="@Model.Id">Deneyin</button>
+                <button type="submit" asp-action="RemoveTest" asp-controller="Test" method="post">Sil</button>
+                <button type="submit" asp-action="Result" asp-controller="Quiz" asp-route-id="@Model.Id" method="post">Sonuçlar</button>
+                <button type="button" id="copyButton" value="@Model.Id" onclick="copyFunc()"> Kopyala</button>
+                <button class=" dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Çıktı Al
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" asp-action="ExcelPage" asp-controller="Quiz" asp-route-id="@Model.Id">Excel</a>
+                    <a class="dropdown-item" asp-action="PdfPage" asp-controller="Quiz" asp-route-id="@Model.Id">PDF</a>
+                   
+                </div>
+                @* <button  type="submit" asp-action="ExcelPage" asp-controller="Quiz" asp-route-id="@Model.Id" method="post">Çıktı Al</button> *@
+            </div>
 
         </form>
     </div>
@@ -138,7 +145,7 @@
         document.getElementById("updateForm").submit();
     }
     function copyFunc() {
-        let copyText= document.getElementById("testlinkid");
+        let copyText = document.getElementById("testlinkid");
         navigator.clipboard.writeText(copyText.value);
     }
 </script>

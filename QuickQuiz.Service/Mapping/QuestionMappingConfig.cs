@@ -21,7 +21,7 @@ namespace Exams.Service.Mapping
 #if DEBUG
             site = "https://localhost:7147";
 #else
-            site = "https://app.quizck.com";
+            site = "https://quizck.com";
 #endif
 
             config.NewConfig<AppUser, UserEditViewModel>()

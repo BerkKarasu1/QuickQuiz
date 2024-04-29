@@ -1,351 +1,295 @@
-﻿@model (TestDTO testDTO,string visitorName)
+﻿@model (TestDTO testDTO,string visitorName,string rating)
 @{
     Layout = null;
 }
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QuizCK | @Model.testDTO.Name</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&amp;display=swap">
+    <link rel="stylesheet" href="~/css/testrating.css">
+</head>
+<body>
+    <div class="progress">
+        <div class="progress--bar"></div>
+    </div>
 
+    <h1 id="title">@Model.testDTO.Name</h1>
+    <div class="questionArea">
+        <form id="myForm" form="myForm" asp-controller="Quiz" asp-action="Result" method="post">
 
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        display: flex;
-        min-height: 100vh;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        background-color: #313645;
-        font-family: verdana, sans-serif;
-    }
-
-    h1 {
-        color: #fff;
-        margin: 20px 0;
-    }
-
-    .btn-12 {
-        justify-content: center;
-        align-items: center;
-        background-color: #313645;
-        /*position: relative;*/
-        right: 20px;
-        bottom: 20px;
-        border: none;
-        box-shadow: none;
-        width: 130px;
-        height: 40px;
-        line-height: 42px;
-        -webkit-perspective: 230px;
-        perspective: 230px;
-        margin-left: 25.75rem !important;
-    }
-
-        .btn-12 span {
-            background: rgb(0,172,238);
-            background: linear-gradient(0deg, rgba(0,172,238,1) 0%, rgba(2,126,251,1) 100%);
-            display: block;
-            position: absolute;
-            width: 130px;
-            height: 40px;
-            box-shadow: inset 2px 2px 2px 0px rgba(255,255,255,.5), 7px 7px 20px 0px rgba(0,0,0,.1), 4px 4px 5px 0px rgba(0,0,0,.1);
-            border-radius: 5px;
-            margin: 0;
-            text-align: center;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-            -webkit-transition: all .3s;
-            transition: all .3s;
-        }
-
-            .btn-12 span:nth-child(1) {
-                box-shadow: -7px -7px 20px 0px #fff9, -4px -4px 5px 0px #fff9, 7px 7px 20px 0px #0002, 4px 4px 5px 0px #0001;
-                -webkit-transform: rotateX(90deg);
-                -moz-transform: rotateX(90deg);
-                transform: rotateX(90deg);
-                -webkit-transform-origin: 50% 50% -20px;
-                -moz-transform-origin: 50% 50% -20px;
-                transform-origin: 50% 50% -20px;
+            <input asp-for="@Model.testDTO.Id" name="Id" hidden />
+            <input id="ratingPointInput" asp-for="@Model.rating" value="0" name="rating" hidden />
+            <input asp-for="@Model.visitorName" value="@Model.visitorName" name="visitorName" hidden />
+            @for (int i = 0; i < Model.testDTO.Question.Count; i++)
+            {
+                <input id="answer_@i" value="0" asp-for="@Model.testDTO.Question[i].TrueAnswer.AnswerText" name="Question[@i].TrueAnswer.AnswerText" hidden />
+                <input id="quest_@i" value="0" asp-for="@Model.testDTO.Question[i].Question" name="Question[@i].Question" hidden />
+                <input id="id_@i" value="0" asp-for="@Model.testDTO.Question[i].Id" name="Question[@i].Id" hidden />
             }
+            @*<button id="but"  type="submit" style="display:none">Testi Bitir</button>*@
+            <div class="rating" id="ratingArea" style="display:none">
+                <div class="rating-head">
+                    <p>Testi Beğendiniz Mi? </p>
+                </div>
+                <div data-rating="0" class="rating-emoji">🎯</div>
+                <div data-rating="1" class="rating-emoji" hidden="true">🤮</div>
+                <div data-rating="2" class="rating-emoji" hidden="true">😕</div>
+                <div data-rating="3" class="rating-emoji" hidden="true">😐</div>
+                <div data-rating="4" class="rating-emoji" hidden="true">😊</div>
+                <div data-rating="5" class="rating-emoji" hidden="true">🥰</div>
+                <div class="rating__stars">
 
-            .btn-12 span:nth-child(2) {
-                -webkit-transform: rotateX(0deg);
-                -moz-transform: rotateX(0deg);
-                transform: rotateX(0deg);
-                -webkit-transform-origin: 50% 50% -20px;
-                -moz-transform-origin: 50% 50% -20px;
-                transform-origin: 50% 50% -20px;
-            }
+                    <input id="rating-1" class="rating__input rating__input-1" type="radio" name="rating" value="1">
+                    <input id="rating-2" class="rating__input rating__input-2" type="radio" name="rating" value="2">
+                    <input id="rating-3" class="rating__input rating__input-3" type="radio" name="rating" value="3">
+                    <input id="rating-4" class="rating__input rating__input-4" type="radio" name="rating" value="4">
+                    <input id="rating-5" class="rating__input rating__input-5" type="radio" name="rating" value="5">
+                    <label class="rating__label" for="rating-1">
+                        <svg class="rating__star" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
+                            <g transform="translate(16,16)">
+                                <circle class="rating__star-ring" fill="none" stroke="#000" stroke-width="16" r="8" transform="scale(0)" />
+                            </g>
+                            <g stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <g transform="translate(16,16) rotate(180)">
+                                    <polygon class="rating__star-stroke" points="0,15 4.41,6.07 14.27,4.64 7.13,-2.32 8.82,-12.14 0,-7.5 -8.82,-12.14 -7.13,-2.32 -14.27,4.64 -4.41,6.07" fill="none" />
+                                    <polygon class="rating__star-fill" points="0,15 4.41,6.07 14.27,4.64 7.13,-2.32 8.82,-12.14 0,-7.5 -8.82,-12.14 -7.13,-2.32 -14.27,4.64 -4.41,6.07" fill="#000" />
+                                </g>
+                                <g transform="translate(16,16)" stroke-dasharray="12 12" stroke-dashoffset="12">
+                                    <polyline class="rating__star-line" transform="rotate(0)" points="0 4,0 16" />
+                                    <polyline class="rating__star-line" transform="rotate(72)" points="0 4,0 16" />
+                                    <polyline class="rating__star-line" transform="rotate(144)" points="0 4,0 16" />
+                                    <polyline class="rating__star-line" transform="rotate(216)" points="0 4,0 16" />
+                                    <polyline class="rating__star-line" transform="rotate(288)" points="0 4,0 16" />
+                                </g>
+                            </g>
+                        </svg>
+                        <span class="rating__sr">1 star—Terrible</span>
+                    </label>
+                    <label class="rating__label" for="rating-2">
+                        <svg class="rating__star" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
+                            <g transform="translate(16,16)">
+                                <circle class="rating__star-ring" fill="none" stroke="#000" stroke-width="16" r="8" transform="scale(0)" />
+                            </g>
+                            <g stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <g transform="translate(16,16) rotate(180)">
+                                    <polygon class="rating__star-stroke" points="0,15 4.41,6.07 14.27,4.64 7.13,-2.32 8.82,-12.14 0,-7.5 -8.82,-12.14 -7.13,-2.32 -14.27,4.64 -4.41,6.07" fill="none" />
+                                    <polygon class="rating__star-fill" points="0,15 4.41,6.07 14.27,4.64 7.13,-2.32 8.82,-12.14 0,-7.5 -8.82,-12.14 -7.13,-2.32 -14.27,4.64 -4.41,6.07" fill="#000" />
+                                </g>
+                                <g transform="translate(16,16)" stroke-dasharray="12 12" stroke-dashoffset="12">
+                                    <polyline class="rating__star-line" transform="rotate(0)" points="0 4,0 16" />
+                                    <polyline class="rating__star-line" transform="rotate(72)" points="0 4,0 16" />
+                                    <polyline class="rating__star-line" transform="rotate(144)" points="0 4,0 16" />
+                                    <polyline class="rating__star-line" transform="rotate(216)" points="0 4,0 16" />
+                                    <polyline class="rating__star-line" transform="rotate(288)" points="0 4,0 16" />
+                                </g>
+                            </g>
+                        </svg>
+                        <span class="rating__sr">2 stars—Bad</span>
+                    </label>
+                    <label class="rating__label" for="rating-3">
+                        <svg class="rating__star" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
+                            <g transform="translate(16,16)">
+                                <circle class="rating__star-ring" fill="none" stroke="#000" stroke-width="16" r="8" transform="scale(0)" />
+                            </g>
+                            <g stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <g transform="translate(16,16) rotate(180)">
+                                    <polygon class="rating__star-stroke" points="0,15 4.41,6.07 14.27,4.64 7.13,-2.32 8.82,-12.14 0,-7.5 -8.82,-12.14 -7.13,-2.32 -14.27,4.64 -4.41,6.07" fill="none" />
+                                    <polygon class="rating__star-fill" points="0,15 4.41,6.07 14.27,4.64 7.13,-2.32 8.82,-12.14 0,-7.5 -8.82,-12.14 -7.13,-2.32 -14.27,4.64 -4.41,6.07" fill="#000" />
+                                </g>
+                                <g transform="translate(16,16)" stroke-dasharray="12 12" stroke-dashoffset="12">
+                                    <polyline class="rating__star-line" transform="rotate(0)" points="0 4,0 16" />
+                                    <polyline class="rating__star-line" transform="rotate(72)" points="0 4,0 16" />
+                                    <polyline class="rating__star-line" transform="rotate(144)" points="0 4,0 16" />
+                                    <polyline class="rating__star-line" transform="rotate(216)" points="0 4,0 16" />
+                                    <polyline class="rating__star-line" transform="rotate(288)" points="0 4,0 16" />
+                                </g>
+                            </g>
+                        </svg>
+                        <span class="rating__sr">3 stars—OK</span>
+                    </label>
+                    <label class="rating__label" for="rating-4">
+                        <svg class="rating__star" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
+                            <g transform="translate(16,16)">
+                                <circle class="rating__star-ring" fill="none" stroke="#000" stroke-width="16" r="8" transform="scale(0)" />
+                            </g>
+                            <g stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <g transform="translate(16,16) rotate(180)">
+                                    <polygon class="rating__star-stroke" points="0,15 4.41,6.07 14.27,4.64 7.13,-2.32 8.82,-12.14 0,-7.5 -8.82,-12.14 -7.13,-2.32 -14.27,4.64 -4.41,6.07" fill="none" />
+                                    <polygon class="rating__star-fill" points="0,15 4.41,6.07 14.27,4.64 7.13,-2.32 8.82,-12.14 0,-7.5 -8.82,-12.14 -7.13,-2.32 -14.27,4.64 -4.41,6.07" fill="#000" />
+                                </g>
+                                <g transform="translate(16,16)" stroke-dasharray="12 12" stroke-dashoffset="12">
+                                    <polyline class="rating__star-line" transform="rotate(0)" points="0 4,0 16" />
+                                    <polyline class="rating__star-line" transform="rotate(72)" points="0 4,0 16" />
+                                    <polyline class="rating__star-line" transform="rotate(144)" points="0 4,0 16" />
+                                    <polyline class="rating__star-line" transform="rotate(216)" points="0 4,0 16" />
+                                    <polyline class="rating__star-line" transform="rotate(288)" points="0 4,0 16" />
+                                </g>
+                            </g>
+                        </svg>
+                        <span class="rating__sr">4 stars—Good</span>
+                    </label>
+                    <label class="rating__label" for="rating-5">
+                        <svg class="rating__star" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
+                            <g transform="translate(16,16)">
+                                <circle class="rating__star-ring" fill="none" stroke="#000" stroke-width="16" r="8" transform="scale(0)" />
+                            </g>
+                            <g stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <g transform="translate(16,16) rotate(180)">
+                                    <polygon class="rating__star-stroke" points="0,15 4.41,6.07 14.27,4.64 7.13,-2.32 8.82,-12.14 0,-7.5 -8.82,-12.14 -7.13,-2.32 -14.27,4.64 -4.41,6.07" fill="none" />
+                                    <polygon class="rating__star-fill" points="0,15 4.41,6.07 14.27,4.64 7.13,-2.32 8.82,-12.14 0,-7.5 -8.82,-12.14 -7.13,-2.32 -14.27,4.64 -4.41,6.07" fill="#000" />
+                                </g>
+                                <g transform="translate(16,16)" stroke-dasharray="12 12" stroke-dashoffset="12">
+                                    <polyline class="rating__star-line" transform="rotate(0)" points="0 4,0 16" />
+                                    <polyline class="rating__star-line" transform="rotate(72)" points="0 4,0 16" />
+                                    <polyline class="rating__star-line" transform="rotate(144)" points="0 4,0 16" />
+                                    <polyline class="rating__star-line" transform="rotate(216)" points="0 4,0 16" />
+                                    <polyline class="rating__star-line" transform="rotate(288)" points="0 4,0 16" />
+                                </g>
+                            </g>
+                        </svg>
+                        <span class="rating__sr">5 stars—Excellent</span>
+                    </label>
+                    <div class="rating__display">
+                        <p data-rating="1" hidden>Berbat</p>
+                        <p data-rating="2" hidden>Kötü</p>
+                        <p data-rating="3" hidden>Orta</p>
+                        <p data-rating="4" hidden>Güzel</p>
+                        <p data-rating="5" hidden>Mükemmel</p>
+                    </div>
+                </div>
+                <br><br>
+                <div style="text-align: center;">
+                    <button type="submit" class="finishExamButton">
+                        Testi Sonlandır
+                    </button>
+                </div>
+            </div>
+            @* <button class="custom-btn btn-12" type="submit" id="ratingAreaBut" style="display:none;"><span>Sonlandır</span><span>Testi Sonlandır</span></button> *@
+        </form>
+        <!-- Form alanları ve diğer içerikler -->
+        <div id="que" class="question">...</div>
+        <div id="opt" class="options">
+        </div>
+    </div>
 
-        .btn-12:hover span:nth-child(1) {
-            box-shadow: inset 2px 2px 2px 0px rgba(255,255,255,.5), 7px 7px 20px 0px rgba(0,0,0,.1), 4px 4px 5px 0px rgba(0,0,0,.1);
-            -webkit-transform: rotateX(0deg);
-            -moz-transform: rotateX(0deg);
-            transform: rotateX(0deg);
-        }
-
-        .btn-12:hover span:nth-child(2) {
-            box-shadow: inset 2px 2px 2px 0px rgba(255,255,255,.5), 7px 7px 20px 0px rgba(0,0,0,.1), 4px 4px 5px 0px rgba(0,0,0,.1);
-            color: transparent;
-            -webkit-transform: rotateX(-90deg);
-            -moz-transform: rotateX(-90deg);
-            transform: rotateX(-90deg);
-        }
-
-
-    .progress {
-        height: 5px;
-        position: fixed;
-        left: 0;
-        top: 0;
-        right: 0;
-    }
-
-    .progress--bar {
-        background-color: #0f0;
-        height: 100%;
-        transition: all ease 0.5s;
-        width: 0%;
-    }
-
-    .questionArea, .scoreArea {
-        display: none;
-    }
-
-    .questionArea {
-        max-width: 1000px;
-        width: 100%;
-        text-align: center;
-        padding: 0 15px;
-    }
-
-    .question {
-        color: #fff;
-        font-size: 18px;
-        margin: 20px 0;
-    }
-
-    .option {
-        display: flex;
-        align-items: center;
-        height: 50px;
-        background-color: rgba(0, 0, 0, 0.2);
-        border-radius: 6px;
-        margin-bottom: 10px;
-        color: #a7b6e4;
-        font-size: 16px;
-        cursor: pointer;
-    }
-
-        .option span {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 30px;
-            height: 30px;
-            border-radius: 15px;
-            margin-left: 5px;
-            margin-right: 10px;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: #4b5677;
-        }
-
-        .option:hover {
-            background-color: rgba(213, 167, 26, 0.899);
-            color: black;
-        }
-
-    .scoreArea {
-        background-color: rgba(255, 255, 255, 0.5);
-        padding: 20px;
-        border-radius: 20px;
-        margin: 10px;
-        text-align: center;
-    }
-
-    .prizeImage {
-        width: auto;
-        height: 100px;
-        margin-bottom: 10px;
-    }
-
-    .scoreText1 {
-        color: #000;
-        font-size: 23px;
-        font-weight: bold;
-        margin: 20px auto 10px;
-    }
-
-    .scorePct {
-        color: #0d630d;
-        font-size: 30px;
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
-
-    .scoreText2 {
-        font-size: 16px;
-        color: #000;
-        margin-bottom: 10px;
-    }
-
-    .scoreArea button {
-        border: 0;
-        border-radius: 6px;
-        background-color: rgba(0, 0, 0, 0.5);
-        color: #ccc;
-        padding: 10px 80px;
-        margin-top: 20px;
-        cursor: pointer;
-    }
-
-        .scoreArea button:hover {
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-
-</style>
-<div class="progress">
-    <div class="progress--bar"></div>
-</div>
-
-<h1 id="title">@Model.testDTO.Name</h1>
-<div class="questionArea">
-    <form id="myForm" form="myForm" asp-controller="Quiz" asp-action="Result" method="post" enctype="multipart/form-data">
-
-        <input asp-for="@Model.testDTO.Id" name="Id" hidden />
-        <input asp-for="@Model.visitorName" value="@Model.visitorName" name="visitorName" hidden />
+    <div class="scoreArea">
+        <img src="https://img.icons8.com/color/96/26e07f/checked--v4.png" class="prizeImage" />
+        <p>Finish!</p>
+        <hr />
+        <div class="scoreText1">--</div>
+        <div class="scorePct">--</div>
+        <div class="scoreText2">--</div>
+        <button>Retry</button>
+    </div>
+    <script charset="UTF-8">
+        let questions = [
         @for (int i = 0; i < Model.testDTO.Question.Count; i++)
         {
-            <input id="answer_@i" value="0" asp-for="@Model.testDTO.Question[i].TrueAnswer.AnswerText" name="Question[@i].TrueAnswer.AnswerText" hidden />
-            <input id="quest_@i" value="0" asp-for="@Model.testDTO.Question[i].Question" name="Question[@i].Question" hidden />
-            <input id="id_@i" value="0" asp-for="@Model.testDTO.Question[i].Id" name="Question[@i].Id" hidden />
-        }
-        @*<button id="but"  type="submit" style="display:none">Testi Bitir</button>*@
-        <button class="custom-btn btn-12" id="but" type="submit" style="display:none"><span>Sonlandır</span><span>Testi Sonlandır</span></button>
-    </form>
-    <!-- Form alanları ve diğer içerikler -->
-    <div id="que" class="question">...</div>
-    <div id="opt" class="options">
-    </div>
-</div>
+            <text>
+                {
+                    Id: '@Model.testDTO.Question[i].Id',
+                    question: '@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Model.testDTO.Question[i].Question))',
+                    options: [
+                        @for (int j = 0; j < Model.testDTO.Question[i].Answers.Count; j++)
+                        {
+                            // <text>'@Model.testDTO.Question[i].Answers[j].AnswerText', </text>
+                    <text>'@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(Model.testDTO.Question[i].Answers[j].AnswerText))', </text>
+                        }
+                    ],
+                },
+            </text>
+        }];
+        console.log(questions)
+        const progressBar = document.querySelector(".progress--bar");
+        const questionArea = document.querySelector(".questionArea");
+        const scoreArea = document.querySelector(".scoreArea");
+        const scoreText1 = document.querySelector(".scoreText1");
+        const scorePct = document.querySelector(".scorePct");
 
-<div class="scoreArea">
-    <img src="https://img.icons8.com/color/96/26e07f/checked--v4.png" class="prizeImage" />
-    <p>Finish!</p>
-    <hr />
-    <div class="scoreText1">--</div>
-    <div class="scorePct">--</div>
-    <div class="scoreText2">--</div>
-    <button>Retry</button>
-</div>
-<script>
-    let questions = [
-    @for (int i = 0; i < Model.testDTO.Question.Count; i++)
-    {
-        <text>
-            {
-                Id: '@Model.testDTO.Question[i].Id',
-                question: '@Model.testDTO.Question[i].Question',
-                options: [
-            @for (int j = 0; j < Model.testDTO.Question[i].Answers.Count; j++)
-            {
-                <text>'@Model.testDTO.Question[i].Answers[j].AnswerText', </text>
-            }
-                                                ],
+        //initial data
+        let currentQuestion = 0;
+        let correctAnswers = 0;
+        let selectedAnswers = [];
 
-            },
-        </text>
-    }
-                    ];
-    /* ======== End ======== */
-
-    /* ==== True code ==== */
-    const progressBar = document.querySelector(".progress--bar");
-    const questionArea = document.querySelector(".questionArea");
-    const scoreArea = document.querySelector(".scoreArea");
-    const scoreText1 = document.querySelector(".scoreText1");
-    const scorePct = document.querySelector(".scorePct");
-
-    //initial data
-    let currentQuestion = 0;
-    let correctAnswers = 0;
-    let selectedAnswers = [];
-
-    showQuestion();
-
-    //reset event
-    document.querySelector(".scoreArea button").addEventListener("click", () => {
-        currentQuestion = 0;
-        correctAnswers = 0;
-        showQuestion();
-    });
-
-    //Functions
-    function showQuestion() {
-        if (questions[currentQuestion]) {
-            let q = questions[currentQuestion];
-
-            let progress = Math.floor((currentQuestion / questions.length) * 100);
-            progressBar.style.width = `${progress}%`;
-
-            scoreArea.style.display = "none";
-            questionArea.style.display = "block";
-
-            document.querySelector(".question").innerHTML = q.question;
-
-            let optionsHtml = "";
-
-            for (let i in q.options) {
-                optionsHtml += `<div data-op="${i}" class="option"><span> ${parseInt(i) + 1
-                    }</span> ${q.options[i]}</div>`;
-            }
-
-            document.querySelector(".options").innerHTML = optionsHtml;
-
-            document.querySelectorAll(".options .option").forEach((item) => {
-                item.addEventListener("click", optionsClickEvent);
-            });
-        } else {
-            finishQuiz();
-        }
-    }
-
-
-    function optionsClickEvent(e) {
-        let clickedOption = parseInt(e.target.getAttribute("data-op"));
-        let quesId = "quest_" + currentQuestion;
-        let answerId = "answer_" + currentQuestion;
-        let id = "id_" + currentQuestion;
-        document.getElementById(id).value = questions[currentQuestion].Id;
-        document.getElementById(quesId).value = questions[currentQuestion].question;
-        document.getElementById(answerId).value = questions[currentQuestion].options[clickedOption];
-
-        if (questions[currentQuestion].answer === clickedOption) {
-            correctAnswers++;
-        }
-        let selectedAnswer = {
-            question: questions[currentQuestion].question,
-            selectedOption: questions[currentQuestion].options[clickedOption]
-        };
-        selectedAnswers.push(selectedAnswer);
-
-        currentQuestion++;
         showQuestion();
 
-    }
+        //reset event
+        document.querySelector(".scoreArea button").addEventListener("click", () => {
+            currentQuestion = 0;
+            correctAnswers = 0;
+            showQuestion();
+        });
 
-    function finishQuiz() {
-        progressBar.style.width = `${100}%`;
-        let quest = document.getElementById("que")
-        let option = document.getElementById("opt")
-        let title = document.getElementById("title")
-        let but = document.getElementById("but")
-        quest.style.display = "none";
-        option.style.display = "none";
-        title.style.display = "none";
-        but.style.display = "block";
-    }
-</script>
+        //Functions
+        function showQuestion() {
+            if (questions[currentQuestion]) {
+                let q = questions[currentQuestion];
+
+                let progress = Math.floor((currentQuestion / questions.length) * 100);
+                progressBar.style.width = `${progress}%`;
+
+                scoreArea.style.display = "none";
+                questionArea.style.display = "block";
+
+                document.querySelector(".question").innerHTML = q.question;
+
+                let optionsHtml = "";
+
+                for (let i in q.options) {
+                    optionsHtml += `<div data-op="${i}" class="option"><span> ${parseInt(i) + 1
+                        }</span> ${q.options[i]}</div>`;
+                }
+
+                document.querySelector(".options").innerHTML = optionsHtml;
+
+                document.querySelectorAll(".options .option").forEach((item) => {
+                    item.addEventListener("click", optionsClickEvent);
+                });
+            } else {
+                finishQuiz();
+            }
+        }
+
+
+        function optionsClickEvent(e) {
+            let clickedOption = parseInt(e.target.getAttribute("data-op"));
+            let quesId = "quest_" + currentQuestion;
+            let answerId = "answer_" + currentQuestion;
+            let id = "id_" + currentQuestion;
+            document.getElementById(id).value = questions[currentQuestion].Id;
+            document.getElementById(quesId).value = questions[currentQuestion].question;
+            document.getElementById(answerId).value = questions[currentQuestion].options[clickedOption];
+
+            if (questions[currentQuestion].answer === clickedOption) {
+                correctAnswers++;
+            }
+            let selectedAnswer = {
+                question: questions[currentQuestion].question,
+                selectedOption: questions[currentQuestion].options[clickedOption]
+            };
+            selectedAnswers.push(selectedAnswer);
+
+            currentQuestion++;
+            showQuestion();
+
+        }
+
+        function finishQuiz() {
+            progressBar.style.width = `${100}%`;
+            let quest = document.getElementById("que")
+            let option = document.getElementById("opt")
+            let title = document.getElementById("title")
+            let ratingArea = document.getElementById("ratingArea")
+            quest.style.display = "none";
+            option.style.display = "none";
+            title.style.display = "none";
+            ratingArea.style.display = "block";
+        }
+    </script>
+    <script src="~/js/testrating.js"></script>
+</body>
+
+</html>

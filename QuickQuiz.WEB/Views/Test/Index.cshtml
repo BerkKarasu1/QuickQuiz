@@ -23,7 +23,7 @@
             @for (int i = j * 4; i < f; i++)
             {
 
-                <a class="card" asp-controller="Test" asp-action="Edit" asp-route-id="@Model[i].Id">
+                <a class="card" style="border:none" asp-controller="Test" asp-action="Edit" asp-route-id="@Model[i].Id">
                     @if (!string.IsNullOrEmpty(Model[i].PictureUrl))
                     {
                         <div class="card__background" style="background-image: url(data:image/jpeg;base64,@Model[i].PictureUrl)"></div>

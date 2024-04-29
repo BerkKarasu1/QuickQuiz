@@ -78,10 +78,27 @@ namespace QuickQuiz.WEB.Controllers
         {
             var currentUser = await _userManager.FindByNameAsync(User!.Identity!.Name!);
             ViewBag.genderList = new SelectList(Enum.GetNames(typeof(Gender)));
-            ViewBag.educationLevel = new SelectList(Enum.GetNames(typeof(EducationLevel)));
-            ViewBag.occupation = new SelectList(Enum.GetNames(typeof(Occupation)));
+            //ViewBag.educationLevel = new SelectList(Enum.GetNames(typeof(EducationLevel)));
+            //ViewBag.occupation = new SelectList(Enum.GetNames(typeof(Occupation)));
             List<string> enums = new();
             List<string> enums2 = new();
+            var userEditViewModel = new UserEditViewModel()
+            {
+                UserName = currentUser!.UserName!,
+                Email = currentUser!.Email!,
+                BirthDate = currentUser!.BirthDate,
+                Phone = currentUser!.PhoneNumber!,
+                City = currentUser!.City,
+                Gender = currentUser!.Gender,
+                Github = currentUser!.Github,
+                Twitter = currentUser!.Twitter,
+                Instagram = currentUser!.Instagram,
+                Facebook = currentUser!.Facebook,
+                Linkedln = currentUser!.Linkedln,
+                EducationLevel = currentUser.EducationLevel,
+                EducationLevelDesc = currentUser.EducationLevel?.GetType().GetField(currentUser.EducationLevel?.ToString())?.GetCustomAttributes<DescriptionAttribute>().FirstOrDefault()?.Description,
+                OccupationDesc = currentUser.Occupation?.GetType().GetField(currentUser.Occupation?.ToString())?.GetCustomAttributes<DescriptionAttribute>().FirstOrDefault()?.Description,
+            };
             foreach (Occupation occupation in Enum.GetValues(typeof(Occupation)))
             {
                 var desc = occupation.GetType().GetField(occupation.ToString())?.GetCustomAttributes<DescriptionAttribute>().FirstOrDefault()?.Description;
@@ -96,20 +113,7 @@ namespace QuickQuiz.WEB.Controllers
             }
             ViewBag.occupation = new SelectList(enums);
             ViewBag.educationLevel = new SelectList(enums2);
-            var userEditViewModel = new UserEditViewModel()
-            {
-                UserName = currentUser!.UserName!,
-                Email = currentUser!.Email!,
-                BirthDate = currentUser!.BirthDate,
-                Phone = currentUser!.PhoneNumber!,
-                City = currentUser!.City,
-                Gender = currentUser!.Gender,
-                Github = currentUser!.Github,
-                Twitter = currentUser!.Twitter,
-                Instagram = currentUser!.Instagram,
-                Facebook = currentUser!.Facebook,
-                Linkedln = currentUser!.Linkedln
-            };
+
 
             return View(userEditViewModel);
         }

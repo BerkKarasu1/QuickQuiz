@@ -18876,6 +18876,7 @@ button.bg-dark:focus,
 
 .font-weight-normal {
   font-weight: 400 !important;
+  font-size:2rem;
 }
 
 .font-weight-bold {
@@ -20194,7 +20195,6 @@ code {
 
 .card-people {
   position: relative;
-  padding-top: 20px;
 }
 
 .card-people img {
@@ -20213,7 +20213,7 @@ code {
 }
 
 .card-people .weather-info .location {
-  font-size: 20px;
+  font-size: 40px;
   margin-bottom: 0;
 }
 

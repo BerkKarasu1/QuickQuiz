@@ -21,9 +21,10 @@ namespace QuickQuiz.Repository.Repositories
             await _context.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
+        //todo: Take(2) alanı kaldırılacak.
         public async Task<List<Test>> GetAllTest(AppUser user)
         {
-            return await _context.Tests.Where(x => x.Creater.Id == user.Id).Include(x => x.Question).ThenInclude(x => x.Answers).ToListAsync();
+            return await _context.Tests.Where(x => x.Creater.Id == user.Id).ToListAsync();
         }
         public async Task<List<Test>> GetAllTest()
         {

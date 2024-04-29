@@ -15,11 +15,161 @@
 else if (TempData["QuestionError"] != null)
 {
     <br />
-    <h3 class="dikkat">@TempData["QuestionError"]</h3>    
+    <h3 class="dikkat">@TempData["QuestionError"]</h3>
 }
 <form form="GeneralForm" asp-controller="Test" asp-action="CreateTest" formmethod="post">
     <br />
     <br />
+    <style>
+        .modal-window-excel {
+            position: fixed;
+            background-color: rgba(255, 255, 255, 0.25);
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 999;
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s;
+        }
+
+        .modal-window-excel:target {
+                visibility: visible;
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+        .modal-window-excel > div {
+                width: 400px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                padding: 2em;
+                background: white;
+            }
+
+        .modal-window-excel header {
+                font-weight: bold;
+            }
+
+        .modal-window-excel h1 {
+                font-size: 150%;
+                margin: 0 0 15px;
+            }
+
+        .modal-close-excel {
+            color: #aaa;
+            line-height: 50px;
+            font-size: 80%;
+            position: absolute;
+            right: 0;
+            text-align: center;
+            top: 0;
+            width: 70px;
+            text-decoration: none;
+        }
+
+        .modal-close-excel:hover {
+                color: black;
+            }
+     
+
+
+        .modal-window-excel > div {
+            border-radius: 1rem;
+        }
+
+        .modal-window-excel div:not(:last-of-type) {
+            margin-bottom: 15px;
+        }
+
+
+        .btnExcelModal {
+            background-color: white;
+            padding: 1em 1.5em;
+            border-radius: 0.5rem;
+            text-decoration: none;
+        }
+
+            .btnExcelModal i {
+                padding-right: 0.3em;
+            }
+
+        [type="file"] {
+            height: 0;
+            overflow: hidden;
+            width: 0;
+        }
+
+            [type="file"] + label {
+                background: #f15d22;
+                border: none;
+                border-radius: 5px;
+                color: #fff;
+                cursor: pointer;
+                display: inline-block;
+                font-family: 'Rubik', sans-serif;
+                font-size: inherit;
+                font-weight: 500;
+                margin-bottom: 1rem;
+                outline: none;
+                padding: 1rem 50px;
+                position: relative;
+                transition: all 0.3s;
+                vertical-align: middle;
+            }
+
+                [type="file"] + label.btn-2 {
+                    background-color: #99c793;
+                    border-radius: 50px;
+                    overflow: hidden;
+                }
+
+                    [type="file"] + label.btn-2::before {
+                        color: #fff;
+                        content: "\f382";
+                        font-family: "Font Awesome 5 Pro";
+                        font-size: 100%;
+                        height: 100%;
+                        right: 130%;
+                        line-height: 3.3;
+                        position: absolute;
+                        top: 0px;
+                        transition: all 0.3s;
+                    }
+
+                    [type="file"] + label.btn-2:hover {
+                        background-color: #497f42;
+                    }
+
+                        [type="file"] + label.btn-2:hover::before {
+                            right: 75%;
+                        }
+    </style>
+    <input type="file" id="file" />@* 
+    <label for="file" class="btn-2">upload</label> *@
+    @if (Model.Question.Any())
+    {
+@*   <div class="interior">
+    <a class="btnExcelModal" href="#open-modal-excel">👋 Basic CSS-Only Modal</a>
+  </div>
+        <div id="open-modal-excel" class="modal-window-excel">
+  <div>
+                <a href="#" title="Close" class="modal-closeexcel">Close</a>
+    <h1>Voilà!</h1>
+    <div>A CSS-only modal based on the :target pseudo-class. Hope you find it helpful.</div>
+    <br>
+    <div><small>Check out 👇</small></div>
+
+      Your new favorite eyedropper tool!
+  </div>
+</div> *@
+        <button class="btn btn-success" onclick="check()" data-toggle="modal" data-target="#createTestModal" type="button">Seçilen Öğelerden Test Oluştur</button>
+    }
+
     @for (int i = 0; i < Model.Question.Count; i++)
     {
         <div class="row mt-12">
@@ -81,35 +231,35 @@ else if (TempData["QuestionError"] != null)
     }
     @if (Model.Question.Any())
     {
-        
-    <button class="btn btn-success" onclick="check()" data-toggle="modal" data-target="#createTestModal" type="button">Seçilen Öğelerden Test Oluştur</button>
 
-    <div class="modal fade" id="createTestModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Test Oluşturuluyor</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" style="text-align:center">
-                    <strong id="bb"> Oluşturduğunuz Testin Adını Belirleyin</strong>
-                    <br />
-                    <input type="text" asp-for=@Model.Test.Name id="testName">
-                    <br />
-                    <strong id="bb">Kategori Seçiniz</strong>
-                    <br />
-                    <select asp-for="@Model.Test.TestCategoryDescription" asp-items="ViewBag.genderList" class="form-control">
-                        <option value="">Kategori Seçiniz</option>
-                    </select>
-                    <span asp-validation-for="@Model.Test.Name" class="text-danger"></span>
-                    <span asp-validation-for="@Model.Test.TestCategorys" class="text-danger"></span>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
-                    <button type="submit" id="createTestButton" class="btn btn-primary">Test Oluştur</button>
+        <button class="btn btn-success" onclick="check()" data-toggle="modal" data-target="#createTestModal" type="button">Seçilen Öğelerden Test Oluştur</button>
+
+        <div class="modal fade" id="createTestModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Test Oluşturuluyor</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="text-align:center">
+                        <strong id="bb"> Oluşturduğunuz Testin Adını Belirleyin</strong>
+                        <br />
+                        <input type="text" asp-for=@Model.Test.Name id="testName">
+                        <br />
+                        <strong id="bb">Kategori Seçiniz</strong>
+                        <br />
+                        <select asp-for="@Model.Test.TestCategoryDescription" asp-items="ViewBag.genderList" class="form-control">
+                            <option value="">Kategori Seçiniz</option>
+                        </select>
+                        <span asp-validation-for="@Model.Test.Name" class="text-danger"></span>
+                        <span asp-validation-for="@Model.Test.TestCategorys" class="text-danger"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
+                        <button type="submit" id="createTestButton" class="btn btn-primary">Test Oluştur</button>
+                    </div>
                 </div>
             </div>
-        </div>
         </div>
     }
     else

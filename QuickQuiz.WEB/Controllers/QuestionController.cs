@@ -20,14 +20,18 @@ namespace QuickQuiz.WEB.Controllers
             _questionService = questionService;
         }
 
-        public IActionResult Add()
-        {
-            return View();
-        }
+        public IActionResult Add() => View(new QuestionDTO());
+        
         [HttpPost]
         public async Task<IActionResult> Add(QuestionDTO questionDTO)
         {
             await _questionService.AddAsync(questionDTO,CurrentUser);
+            return RedirectToAction("Add");
+        }
+        [HttpPost]
+        public async Task<IActionResult> BulkAddWithExcel(QuestionDTO questionDTO)
+        {
+            await _questionService.AddAsync(questionDTO, CurrentUser);
             return RedirectToAction("Add");
         }
         [HttpPost]

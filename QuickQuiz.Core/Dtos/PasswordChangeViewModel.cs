@@ -22,5 +22,6 @@ namespace QuickQuiz.Core.Dtos
         [Display(Name = "Yeni Şifre Tekrar:")]
         [MinLength(6, ErrorMessage = "Şifreniz en az 6 karakter olabilir!")]
         public string PasswordNewConfirm { get; set; } = null!;
+        public string? Token { get; set; }
     }
 }
