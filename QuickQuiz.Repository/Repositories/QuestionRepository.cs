@@ -40,6 +40,10 @@ namespace QuickQuiz.Repository.Repositories
         {
             return await _context.Questions.Where(x => x.Creater.Id == user.Id).Include(x=>x.Answers).ToListAsync();
         }
+        public async Task<List<Question>> GetAllQuestionsWithStatistic(AppUser user)
+        {
+            return await _context.Questions.Where(x => x.Creater.Id == user.Id).Include(x=>x.Answers).Include(x=>x.Statistic).ToListAsync();
+        }
 
         public void Remove(Question entity)
         {

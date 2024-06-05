@@ -15,6 +15,7 @@ namespace QuickQuiz.Core.Model
         public List<Answer> Answers { get; set; } 
         public AppUser Creater { get; set; }
         public List<Test>? Tests { get; set; }
+        public QuestionStatistic? Statistic { get; set; }
     }
     public class Answer
     {

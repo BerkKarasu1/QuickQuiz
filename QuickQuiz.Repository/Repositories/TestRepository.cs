@@ -24,11 +24,11 @@ namespace QuickQuiz.Repository.Repositories
         //todo: Take(2) alanı kaldırılacak.
         public async Task<List<Test>> GetAllTest(AppUser user)
         {
-            return await _context.Tests.Where(x => x.Creater.Id == user.Id).ToListAsync();
+            return await _context.Tests.Where(x => x.Creater.Id == user.Id).OrderByDescending(x => x.Id).ToListAsync();
         }
         public async Task<List<Test>> GetAllTest()
         {
-            return await _context.Tests.Include(x=>x.Creater).ToListAsync();
+            return await _context.Tests.Include(x=>x.Creater).OrderByDescending(x=>x.Id).ToListAsync();
         }
 
         public async Task<Test> GetTestById(int id)

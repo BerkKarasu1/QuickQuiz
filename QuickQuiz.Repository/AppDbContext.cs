@@ -12,6 +12,7 @@ namespace QuickQuiz.Repository
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Test> Tests { get; set; }
+        public DbSet<QuestionStatistic> QuestionStatistics { get; set; }
         public DbSet<ExamResult> ExamResults { get; set; }
         private IConfiguration configuration;
         public AppDbContext()
@@ -40,6 +41,8 @@ namespace QuickQuiz.Repository
                   .UsingEntity<Dictionary<string, object>>("TestQuestionManyToMany",
                   x => x.HasOne<Test>().WithMany().HasForeignKey("TestId").HasConstraintName("TestFK"),
                   x => x.HasOne<Question>().WithMany().HasForeignKey("QuestionId").HasConstraintName("QuestionFK"));
+            builder.Entity<Question>()
+                .HasOne(x => x.Statistic).WithOne(x => x.Question).HasForeignKey<QuestionStatistic>(fk=>fk.Id);
         }
     }
 }

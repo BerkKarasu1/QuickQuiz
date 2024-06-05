@@ -15,13 +15,15 @@ namespace QuickQuiz.Service.Services
         readonly ITestRepository _testRepository;
         readonly IQuestionRepository _questionRepository;
         readonly IResultService _resultService;
+        readonly IStatisticRepository _statisticRepository;
         readonly IMapper _mapper;
-        public TestService(ITestRepository testRepository, IQuestionRepository questionRepository, IResultService resultService, IMapper mapper)
+        public TestService(ITestRepository testRepository, IQuestionRepository questionRepository, IResultService resultService, IMapper mapper, IStatisticRepository statisticRepository)
         {
             _testRepository = testRepository;
             _questionRepository = questionRepository;
             _resultService = resultService;
             _mapper = mapper;
+            _statisticRepository = statisticRepository;
         }
         public async Task AddAsync(TestDTO testDTO, AppUser currentUser)
         {
@@ -87,35 +89,32 @@ namespace QuickQuiz.Service.Services
                 test.PictureUrl = testDTO.PictureUrl;
             _testRepository.Update(test);
         }
-        public async Task<bool> Result(TestDTO testDTO, AppUser? curruntUser, string visitorName,string rating)
+        public async Task<bool> Result(TestDTO testDTO, AppUser? curruntUser, string visitorName, string rating)
         {
-            var test = await _testRepository.GetTestById(testDTO.Id);
+            Test test = await _testRepository.GetTestById(testDTO.Id);
+            Dictionary<int, bool> answerStatistics = new();
             if (test != null)
             {
                 int CorrectAnswer = 0;
                 int WrongAnswer = 0;
-                foreach (var testQuest in test.Question)
-                {
-                    foreach (var dtoQuest in testDTO.Question)
-                    {
+                foreach (Question testQuest in test.Question)
+                    foreach (QuestionDTO dtoQuest in testDTO.Question)
                         if (testQuest.Id == dtoQuest.Id)
-                        {
-                            foreach (var answer in testQuest.Answers)
-                            {
+                            foreach (Answer answer in testQuest.Answers)
                                 if (answer.AnswerText == dtoQuest.TrueAnswer.AnswerText)
                                 {
                                     if (answer.IsCorrect)
                                         CorrectAnswer++;
                                     else
                                         WrongAnswer++;
+                                    answerStatistics.Add(testQuest.Id, answer.IsCorrect);
                                 }
-                            }
-                        }
-                    }
-                }
+                //todo:
+                await _statisticRepository.SetQuestionStatistics(answerStatistics);
                 float score = (float.Parse(CorrectAnswer.ToString()) / (float.Parse(WrongAnswer.ToString()) + float.Parse(CorrectAnswer.ToString()))) * 100;
+
                 if (curruntUser != null)
-                    await _resultService.AddAsync(curruntUser, score, test,rating);
+                    await _resultService.AddAsync(curruntUser, score, test, rating);
                 else
                     await _resultService.AddVisitorAsync(visitorName, score, test, rating);
                 return true;

@@ -11,5 +11,6 @@ namespace QuickQuiz.Core.Repositories
     {
        public Task<Question> FindQuestionByIdAsync(int id);
        public Task<List<Question>> GetAllQuestion(AppUser user);
+        Task<List<Question>> GetAllQuestionsWithStatistic(AppUser user);
     }
 }

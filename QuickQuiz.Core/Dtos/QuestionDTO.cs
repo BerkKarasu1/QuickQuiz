@@ -15,8 +15,8 @@ namespace QuickQuiz.Core.Dtos
         public List<AnswerDTO> Answers { get; set; }
         public AnswerDTO? TrueAnswer { get; set; } 
         public List<TestDTO> Tests { get; set; }
-        public UserDTO Creater { get; set; } 
-        public bool Check { get; set; }
+        public UserDTO Creater { get; set; }
+        public bool Check { get; set; } = false;
         public string? TestName { get; set; }
     }
     public record class AnswerDTO
